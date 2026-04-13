@@ -69,9 +69,14 @@
     <div class="mobile-links">
       <!-- Product Accordion -->
       <div class="mobile-accordion">
-        <a class="mobile-link mobile-accordion-toggle" (click)="toggleMobileDropdown('product'); $event.stopPropagation()">
+        <a class="mobile-link mobile-accordion-toggle"
+          (click)="toggleMobileDropdown('product'); $event.stopPropagation()">
           Product
-          <svg class="mobile-chevron" [class.rotated]="mobileDropdowns['product']" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          <svg class="mobile-chevron" [class.rotated]="mobileDropdowns['product']" width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </a>
         <div class="mobile-dropdown" [class.open]="mobileDropdowns['product']">
           <a (click)="scrollTo('product'); closeMobileMenu()" class="mobile-dropdown-item">Why Armor Bridz</a>
@@ -85,9 +90,14 @@
 
       <!-- Company Accordion -->
       <div class="mobile-accordion">
-        <a class="mobile-link mobile-accordion-toggle" (click)="toggleMobileDropdown('company'); $event.stopPropagation()">
+        <a class="mobile-link mobile-accordion-toggle"
+          (click)="toggleMobileDropdown('company'); $event.stopPropagation()">
           Company
-          <svg class="mobile-chevron" [class.rotated]="mobileDropdowns['company']" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          <svg class="mobile-chevron" [class.rotated]="mobileDropdowns['company']" width="16" height="16"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </a>
         <div class="mobile-dropdown" [class.open]="mobileDropdowns['company']">
           <a href="#" class="mobile-dropdown-item">About</a>
@@ -396,16 +406,14 @@
           </a>
         </div>
       </div>
-
       <div class="footer-col">
-        <h6 class="footer-heading">Features</h6>
+        <h6 class="footer-heading">Product</h6>
         <ul class="footer-links">
-          <li><a href="#" id="footer-campaigns">Smart Campaigns</a></li>
-          <li><a href="#" id="footer-templates">Realistic Templates</a></li>
-          <li><a href="#" id="footer-analytics">Live Analytics</a></li>
-          <li><a href="#" id="footer-risk-scoring">Risk Scoring</a></li>
-          <li><a href="#" id="footer-compliance-reports">Compliance Reports</a></li>
-          <li><a href="#" id="footer-zero-data">Zero Data Risk</a></li>
+          <li><a href="#" id="footer-overview">Overview</a></li>
+          <li><a (click)="scrollTo('product')" style="cursor:pointer;">Why Armor Bridz</a></li>
+          <li><a (click)="scrollTo('impact')" style="cursor:pointer;">The Impact</a></li>
+          <li><a (click)="scrollTo('features')" style="cursor:pointer;" id="footer-features">Features</a></li>
+          <li><a href="#" id="footer-pricing">Pricing</a></li>
         </ul>
       </div>
 
@@ -418,18 +426,6 @@
           <li><a href="#" id="footer-contact">Contact</a></li>
         </ul>
       </div>
-
-      <div class="footer-col">
-        <h6 class="footer-heading">Product</h6>
-        <ul class="footer-links">
-          <li><a href="#" id="footer-overview">Overview</a></li>
-          <li><a href="#" id="footer-pricing">Pricing</a></li>
-          <li><a (click)="scrollTo('product')" style="cursor:pointer;">Why Armor Bridz</a></li>
-          <li><a (click)="scrollTo('impact')" style="cursor:pointer;">The Impact</a></li>
-        </ul>
-      </div>
-
-
     </div>
 
     <hr class="footer-divider">
