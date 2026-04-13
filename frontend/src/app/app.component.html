@@ -1,1 +1,17 @@
 <router-outlet></router-outlet>
+
+<!-- Global floating scroll buttons -->
+<div class="floating-actions" *ngIf="isHome">
+  <div class="floating-icons">
+    <button class="float-icon-btn up-btn" [class.hidden]="!showUp" (click)="scrollToTop()" aria-label="Scroll to top">
+      <div class="float-icon">
+        <i class="bi bi-arrow-up"></i>
+      </div>
+    </button>
+    <button class="float-icon-btn down-btn" [class.hidden]="!showDown" (click)="scrollToBottom()" aria-label="Scroll to bottom">
+      <div class="float-icon">
+        <i class="bi bi-arrow-down"></i>
+      </div>
+    </button>
+  </div>
+</div>

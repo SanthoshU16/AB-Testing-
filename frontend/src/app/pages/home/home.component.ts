@@ -13,7 +13,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   title = 'Armor Bridz';
   navScrolled = false;
   showBackToTop = false;
+  showScrollDown = true;
   mobileMenuOpen = false;
+  mobileDropdowns: { [key: string]: boolean } = {};
 
   stats = [
     { prefix: '', target: 91, suffix: '%', current: '0', isFloat: false, label: 'of breaches start with phishing' },
@@ -28,37 +30,43 @@ export class HomeComponent implements OnInit, AfterViewInit {
       icon: 'bi-send-check',
       title: 'Smart Campaigns',
       description: 'Create and schedule targeted phishing simulations with precision. Select departments, set timing, and watch results flow in.',
-      color: '#2563EB'
+      color: '#2563EB',
+      image: 'feature-smart-campaigns.png'
     },
     {
       icon: 'bi-envelope-paper',
       title: 'Realistic Templates',
       description: 'Choose from 100+ industry-tested phishing templates or build custom scenarios that mirror real-world threats.',
-      color: '#1E40AF'
+      color: '#1E40AF',
+      image: 'feature-realistic-templates.png'
     },
     {
       icon: 'bi-graph-up-arrow',
       title: 'Live Analytics',
       description: 'Real-time dashboards showing opens, clicks, and credential attempts. Identify trends before they become problems.',
-      color: '#0A2540'
+      color: '#0A2540',
+      image: 'feature-live-analytics.png'
     },
     {
       icon: 'bi-person-badge',
       title: 'Risk Scoring',
       description: 'AI-powered risk classification categorizes employees into risk tiers, enabling focused remediation.',
-      color: '#EAB308'
+      color: '#EAB308',
+      image: 'feature-risk-scoring.png'
     },
     {
       icon: 'bi-file-earmark-bar-graph',
       title: 'Compliance Reports',
       description: 'One-click audit reports for ISO 27001, SOC 2, and internal security reviews. Always be audit-ready.',
-      color: '#DC2626'
+      color: '#DC2626',
+      image: 'compliance-hero.png'
     },
     {
       icon: 'bi-shield-lock',
       title: 'Zero Data Risk',
       description: 'No real credentials stored. Fully encrypted, GDPR-aligned infrastructure with enterprise-grade security.',
-      color: '#16A34A'
+      color: '#16A34A',
+      image: 'zero-data-hero.png'
     }
   ];
 
@@ -83,12 +91,50 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.observeAnimations();
     this.setupLiquidButtons();
+    this.setup3DTiltCards();
+  }
+
+  private setup3DTiltCards(): void {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.tilt-card'));
+    
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left; // x position within the element
+        const y = e.clientY - rect.top;  // y position within the element
+        
+        // Calculate rotation limits (-10deg to +10deg max)
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Calculate tilt
+        const tiltX = ((centerY - y) / centerY) * 6; // Max 6 deg rotation along X axis
+        const tiltY = ((x - centerX) / centerX) * 6; // Max 6 deg rotation along Y axis
+        
+        // Calculate shine position
+        const shineX = (x / rect.width) * 100;
+        const shineY = (y / rect.height) * 100;
+        
+        // Apply CSS custom properties
+        card.style.setProperty('--tilt-x', `${tiltX}deg`);
+        card.style.setProperty('--tilt-y', `${tiltY}deg`);
+        card.style.setProperty('--shine-x', `${shineX}%`);
+        card.style.setProperty('--shine-y', `${shineY}%`);
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        // Reset tilt
+        card.style.setProperty('--tilt-x', '0deg');
+        card.style.setProperty('--tilt-y', '0deg');
+      });
+    });
   }
 
   @HostListener('window:scroll')
   onScroll(): void {
     this.navScrolled = window.scrollY > 20;
-    this.showBackToTop = window.scrollY > 300;
+    this.showBackToTop = window.scrollY > 200;
+    this.showScrollDown = window.scrollY > 200;
   }
 
   toggleMobileMenu(): void {
@@ -98,7 +144,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
+    this.mobileDropdowns = {};
     document.body.style.overflow = '';
+  }
+
+  toggleMobileDropdown(key: string): void {
+    this.mobileDropdowns[key] = !this.mobileDropdowns[key];
   }
 
   animationGeneration = 0;

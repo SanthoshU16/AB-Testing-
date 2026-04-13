@@ -12,10 +12,33 @@
       </a>
 
       <ul class="nav-links" id="desktop-nav">
-        <li><a (click)="scrollTo('product')" class="nav-link">Product</a></li>
+        <li class="nav-item-dropdown">
+          <a (click)="scrollTo('hero')" class="nav-link">
+            Product
+          </a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-inner">
+              <a (click)="scrollTo('product')" class="dropdown-item">Why Armor Bridz</a>
+              <a (click)="scrollTo('impact')" class="dropdown-item">The Impact</a>
+              <a href="#" class="dropdown-item">Pricing</a>
+            </div>
+          </div>
+        </li>
         <li><a (click)="scrollTo('features')" class="nav-link">Features</a></li>
         <li><a (click)="scrollTo('how-it-works')" class="nav-link">How It Works</a></li>
-        <li><a (click)="scrollTo('footer')" class="nav-link">Company</a></li>
+        <li class="nav-item-dropdown">
+          <a (click)="scrollTo('footer')" class="nav-link">
+            Company
+          </a>
+          <div class="nav-dropdown">
+            <div class="nav-dropdown-inner">
+              <a href="#" class="dropdown-item">About</a>
+              <a href="#" class="dropdown-item">Blog</a>
+              <a href="#" class="dropdown-item">Careers</a>
+              <a href="#" class="dropdown-item">Contact</a>
+            </div>
+          </div>
+        </li>
       </ul>
 
       <div class="nav-actions">
@@ -44,10 +67,35 @@
       </button>
     </div>
     <div class="mobile-links">
-      <a (click)="scrollTo('product')" class="mobile-link">Product</a>
-      <a (click)="scrollTo('features')" class="mobile-link">Features</a>
-      <a (click)="scrollTo('how-it-works')" class="mobile-link">How It Works</a>
-      <a (click)="scrollTo('footer')" class="mobile-link">Company</a>
+      <!-- Product Accordion -->
+      <div class="mobile-accordion">
+        <a class="mobile-link mobile-accordion-toggle" (click)="toggleMobileDropdown('product'); $event.stopPropagation()">
+          Product
+          <svg class="mobile-chevron" [class.rotated]="mobileDropdowns['product']" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="mobile-dropdown" [class.open]="mobileDropdowns['product']">
+          <a (click)="scrollTo('product'); closeMobileMenu()" class="mobile-dropdown-item">Why Armor Bridz</a>
+          <a (click)="scrollTo('impact'); closeMobileMenu()" class="mobile-dropdown-item">The Impact</a>
+          <a href="#" class="mobile-dropdown-item">Pricing</a>
+        </div>
+      </div>
+
+      <a (click)="scrollTo('features'); closeMobileMenu()" class="mobile-link">Features</a>
+      <a (click)="scrollTo('how-it-works'); closeMobileMenu()" class="mobile-link">How It Works</a>
+
+      <!-- Company Accordion -->
+      <div class="mobile-accordion">
+        <a class="mobile-link mobile-accordion-toggle" (click)="toggleMobileDropdown('company'); $event.stopPropagation()">
+          Company
+          <svg class="mobile-chevron" [class.rotated]="mobileDropdowns['company']" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </a>
+        <div class="mobile-dropdown" [class.open]="mobileDropdowns['company']">
+          <a href="#" class="mobile-dropdown-item">About</a>
+          <a href="#" class="mobile-dropdown-item">Blog</a>
+          <a href="#" class="mobile-dropdown-item">Careers</a>
+          <a href="#" class="mobile-dropdown-item">Contact</a>
+        </div>
+      </div>
     </div>
     <div class="mobile-actions">
       <a routerLink="/sign-in" class="mobile-btn-outline liquid-btn">Sign in</a>
@@ -92,6 +140,7 @@
           </svg>
         </a>
       </div>
+
     </div>
   </div>
 </section>
@@ -109,29 +158,95 @@
     </div>
 
     <div class="value-grid">
-      <div class="value-card reveal" style="transition-delay: 0.15s">
-        <div class="value-number gradient-text">01</div>
-        <h3 class="value-title">Simulate real attacks</h3>
-        <p class="value-desc">
-          Launch realistic phishing campaigns that mirror the latest threat
-          vectors. Test your team against the same tactics used by real attackers.
-        </p>
+      <!-- Card 1: Simulate real attacks -->
+      <div class="value-card tilt-card reveal" style="transition-delay: 0.15s">
+        <div class="tilt-shine"></div>
+        <div class="value-visual" style="background: linear-gradient(135deg, #0d1f4e 0%, #1a3a8f 100%);">
+          <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
+            <rect x="35" y="52" width="150" height="100" rx="10" fill="#1a3a8f" stroke="#2d5ec7" stroke-width="1.2" />
+            <polygon points="35,52 110,105 185,52" fill="none" stroke="#4a7fd4" stroke-width="1.2" />
+            <line x1="35" y1="152" x2="85" y2="110" stroke="#2d5ec7" stroke-width="1" opacity="0.6" />
+            <line x1="185" y1="152" x2="135" y2="110" stroke="#2d5ec7" stroke-width="1" opacity="0.6" />
+            <path d="M110,52 Q110,25 132,18 Q158,10 158,35 Q158,58 132,58" fill="none" stroke="#fbbf24"
+              stroke-width="2.5" stroke-linecap="round" />
+            <path d="M132,58 Q124,66 128,72" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" />
+            <path d="M128,72 Q138,80 130,85" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"
+              stroke-dasharray="3,2" />
+            <line x1="158" y1="10" x2="158" y2="0" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="3,2" />
+            <circle cx="174" cy="54" r="16" fill="#dc2626" />
+            <text x="174" y="60" text-anchor="middle" font-size="17" fill="white" font-weight="900"
+              font-family="sans-serif">!</text>
+            <polygon points="48,128 48,145 53,140 57,148 60,147 56,138 62,138" fill="#60a5fa" opacity="0.85" />
+          </svg>
+        </div>
+        <div class="value-body">
+
+          <h3 class="value-title">Simulate real attacks</h3>
+          <p class="value-desc">Launch realistic phishing campaigns that mirror the latest threat vectors. Test your
+            team against the same tactics used by real attackers.</p>
+        </div>
       </div>
-      <div class="value-card reveal" style="transition-delay: 0.25s">
-        <div class="value-number gradient-text">02</div>
-        <h3 class="value-title">Measure everything</h3>
-        <p class="value-desc">
-          Track opens, clicks, and credential attempts in real time.
-          Identify your most vulnerable users and departments instantly.
-        </p>
+
+      <!-- Card 2: Measure everything -->
+      <div class="value-card tilt-card reveal" style="transition-delay: 0.25s">
+        <div class="tilt-shine"></div>
+        <div class="value-visual" style="background: linear-gradient(135deg, #062d20 0%, #0a5c3a 100%);">
+          <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="18" width="180" height="130" rx="10" fill="#0d4a2e" stroke="#1a7a4e" stroke-width="0.8"
+              opacity="0.7" />
+            <rect x="38" y="100" width="22" height="42" rx="3" fill="#1a7a4e" opacity="0.7" />
+            <rect x="68" y="78" width="22" height="64" rx="3" fill="#1a7a4e" opacity="0.8" />
+            <rect x="98" y="55" width="22" height="87" rx="3" fill="#22c55e" />
+            <rect x="128" y="68" width="22" height="74" rx="3" fill="#1a7a4e" opacity="0.8" />
+            <rect x="158" y="86" width="22" height="56" rx="3" fill="#1a7a4e" opacity="0.7" />
+            <polyline points="49,96 79,74 109,52 139,64 169,82" fill="none" stroke="#4ade80" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="49" cy="96" r="3.5" fill="#4ade80" />
+            <circle cx="109" cy="52" r="5" fill="#86efac" />
+            <circle cx="169" cy="82" r="3.5" fill="#4ade80" />
+            <circle cx="109" cy="52" r="12" fill="none" stroke="#4ade80" stroke-width="1" opacity="0.4" />
+            <circle cx="109" cy="52" r="18" fill="none" stroke="#4ade80" stroke-width="0.5" opacity="0.2" />
+            <rect x="26" y="24" width="38" height="16" rx="8" fill="#16a34a" />
+            <text x="45" y="36" text-anchor="middle" font-size="9" fill="white" font-weight="700"
+              font-family="sans-serif">● LIVE</text>
+            <line x1="30" y1="142" x2="190" y2="142" stroke="#1a7a4e" stroke-width="0.5" />
+          </svg>
+        </div>
+        <div class="value-body">
+
+          <h3 class="value-title">Measure everything</h3>
+          <p class="value-desc">Track opens, clicks, and credential attempts in real time. Identify your most vulnerable
+            users and departments instantly.</p>
+        </div>
       </div>
-      <div class="value-card reveal" style="transition-delay: 0.35s">
-        <div class="value-number gradient-text">03</div>
-        <h3 class="value-title">Build resilience</h3>
-        <p class="value-desc">
-          Transform awareness data into action. Deliver targeted training
-          that turns your weakest links into your strongest defenders.
-        </p>
+
+      <!-- Card 3: Build resilience -->
+      <div class="value-card tilt-card reveal" style="transition-delay: 0.35s">
+        <div class="tilt-shine"></div>
+        <div class="value-visual" style="background: linear-gradient(135deg, #1e0a40 0%, #3b1f7a 100%);">
+          <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="110" cy="95" rx="55" ry="55" fill="#6d28d9" opacity="0.18" />
+            <ellipse cx="110" cy="95" rx="38" ry="38" fill="#7c3aed" opacity="0.15" />
+            <path d="M110,28 L158,46 L158,95 Q158,132 110,152 Q62,132 62,95 L62,46 Z" fill="#4c1d95" stroke="#8b5cf6"
+              stroke-width="1.8" />
+            <path d="M110,42 L148,56 L148,95 Q148,122 110,138 Q72,122 72,95 L72,56 Z" fill="#6d28d9" opacity="0.6" />
+            <polyline points="88,94 103,109 134,76" fill="none" stroke="#c4b5fd" stroke-width="4" stroke-linecap="round"
+              stroke-linejoin="round" />
+            <circle cx="80" cy="158" r="5" fill="#8b5cf6" opacity="0.8" />
+            <circle cx="110" cy="162" r="5" fill="#a78bfa" />
+            <circle cx="140" cy="158" r="5" fill="#8b5cf6" opacity="0.8" />
+            <path d="M80,158 Q110,148 140,158" fill="none" stroke="#8b5cf6" stroke-width="1" opacity="0.5" />
+            <circle cx="60" cy="50" r="2" fill="#c4b5fd" opacity="0.7" />
+            <circle cx="168" cy="70" r="2" fill="#c4b5fd" opacity="0.6" />
+            <circle cx="55" cy="110" r="1.5" fill="#a78bfa" opacity="0.5" />
+          </svg>
+        </div>
+        <div class="value-body">
+
+          <h3 class="value-title">Build resilience</h3>
+          <p class="value-desc">Transform awareness data into action. Deliver targeted training that turns your weakest
+            links into your strongest defenders.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -139,7 +254,7 @@
 
 
 <!-- ========== PROBLEM STATS ========== -->
-<section class="stats-section">
+<section class="stats-section" id="impact">
   <div class="container">
     <div class="stats-header">
       <p class="section-overline reveal">The Impact</p>
@@ -171,19 +286,27 @@
     </div>
 
     <div class="features-grid">
-      <div class="feature-card reveal" *ngFor="let f of features; let i = index"
+      <div class="feature-card tilt-card reveal" [class.has-image]="f.image" *ngFor="let f of features; let i = index"
         [style.transition-delay]="(i * 0.08) + 's'" [id]="'feature-card-' + i">
-        <div class="feature-icon" [style.color]="f.color">
+        <div class="tilt-shine"></div>
+        <!-- Image hero area -->
+        <div class="feature-image-wrap" *ngIf="f.image">
+          <img [src]="f.image" [alt]="f.title" class="feature-image">
+        </div>
+        <!-- Fallback icon for cards without image -->
+        <div class="feature-icon" *ngIf="!f.image" [style.color]="f.color">
           <i class="bi" [ngClass]="f.icon"></i>
         </div>
-        <h3 class="feature-title">{{ f.title }}</h3>
-        <p class="feature-desc">{{ f.description }}</p>
-        <a class="feature-link" href="#">
-          Learn more
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-          </svg>
-        </a>
+        <div class="feature-text">
+          <h3 class="feature-title">{{ f.title }}</h3>
+          <p class="feature-desc">{{ f.description }}</p>
+          <a class="feature-link" href="#">
+            Learn more
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -301,6 +424,8 @@
         <ul class="footer-links">
           <li><a href="#" id="footer-overview">Overview</a></li>
           <li><a href="#" id="footer-pricing">Pricing</a></li>
+          <li><a (click)="scrollTo('product')" style="cursor:pointer;">Why Armor Bridz</a></li>
+          <li><a (click)="scrollTo('impact')" style="cursor:pointer;">The Impact</a></li>
         </ul>
       </div>
 
@@ -311,12 +436,6 @@
 
     <div class="footer-bottom">
       <p class="footer-copy">&copy; 2026 Armor Bridz. All rights reserved.</p>
-      <button class="back-to-top" [class.visible]="showBackToTop" (click)="scrollTo('hero')" aria-label="Back to top">
-        <div class="back-to-top-icon">
-          <i class="bi bi-arrow-up"></i>
-        </div>
-        <span class="back-to-top-text">BACK TO TOP</span>
-      </button>
     </div>
   </div>
 </footer>

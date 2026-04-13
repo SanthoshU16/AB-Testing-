@@ -1,450 +1,250 @@
-.auth-layout {
+.apple-auth-layout {
+  position: relative;
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  /* A fluid, light background to make the glass pop */
-  background: radial-gradient(circle at center, #f0fdfa 0%, #e0f2fe 50%, #ffffff 100%);
-  background-size: 200% 200%;
-  animation: bgFlow 15s ease infinite;
-  overflow: hidden;
-  padding: 24px;
+  flex-direction: column;
+  background-color: #f5f5f7;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-@keyframes bgFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.auth-bg-effects {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.6;
-  animation: floatOrb 12s ease-in-out infinite alternate;
-}
-
-@keyframes floatOrb {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(30px, -40px) scale(1.05); }
-  100% { transform: translate(-20px, 20px) scale(0.95); }
-}
-
-/* Vibrant liquid orbs to drive the glass refraction */
-.orb-1 {
-  width: 55vw;
-  height: 55vw;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.5) 0%, rgba(37, 99, 235, 0) 70%);
-  top: -20%;
-  left: -20%;
-  animation-delay: 0s;
-}
-
-.orb-2 {
-  width: 45vw;
-  height: 45vw;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(6, 182, 212, 0) 70%);
-  bottom: -15%;
-  right: -10%;
-  animation-delay: -3s;
-  animation-duration: 15s;
-}
-
-.orb-3 {
-  width: 35vw;
-  height: 35vw;
-  background: radial-gradient(circle, rgba(147, 51, 234, 0.3) 0%, rgba(147, 51, 234, 0) 70%);
-  top: 30%;
-  left: 40%;
-  animation-delay: -5s;
-  animation-duration: 18s;
-}
-
-.auth-container {
-  position: relative;
-  z-index: 10;
+.apple-auth-content {
   width: 100%;
-  max-width: 440px;
-  animation: scaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  max-width: 520px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 32px;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.back-link:hover {
-  color: var(--blue);
-  transform: translateX(-4px);
-}
-
-/* -------------------------------------------------------------
-   LIQUID GLASS CARD
-   ------------------------------------------------------------- */
-.auth-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.25));
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  /* 3D Glass Edge Effect */
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  border-right: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 36px;
-  padding: 48px 40px;
-  /* Deep shadows and inner glow for volume */
-  box-shadow: 
-    0 40px 100px -10px rgba(10, 37, 64, 0.15), 
-    0 16px 40px -5px rgba(10, 37, 64, 0.1),
-    inset 0 0 24px rgba(255, 255, 255, 0.6);
-}
-
-.auth-header {
-  text-align: center;
-  margin-bottom: 36px;
-}
-
-.auth-logo {
-  height: 48px;
+.apple-back-wrapper {
+  display: flex;
+  justify-content: flex-start;
   margin-bottom: 24px;
-  filter: drop-shadow(0 4px 12px rgba(255,255,255,0.8));
 }
 
-.auth-title {
-  font-family: var(--font-display);
-  font-size: 1.85rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+.apple-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #0071e3;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.apple-back-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.apple-back-btn:hover {
+  opacity: 0.7;
+}
+
+.apple-auth-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.8s ease forwards;
+  background: #ffffff;
+  padding: 40px 48px;
+  border-radius: 36px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 24px 38px 3px rgba(0, 0, 0, 0.04), 0 9px 46px 8px rgba(0, 0, 0, 0.02);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.apple-auth-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.apple-logo {
+  height: 56px;
+  margin-bottom: 16px;
+  filter: brightness(0.95);
+}
+
+.apple-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 8px 0;
   letter-spacing: -0.02em;
 }
 
-.auth-desc {
-  color: var(--text-secondary);
-  font-size: 1rem;
+.apple-subtitle {
+  font-size: 1.05rem;
+  color: #86868b;
+  margin: 0;
 }
 
-/* OAuth Buttons (Frosted Glass Tiles) */
-.oauth-grid {
+/* Joined Input Group */
+.apple-input-group {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #d2d2d7;
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.apple-input-group:focus-within {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+}
+
+.apple-input-row {
   display: flex;
-  gap: 12px;
-  margin-bottom: 28px;
+  align-items: center;
+  height: 54px;
+  padding: 0 16px;
 }
 
-.oauth-btn {
-  flex: 1;
+.apple-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 1.05rem;
+  color: #1d1d1f;
+  outline: none;
+}
+
+.apple-input::placeholder {
+  color: #86868b;
+}
+
+.apple-input-divider {
+  height: 1px;
+  background-color: #d2d2d7;
+  margin: 0 16px;
+}
+
+.apple-options {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 52px;
-  /* Frosted Glass */
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 16px;
-  color: var(--text-primary);
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 
-    0 8px 24px rgba(10, 37, 64, 0.04), 
-    inset 0 2px 4px rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-}
-
-.oauth-btn:hover {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(255, 255, 255, 1);
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 
-    0 16px 32px rgba(10, 37, 64, 0.08), 
-    inset 0 2px 4px rgba(255, 255, 255, 0.9);
-}
-
-.oauth-icon {
-  width: 22px;
-  height: 22px;
-}
-
-/* Divider */
-.auth-divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 28px;
-  color: var(--text-tertiary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.auth-divider::before,
-.auth-divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid rgba(10, 37, 64, 0.15);
-}
-
-.auth-divider:not(:empty)::before { margin-right: 1em; }
-.auth-divider:not(:empty)::after { margin-left: 1em; }
-
-/* Recessed Glass Form Inputs */
-.form-group {
   margin-bottom: 24px;
 }
 
-.form-label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 10px;
-}
-
-.input-wrapper {
-  position: relative;
+.apple-checkbox {
   display: flex;
   align-items: center;
-}
-
-.input-icon {
-  position: absolute;
-  left: 20px;
-  color: var(--text-tertiary);
-  transition: color 0.4s ease;
-  z-index: 2;
-}
-
-.form-input {
-  width: 100%;
-  height: 56px;
-  padding: 0 16px 0 52px;
-  /* Recessed Glass look */
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-top: 1px solid rgba(10, 37, 64, 0.08);
-  border-radius: 20px;
-  box-shadow: inset 0 4px 12px rgba(10, 37, 64, 0.03);
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-primary);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.form-input::placeholder {
-  color: var(--text-tertiary);
-  opacity: 0.8;
-}
-
-.form-input:focus {
-  outline: none;
-  background: rgba(255, 255, 255, 0.85);
-  border-color: var(--blue);
-  box-shadow: 
-    inset 0 2px 6px rgba(10, 37, 64, 0.02), 
-    0 0 0 4px var(--teal-soft);
-}
-
-.form-input:focus + .input-icon {
-  color: var(--blue);
-}
-
-.form-options {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 32px;
-  font-size: 0.9rem;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.checkbox-label input {
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
-  accent-color: var(--blue);
-}
-
-.forgot-link {
-  color: var(--blue);
-  text-decoration: none;
-  font-weight: 700;
-  transition: opacity 0.3s;
-}
-
-.forgot-link:hover {
-  opacity: 0.8;
-}
-
-.auth-footer {
-  text-align: center;
-  margin-top: 36px;
+  gap: 8px;
   font-size: 0.95rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+  color: #1d1d1f;
+  cursor: pointer;
 }
 
-.auth-footer a {
-  color: var(--blue);
-  font-weight: 700;
-  text-decoration: none;
-  position: relative;
+.apple-checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #0071e3;
 }
 
-.auth-footer a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--blue);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
-}
-
-.auth-footer a:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-/* Liquid Button Base specific for Auth, matching landing page styles */
-.liquid-btn {
-  --liquid-bg: linear-gradient(180deg, #ffffff 0%, #eef2f7 100%);
-  --liquid-text: var(--text-primary);
-  --liquid-border: rgba(10, 37, 64, 0.12);
-  --liquid-shadow: 0 10px 22px rgba(15, 23, 42, 0.16),
-    inset 0 3px 4px rgba(255, 255, 255, 0.9),
-    inset 0 -7px 10px rgba(15, 23, 42, 0.14);
-  --liquid-highlight: rgba(255, 255, 255, 0.95);
-  --liquid-shade: rgba(15, 23, 42, 0.2);
-  --tilt-x: 0deg;
-  --tilt-y: 0deg;
-  --shine-x: 45%;
-  --shine-y: 20%;
-  --shade-x: 65%;
-  --shade-y: 80%;
-  --lift: 0px;
-  --scale: 1;
-  position: relative;
-  display: inline-flex;
+.apple-btn-submit-wide {
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 56px;
-  padding: 0 24px;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--liquid-text);
-  background: var(--liquid-bg);
-  border: 1px solid var(--liquid-border);
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  box-shadow: var(--liquid-shadow);
-  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--lift)) scale(var(--scale));
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-  transform-style: preserve-3d;
-  will-change: transform;
-  overflow: hidden;
+  height: 52px;
+  margin: 0 auto 24px;
+  background-color: #0071e3;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: white;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
-  user-select: none;
-  touch-action: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.liquid-btn::before {
+.apple-btn-submit-wide:hover {
+  background-color: #0077ED;
+}
+
+.apple-btn-submit-wide:active {
+  transform: scale(0.98);
+}
+
+.apple-links {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.apple-link {
+  color: #0071e3;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.apple-link:hover {
+  text-decoration: underline;
+}
+
+.apple-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #86868b;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.apple-divider::before, .apple-divider::after {
   content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 120% at var(--shine-x) var(--shine-y),
-      var(--liquid-highlight) 0%,
-      rgba(255, 255, 255, 0.45) 35%,
-      rgba(255, 255, 255, 0) 60%);
-  opacity: 0.85;
-  mix-blend-mode: screen;
-  pointer-events: none;
+  flex: 1;
+  border-bottom: 1px solid #d2d2d7;
 }
 
-.liquid-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(120% 120% at var(--shade-x) var(--shade-y),
-      var(--liquid-shade) 0%,
-      rgba(15, 23, 42, 0) 60%);
-  opacity: 0.35;
-  pointer-events: none;
+.apple-divider span {
+  padding: 0 12px;
 }
 
-.liquid-btn:hover {
-  --lift: -2px;
-  --scale: 1.01;
-  filter: brightness(1.02) saturate(1.04);
+.apple-oauth-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 16px;
 }
 
-.liquid-btn.is-hovered {
-  /* Fast tracking so mouse trail has no lag, but click animations are smooth */
-  transition: transform 0.05s linear, box-shadow 0.2s ease, filter 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+.apple-oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: white;
+  border: 1px solid #d2d2d7;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.btn-primary {
-  --liquid-bg: linear-gradient(180deg, #60a5fa 0%, #2563eb 50%, #1d4ed8 100%);
-  --liquid-text: #ffffff;
-  --liquid-border: rgba(255, 255, 255, 0.5);
-  --liquid-shadow: 0 14px 30px rgba(37, 99, 235, 0.4),
-    inset 0 3px 4px rgba(255, 255, 255, 0.75),
-    inset 0 -10px 14px rgba(29, 78, 216, 0.5);
-  --liquid-highlight: rgba(255, 255, 255, 0.85);
-  --liquid-shade: rgba(29, 78, 216, 0.55);
+.apple-oauth-btn:hover {
+  background-color: #f5f5f7;
+  transform: scale(1.05);
 }
 
-.btn-primary:hover {
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4),
-    inset 0 3px 4px rgba(255, 255, 255, 0.2),
-    inset 0 -8px 12px rgba(0, 0, 0, 0.8);
+.apple-oauth-btn:active {
+  transform: scale(0.95);
 }
 
-@media (max-width: 480px) {
-  .auth-card {
-    padding: 36px 24px;
-    border-radius: 28px;
-  }
-  .oauth-grid {
-    flex-wrap: wrap; /* In case Apple button gets too squeezed on micro screens */
-  }
+.oauth-icon {
+  width: 24px;
+  height: 24px;
 }

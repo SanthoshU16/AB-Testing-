@@ -1,1 +1,117 @@
-/* App-level global styles (empty as they are now in pages or global styles.css) */
+/* App-level global styles */
+
+/* ---- Floating Scroll Capsule (Global) ---- */
+.floating-actions {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px;
+  border-radius: 40px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(237, 241, 246, 0.5) 100%);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 45px rgba(37, 99, 235, 0.25),
+    0 12px 24px rgba(10, 37, 64, 0.08),
+    inset 0 3px 6px rgba(255, 255, 255, 0.95),
+    inset 0 -8px 12px rgba(15, 23, 42, 0.05);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-actions:hover {
+  transform: translateY(-4px) scale(1.02);
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
+  box-shadow: 0 16px 36px rgba(10, 37, 64, 0.12),
+    inset 0 3px 6px rgba(255, 255, 255, 1),
+    inset 0 -8px 12px rgba(15, 23, 42, 0.08);
+}
+
+.floating-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.float-icon-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  display: flex;
+}
+
+.float-icon-btn.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  width: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.float-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Up Button (Blue) */
+.up-btn .float-icon {
+  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3),
+    inset 0 2px 3px rgba(255, 255, 255, 0.6),
+    inset 0 -7px 10px rgba(15, 23, 100, 0.4);
+}
+
+.up-btn .float-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  border-radius: 50% 50% 100% 100% / 20% 20% 40% 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 100%);
+  pointer-events: none;
+}
+
+/* Down Button (Black/Navy) */
+.down-btn .float-icon {
+  background: linear-gradient(180deg, #1e3a5f 0%, #0a2540 50%, #051626 100%);
+  box-shadow: 0 12px 24px rgba(10, 37, 64, 0.35),
+    inset 0 2px 3px rgba(255, 255, 255, 0.15),
+    inset 0 -7px 10px rgba(5, 22, 38, 0.9);
+}
+
+.down-btn .float-icon::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  border-radius: 50% 50% 100% 100% / 20% 20% 40% 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+}
+
+.float-icon-btn:hover .float-icon {
+  transform: translateY(-2px) scale(1.08);
+}
