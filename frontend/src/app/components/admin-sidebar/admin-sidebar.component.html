@@ -1,0 +1,23 @@
+<aside class="admin-sidebar">
+  <div class="sidebar-header">
+    <img src="ABLM.png" alt="Armor Bridz Logo" class="sidebar-logo">
+    <span class="sidebar-brand">Armor Bridz</span>
+  </div>
+  
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li class="nav-item" *ngFor="let item of navItems">
+        <a [routerLink]="item.route" routerLinkActive="active" class="nav-link">
+          <i class="bi {{ item.icon }} nav-icon"></i>
+          <span class="nav-label">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="version-info">
+      <span>Version 1.0.0</span>
+    </div>
+  </div>
+</aside>

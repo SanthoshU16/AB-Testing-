@@ -12,9 +12,23 @@ export const routes: Routes = [
     path: 'admin',
     canActivate: [AuthGuard],
     loadComponent: () =>
-      import('./pages/admin/dashboard/dashboard.component').then(
-        (m) => m.DashboardComponent
-      )
+      import('./shared/layouts/admin-layout/admin-layout.component').then(
+        (m) => m.AdminLayoutComponent
+      ),
+    children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./pages/admin/dashboard/dashboard.component').then(
+            (m) => m.DashboardComponent
+          )
+      }
+    ]
   },
   { path: '**', redirectTo: '' }
 ];

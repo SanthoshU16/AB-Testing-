@@ -1,0 +1,21 @@
+<header class="admin-topbar">
+  <div class="topbar-left">
+    <h1 class="page-title">{{ pageTitle }}</h1>
+  </div>
+  
+  <div class="topbar-right">
+    <div class="user-info">
+      <div class="user-avatar">
+        {{ userProfile?.firstName?.charAt(0) || 'A' }}{{ userProfile?.lastName?.charAt(0) || 'B' }}
+      </div>
+      <div class="user-details">
+        <span class="user-name">{{ userProfile?.firstName }} {{ userProfile?.lastName }}</span>
+        <span class="user-role">{{ userProfile?.role | titlecase }}</span>
+      </div>
+    </div>
+    <button class="sign-out-btn" (click)="onSignOut()" aria-label="Sign Out">
+      <i class="bi bi-box-arrow-right"></i>
+      <span class="sign-out-text">Sign Out</span>
+    </button>
+  </div>
+</header>
