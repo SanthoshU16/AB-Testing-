@@ -40,3 +40,17 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment files (contain Firebase API keys & secrets)
+src/environments/environment.ts
+src/environments/environment.prod.ts
+src/environments/environment.*.ts
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Package manager lock (optional — remove if you want deterministic installs)
+# package-lock.json

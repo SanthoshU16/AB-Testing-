@@ -1,18 +1,72 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent implements AfterViewInit {
-  
+  firstName = '';
+  lastName = '';
+  email = '';
+  password = '';
+  errorMessage = '';
+  isSubmitting = false;
+
+  constructor(private authService: AuthService) {}
+
   ngAfterViewInit(): void {
     setTimeout(() => this.setupLiquidButtons(), 100);
+  }
+
+  async onSignUp(): Promise<void> {
+    if (this.isSubmitting) return;
+    this.errorMessage = '';
+    this.isSubmitting = true;
+
+    try {
+      await this.authService.signUp(this.email, this.password, this.firstName, this.lastName);
+    } catch (error: any) {
+      this.isSubmitting = false;
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          this.errorMessage = 'An account with this email already exists.';
+          break;
+        case 'auth/invalid-email':
+          this.errorMessage = 'Please enter a valid email address.';
+          break;
+        case 'auth/weak-password':
+          this.errorMessage = 'Password must be at least 6 characters.';
+          break;
+        case 'auth/operation-not-allowed':
+          this.errorMessage = 'Email/Password sign up is not enabled. Contact support.';
+          break;
+        default:
+          this.errorMessage = 'Sign up failed. Please try again.';
+      }
+    }
+  }
+
+  async onGoogleSignUp(): Promise<void> {
+    if (this.isSubmitting) return;
+    this.errorMessage = '';
+    this.isSubmitting = true;
+
+    try {
+      await this.authService.signInWithGoogle();
+    } catch (error: any) {
+      this.isSubmitting = false;
+      if (error.code === 'auth/popup-closed-by-user') {
+        return;
+      }
+      this.errorMessage = 'Google sign up failed. Please try again.';
+    }
   }
 
   private setupLiquidButtons(): void {

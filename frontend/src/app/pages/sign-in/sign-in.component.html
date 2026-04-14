@@ -16,15 +16,27 @@
       <p class="apple-subtitle">Sign in to your Armor Bridz account.</p>
     </div>
 
-    <form class="apple-form">
+    <!-- Error Message -->
+    <div class="auth-error" *ngIf="errorMessage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="15" y1="9" x2="9" y2="15"/>
+        <line x1="9" y1="9" x2="15" y2="15"/>
+      </svg>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <form class="apple-form" (ngSubmit)="onSignIn()">
       <!-- Apple style joined inputs -->
       <div class="apple-input-group">
         <div class="apple-input-row">
-          <input type="email" class="apple-input" placeholder="Work Email" required autofocus>
+          <input type="email" class="apple-input" placeholder="Work Email" required autofocus
+                 [(ngModel)]="email" name="email" id="sign-in-email">
         </div>
         <div class="apple-input-divider"></div>
         <div class="apple-input-row">
-          <input type="password" class="apple-input" placeholder="Password" required>
+          <input type="password" class="apple-input" placeholder="Password" required
+                 [(ngModel)]="password" name="password" id="sign-in-password">
         </div>
       </div>
 
@@ -35,8 +47,9 @@
         </label>
       </div>
 
-      <button type="submit" class="apple-btn-submit-wide">
-        Continue
+      <button type="submit" class="apple-btn-submit-wide" [disabled]="isSubmitting" id="sign-in-submit">
+        <span *ngIf="!isSubmitting">Continue</span>
+        <span *ngIf="isSubmitting" class="btn-spinner"></span>
       </button>
 
       <div class="apple-links">
@@ -49,7 +62,7 @@
       </div>
 
       <div class="apple-oauth-grid">
-        <button type="button" class="apple-oauth-btn" title="Google">
+        <button type="button" class="apple-oauth-btn" title="Google" (click)="onGoogleSignIn()" id="google-sign-in">
           <svg class="oauth-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.16v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>

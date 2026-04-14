@@ -1,18 +1,71 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements AfterViewInit {
-  
+  email = '';
+  password = '';
+  errorMessage = '';
+  isSubmitting = false;
+
+  constructor(private authService: AuthService) {}
+
   ngAfterViewInit(): void {
     setTimeout(() => this.setupLiquidButtons(), 100);
+  }
+
+  async onSignIn(): Promise<void> {
+    if (this.isSubmitting) return;
+    this.errorMessage = '';
+    this.isSubmitting = true;
+
+    try {
+      await this.authService.signIn(this.email, this.password);
+    } catch (error: any) {
+      this.isSubmitting = false;
+      switch (error.code) {
+        case 'auth/user-not-found':
+          this.errorMessage = 'No account found with this email.';
+          break;
+        case 'auth/wrong-password':
+        case 'auth/invalid-credential':
+          this.errorMessage = 'Incorrect email or password.';
+          break;
+        case 'auth/invalid-email':
+          this.errorMessage = 'Please enter a valid email address.';
+          break;
+        case 'auth/too-many-requests':
+          this.errorMessage = 'Too many attempts. Please try again later.';
+          break;
+        default:
+          this.errorMessage = 'Sign in failed. Please try again.';
+      }
+    }
+  }
+
+  async onGoogleSignIn(): Promise<void> {
+    if (this.isSubmitting) return;
+    this.errorMessage = '';
+    this.isSubmitting = true;
+
+    try {
+      await this.authService.signInWithGoogle();
+    } catch (error: any) {
+      this.isSubmitting = false;
+      if (error.code === 'auth/popup-closed-by-user') {
+        return; // User closed the popup, not an error
+      }
+      this.errorMessage = 'Google sign in failed. Please try again.';
+    }
   }
 
   private setupLiquidButtons(): void {
