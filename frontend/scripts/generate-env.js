@@ -8,13 +8,13 @@ const prodFile = 'environment.prod.ts';
 const content = `export const environment = {
   production: true,
   firebase: {
-    apiKey: process.env['FIREBASE_API_KEY'] || 'dummy_api_key',
-    authDomain: process.env['FIREBASE_AUTH_DOMAIN'] || 'dummy_auth_domain',
-    projectId: process.env['FIREBASE_PROJECT_ID'] || 'dummy_project_id',
-    storageBucket: process.env['FIREBASE_STORAGE_BUCKET'] || 'dummy_storage_bucket',
-    messagingSenderId: process.env['FIREBASE_MESSAGING_SENDER_ID'] || 'dummy_sender_id',
-    appId: process.env['FIREBASE_APP_ID'] || 'dummy_app_id',
-    measurementId: process.env['FIREBASE_MEASUREMENT_ID'] || 'dummy_measurement_id'
+    apiKey: "${process.env.FIREBASE_API_KEY || 'dummy_api_key'}",
+    authDomain: "${process.env.FIREBASE_AUTH_DOMAIN || 'dummy_auth_domain'}",
+    projectId: "${process.env.FIREBASE_PROJECT_ID || 'dummy_project_id'}",
+    storageBucket: "${process.env.FIREBASE_STORAGE_BUCKET || 'dummy_storage_bucket'}",
+    messagingSenderId: "${process.env.FIREBASE_MESSAGING_SENDER_ID || 'dummy_sender_id'}",
+    appId: "${process.env.FIREBASE_APP_ID || 'dummy_app_id'}",
+    measurementId: "${process.env.FIREBASE_MEASUREMENT_ID || 'dummy_measurement_id'}"
   }
 };
 `;
