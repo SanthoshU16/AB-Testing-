@@ -129,6 +129,23 @@
   margin: 0 16px;
 }
 
+.password-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #86868b;
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #1d1d1f;
+}
+
 .apple-policy {
   text-align: center;
   font-size: 0.8rem;

@@ -108,36 +108,100 @@
   line-height: 1.3;
 }
 
-/* ─── Coming Soon ───────────────────────────────────────────────────── */
-.coming-soon {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 28px 32px;
-  background: linear-gradient(135deg, #f0f4ff 0%, #faf0ff 100%);
-  border: 1px solid rgba(0, 113, 227, 0.1);
-  border-radius: 20px;
+/* --- Activity Feed --- */
+.dashboard-section {
   animation: slideUp 0.5s ease 0.6s backwards;
 }
 
-.coming-soon-icon {
-  font-size: 2.5rem;
-  flex-shrink: 0;
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.coming-soon-text h3 {
-  font-size: 1.1rem;
+.view-all-btn {
+  background: none;
+  border: none;
+  color: #0071e3;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.view-all-btn:hover { text-decoration: underline; }
+
+.activity-feed-container {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.activity-table th {
+  padding: 16px 24px;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #1d1d1f;
-  margin: 0 0 6px 0;
+  color: #86868b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e5e5ea;
+  background: #f5f5f7;
 }
 
-.coming-soon-text p {
-  font-size: 0.9rem;
-  color: #6e6e73;
-  margin: 0;
-  line-height: 1.5;
+.activity-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e5ea;
+  font-size: 0.95rem;
+  color: #1d1d1f;
+  vertical-align: middle;
 }
+
+.activity-table tr:hover {
+  background: rgba(0, 113, 227, 0.02);
+}
+
+.activity-table tr:last-child td {
+  border-bottom: none;
+}
+
+.activity-event {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.event-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.event-icon svg { width: 16px; height: 16px; }
+
+.bg-blue { background: #0071e3; }
+.bg-red { background: #ff3b30; }
+.bg-purple { background: #a259ff; }
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.status-badge.success { background: #e3f9e5; color: #118a27; }
+.status-badge.error { background: #ffefef; color: #ff3b30; }
 
 /* ─── Animations ────────────────────────────────────────────────────── */
 @keyframes fadeIn {

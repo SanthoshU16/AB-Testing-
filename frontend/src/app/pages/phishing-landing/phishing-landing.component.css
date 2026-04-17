@@ -1,0 +1,110 @@
+/* Phishing Fake Login Page */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.loading-wrap {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 16px;
+  background: #1c1c1e; color: #86868b; font-family: -apple-system, sans-serif;
+}
+
+.spinner {
+  width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #0078d4; border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Fake Login */
+.login-page {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: #f2f2f2; font-family: 'Segoe UI', system-ui, sans-serif; padding: 20px;
+}
+
+.login-card {
+  background: #fff; width: 100%; max-width: 440px;
+  padding: 44px 44px 36px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.brand-logo {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 28px;
+  font-size: 22px; font-weight: 600; color: #1b1b1b;
+}
+
+.login-title {
+  font-size: 24px; font-weight: 600; color: #1b1b1b; margin-bottom: 16px;
+}
+
+.login-form { display: flex; flex-direction: column; gap: 0; }
+
+.form-group { margin-bottom: 12px; }
+
+.login-input {
+  width: 100%; padding: 9px 10px;
+  border: 1px solid #ccc; border-bottom: 2px solid #ccc;
+  font-size: 15px; color: #1b1b1b; outline: none; background: transparent;
+  transition: border-color 0.15s;
+}
+.login-input:focus { border-bottom-color: #0078d4; }
+
+.no-account { font-size: 13px; color: #1b1b1b; margin-bottom: 20px; }
+.no-account a { color: #0078d4; text-decoration: none; }
+.no-account a:hover { text-decoration: underline; }
+
+.sign-in-btn {
+  width: 100%; padding: 10px;
+  background: #0078d4; color: #fff; border: none; border-radius: 2px;
+  font-size: 15px; font-weight: 500; cursor: pointer; margin-top: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.sign-in-btn:hover:not(:disabled) { background: #106ebe; }
+.sign-in-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-spinner {
+  width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff; border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Awareness Page */
+.awareness-page {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  font-family: -apple-system, 'Segoe UI', sans-serif; padding: 20px;
+}
+
+.awareness-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 48px; max-width: 560px;
+  width: 100%; text-align: center;
+}
+
+.awareness-icon { font-size: 56px; margin-bottom: 20px; }
+
+.awareness-card h2 {
+  font-size: 26px; font-weight: 700; color: #f5f5f7; margin-bottom: 16px;
+}
+
+.awareness-card > p {
+  font-size: 15px; color: #aeaeb2; line-height: 1.7; margin-bottom: 28px;
+}
+
+.tips {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px; padding: 20px 24px; text-align: left; margin-bottom: 24px;
+}
+
+.tips h3 { font-size: 14px; color: #86868b; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.tips ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.tips li {
+  font-size: 14px; color: #e5e5e7; padding-left: 20px; position: relative; line-height: 1.5;
+}
+.tips li::before { content: '✓'; position: absolute; left: 0; color: #34c759; font-weight: 700; }
+
+.awareness-badge {
+  background: rgba(255,149,0,0.12); border: 1px solid rgba(255,149,0,0.3);
+  border-radius: 10px; padding: 14px 20px;
+  font-size: 14px; color: #ff9500; font-weight: 500;
+}

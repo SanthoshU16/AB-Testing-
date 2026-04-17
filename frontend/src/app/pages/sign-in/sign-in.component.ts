@@ -16,8 +16,13 @@ export class SignInComponent implements AfterViewInit {
   password = '';
   errorMessage = '';
   isSubmitting = false;
+  showPassword = false;
 
-  constructor(private authService: AuthService) {}
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  constructor(private authService: AuthService) { }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.setupLiquidButtons(), 100);
@@ -47,7 +52,7 @@ export class SignInComponent implements AfterViewInit {
           this.errorMessage = 'Too many attempts. Please try again later.';
           break;
         default:
-          this.errorMessage = 'Sign in failed. Please try again.';
+          this.errorMessage = 'Sign in failed: ' + (error.message || error);
       }
     }
   }
@@ -61,10 +66,11 @@ export class SignInComponent implements AfterViewInit {
       await this.authService.signInWithGoogle();
     } catch (error: any) {
       this.isSubmitting = false;
+      console.error(error);
       if (error.code === 'auth/popup-closed-by-user') {
         return; // User closed the popup, not an error
       }
-      this.errorMessage = 'Google sign in failed. Please try again.';
+      this.errorMessage = 'Google sign in failed: ' + (error.message || error);
     }
   }
 

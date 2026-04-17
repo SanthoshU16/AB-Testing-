@@ -1,0 +1,188 @@
+<div class="wizard-container">
+  <!-- Header -->
+  <div class="wizard-header">
+    <div>
+      <h2 class="page-title">Create Campaign</h2>
+      <p class="page-subtitle">Step {{ currentStep }} of {{ totalSteps }}</p>
+    </div>
+    <button class="apple-btn-secondary" (click)="cancel()">Cancel</button>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="step" *ngFor="let s of [1,2,3,4]; let i = index"
+         [class.active]="currentStep === s"
+         [class.completed]="currentStep > s">
+      <div class="step-circle">
+        <svg *ngIf="currentStep > s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="14" height="14">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span *ngIf="currentStep <= s">{{ s }}</span>
+      </div>
+      <span class="step-label">{{ ['Template', 'Targets', 'Schedule', 'Review'][i] }}</span>
+    </div>
+  </div>
+
+  <!-- Step 1: Name + Template -->
+  <div class="step-content" *ngIf="currentStep === 1">
+    <div class="glass-card">
+      <h3 class="section-label">Campaign Details</h3>
+      <div class="form-group">
+        <label>Campaign Name *</label>
+        <input type="text" class="apple-input" [(ngModel)]="name" placeholder="e.g. Q4 Security Awareness Test">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" class="apple-input" [(ngModel)]="description" placeholder="Optional description">
+      </div>
+    </div>
+
+    <div class="glass-card">
+      <h3 class="section-label">Select Phishing Template *</h3>
+      <div class="template-selector-grid">
+        <div class="template-option"
+             *ngFor="let tpl of templates"
+             [class.selected]="selectedTemplateId === tpl.id"
+             (click)="selectTemplate(tpl)">
+          <div class="template-option-header">
+            <div class="check-circle" *ngIf="selectedTemplateId === tpl.id">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="12" height="12">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <span class="tpl-name">{{ tpl.name }}</span>
+          </div>
+          <p class="tpl-subject">{{ tpl.subject }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Target Selection -->
+  <div class="step-content" *ngIf="currentStep === 2">
+    <div class="glass-card">
+      <h3 class="section-label">Target Mode</h3>
+      <div class="mode-toggle">
+        <button [class.active]="targetMode === 'departments'" (click)="targetMode = 'departments'">By Department</button>
+        <button [class.active]="targetMode === 'employees'" (click)="targetMode = 'employees'">By Employee</button>
+      </div>
+    </div>
+
+    <div class="glass-card" *ngIf="targetMode === 'departments'">
+      <h3 class="section-label">Select Departments</h3>
+      <div class="dept-selector">
+        <div class="dept-option"
+             *ngFor="let dept of departments"
+             [class.selected]="isDeptSelected(dept)"
+             (click)="toggleDepartment(dept)">
+          <div class="dept-check" [class.checked]="isDeptSelected(dept)">
+            <svg *ngIf="isDeptSelected(dept)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="12" height="12">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <span>{{ dept }}</span>
+          <span class="dept-count">{{ employees | deptCount: dept }} employees</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card" *ngIf="targetMode === 'employees'">
+      <h3 class="section-label">Select Employees</h3>
+      <div class="employee-selector">
+        <div class="emp-option"
+             *ngFor="let emp of employees"
+             [class.selected]="isEmpSelected(emp.id!)"
+             (click)="toggleEmployee(emp.id!)">
+          <div class="dept-check" [class.checked]="isEmpSelected(emp.id!)">
+            <svg *ngIf="isEmpSelected(emp.id!)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" width="12" height="12">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div class="emp-avatar-sm">{{ emp.firstName.charAt(0) }}{{ emp.lastName.charAt(0) }}</div>
+          <div class="emp-details">
+            <span class="emp-name-opt">{{ emp.firstName }} {{ emp.lastName }}</span>
+            <span class="emp-dept-opt">{{ emp.department }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Schedule -->
+  <div class="step-content" *ngIf="currentStep === 3">
+    <div class="glass-card">
+      <h3 class="section-label">Launch Schedule</h3>
+      <div class="schedule-options">
+        <div class="schedule-option" [class.selected]="scheduleType === 'now'" (click)="scheduleType = 'now'">
+          <div class="sched-radio" [class.checked]="scheduleType === 'now'"></div>
+          <div>
+            <strong>Launch Now</strong>
+            <p>Campaign becomes active immediately</p>
+          </div>
+        </div>
+        <div class="schedule-option" [class.selected]="scheduleType === 'later'" (click)="scheduleType = 'later'">
+          <div class="sched-radio" [class.checked]="scheduleType === 'later'"></div>
+          <div>
+            <strong>Schedule for Later</strong>
+            <p>Pick a date and time to launch</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" *ngIf="scheduleType === 'later'" style="margin-top: 20px;">
+        <label>Launch Date & Time *</label>
+        <input type="datetime-local" class="apple-input" [(ngModel)]="scheduledAt">
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Review -->
+  <div class="step-content" *ngIf="currentStep === 4">
+    <div class="glass-card review-card">
+      <h3 class="section-label">Review & Launch</h3>
+      <div class="review-grid">
+        <div class="review-item">
+          <span class="review-label">Campaign Name</span>
+          <span class="review-value">{{ name }}</span>
+        </div>
+        <div class="review-item" *ngIf="description">
+          <span class="review-label">Description</span>
+          <span class="review-value">{{ description }}</span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">Template</span>
+          <span class="review-value">{{ selectedTemplateName }}</span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">Targeting</span>
+          <span class="review-value">
+            {{ targetMode === 'departments' ? selectedDepartments.join(', ') : selectedEmployeeIds.length + ' employees selected' }}
+          </span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">Total Targets</span>
+          <span class="review-value highlight">{{ getTargetCount() }} employees</span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">Launch</span>
+          <span class="review-value">{{ scheduleType === 'now' ? 'Immediately' : scheduledAt }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Navigation -->
+  <div class="wizard-footer">
+    <button class="apple-btn-secondary" (click)="back()" [disabled]="currentStep === 1">Back</button>
+    <button class="apple-btn-primary"
+            *ngIf="currentStep < totalSteps"
+            (click)="next()"
+            [disabled]="!canProceed()">Continue</button>
+    <button class="apple-btn-primary launch-btn"
+            *ngIf="currentStep === totalSteps"
+            (click)="launch()"
+            [disabled]="isSaving">
+      <span *ngIf="!isSaving">🚀 Launch Campaign</span>
+      <span *ngIf="isSaving" class="btn-spinner"></span>
+    </button>
+  </div>
+</div>

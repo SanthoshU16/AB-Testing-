@@ -1,0 +1,70 @@
+<div class="modal-overlay" (click)="cancel()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <div class="modal-header">
+      <h3 class="modal-title">Add New Employee</h3>
+      <button class="close-btn" (click)="cancel()" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <form class="modal-form" (ngSubmit)="onSubmit()">
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name *</label>
+          <input type="text" class="apple-input" [(ngModel)]="employee.firstName" name="firstName" required placeholder="Jane">
+        </div>
+        <div class="form-group">
+          <label>Last Name *</label>
+          <input type="text" class="apple-input" [(ngModel)]="employee.lastName" name="lastName" required placeholder="Doe">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Work Email *</label>
+        <input type="email" class="apple-input" [(ngModel)]="employee.email" name="email" required placeholder="jane.doe@company.com">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Department *</label>
+          <select class="apple-input" [(ngModel)]="employee.department" name="department" required>
+            <option value="" disabled selected>Select Department</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Sales">Sales</option>
+            <option value="HR">HR</option>
+            <option value="Finance">Finance</option>
+            <option value="Executive">Executive</option>
+            <option value="Operations">Operations</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Job Role</label>
+          <input type="text" class="apple-input" [(ngModel)]="employee.role" name="role" placeholder="e.g. software engineer">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <select class="apple-input" [(ngModel)]="employee.status" name="status">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="apple-btn-secondary" (click)="cancel()">Cancel</button>
+        <button type="submit" class="apple-btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Add Employee</span>
+          <span *ngIf="isSubmitting" class="btn-spinner"></span>
+        </button>
+      </div>
+    </form>
+    
+  </div>
+</div>

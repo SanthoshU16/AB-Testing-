@@ -1,0 +1,57 @@
+<!-- Loading Spinner -->
+<div class="loading-wrap" *ngIf="phase === 'loading'">
+  <div class="spinner"></div>
+  <p>Verifying link...</p>
+</div>
+
+<!-- Fake Login Page -->
+<div class="login-page" *ngIf="phase === 'landing'">
+  <div class="login-card">
+    <div class="brand-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="color: #0078d4;">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+        <path d="M3 9h18M9 21V9"/>
+      </svg>
+      <span>Microsoft</span>
+    </div>
+
+    <h2 class="login-title">Sign in</h2>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <input type="email" class="login-input" [(ngModel)]="fakeUsername"
+          name="email" placeholder="Email, phone, or Skype" required autocomplete="off">
+      </div>
+      <p class="no-account">No account? <a href="#">Create one!</a></p>
+      <div class="form-group">
+        <input type="password" class="login-input" [(ngModel)]="fakePassword"
+          name="password" placeholder="Password" autocomplete="off">
+      </div>
+      <button type="submit" class="sign-in-btn" [disabled]="isSubmitting">
+        <span *ngIf="!isSubmitting">Sign in</span>
+        <span *ngIf="isSubmitting" class="btn-spinner"></span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Awareness Message -->
+<div class="awareness-page" *ngIf="phase === 'submitted'">
+  <div class="awareness-card">
+    <div class="awareness-icon">⚠️</div>
+    <h2>This was a phishing simulation</h2>
+    <p>You clicked a simulated phishing link and entered credentials. In a real attack, your account could have been compromised.</p>
+    <div class="tips">
+      <h3>How to stay safe:</h3>
+      <ul>
+        <li>Always verify the sender's email address before clicking links</li>
+        <li>Check the URL bar — look for HTTPS and correct domain</li>
+        <li>Never enter credentials on unexpected login pages</li>
+        <li>When in doubt, contact IT Security directly</li>
+      </ul>
+    </div>
+    <div class="awareness-badge">
+      🛡️ You have been enrolled in security awareness training.
+    </div>
+  </div>
+</div>

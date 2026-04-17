@@ -1,0 +1,115 @@
+<div class="analytics-container">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Analytics</h2>
+      <p class="page-subtitle">Real-time phishing simulation performance data.</p>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div><p>Loading analytics...</p>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="sc-icon blue-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <div class="sc-value">{{ summary.totalEmployees }}</div>
+          <div class="sc-label">Total Employees</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-icon purple-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div>
+          <div class="sc-value">{{ summary.activeCampaigns }}</div>
+          <div class="sc-label">Active Campaigns</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-icon orange-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div>
+          <div class="sc-value">{{ summary.avgClickRate }}%</div>
+          <div class="sc-label">Avg Click Rate</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-icon red-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="sc-value">{{ summary.highRiskCount }}</div>
+          <div class="sc-label">High Risk Employees</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-grid">
+      <div class="glass-card chart-card wide">
+        <h3 class="section-label">Department Click Rates</h3>
+        <div class="chart-wrap">
+          <canvas #deptChart></canvas>
+        </div>
+      </div>
+      <div class="glass-card chart-card">
+        <h3 class="section-label">Risk Distribution</h3>
+        <div class="chart-wrap">
+          <canvas #riskChart></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trend Chart -->
+    <div class="glass-card chart-card full-width">
+      <h3 class="section-label">Campaign Performance Trend</h3>
+      <div class="chart-wrap tall">
+        <canvas #trendChart></canvas>
+      </div>
+    </div>
+
+    <!-- Department Table -->
+    <div class="glass-card" *ngIf="deptStats.length > 0">
+      <h3 class="section-label">Department Breakdown</h3>
+      <table class="dept-table">
+        <thead>
+          <tr>
+            <th>Department</th>
+            <th>Employees</th>
+            <th>Clicked</th>
+            <th>Cred Attempts</th>
+            <th>Click Rate</th>
+            <th>Avg Risk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of deptStats">
+            <td class="dept-name">{{ d.department }}</td>
+            <td>{{ d.totalCount }}</td>
+            <td [class.warn]="d.clicked > 0">{{ d.clicked }}</td>
+            <td [class.danger]="d.credentialAttempts > 0">{{ d.credentialAttempts }}</td>
+            <td>
+              <div class="inline-bar">
+                <span>{{ d.clickRate }}%</span>
+                <div class="bar-track"><div class="bar-fill" [style.width.%]="d.clickRate"></div></div>
+              </div>
+            </td>
+            <td>
+              <span class="risk-badge" [ngClass]="d.avgRiskScore >= 70 ? 'risk-high' : d.avgRiskScore >= 30 ? 'risk-medium' : 'risk-low'">
+                {{ d.avgRiskScore >= 70 ? 'High' : d.avgRiskScore >= 30 ? 'Medium' : 'Low' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

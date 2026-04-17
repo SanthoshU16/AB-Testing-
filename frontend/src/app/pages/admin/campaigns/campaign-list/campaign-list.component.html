@@ -1,0 +1,99 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Campaigns</h2>
+      <p class="page-subtitle">Manage your phishing simulation campaigns.</p>
+    </div>
+    <a routerLink="/admin/campaigns/create" class="apple-btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      New Campaign
+    </a>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading campaigns...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!isLoading && campaigns.length === 0">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="empty-icon">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <h3>No Campaigns Yet</h3>
+    <p>Launch your first phishing simulation campaign.</p>
+    <a routerLink="/admin/campaigns/create" class="apple-btn-primary">Create Campaign</a>
+  </div>
+
+  <!-- Campaign Table -->
+  <div class="glass-table-container" *ngIf="!isLoading && campaigns.length > 0">
+    <table class="apple-table">
+      <thead>
+        <tr>
+          <th>Campaign</th>
+          <th>Template</th>
+          <th>Targets</th>
+          <th>Status</th>
+          <th>Sent</th>
+          <th>Clicked</th>
+          <th>Click Rate</th>
+          <th>Cred Attempts</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let campaign of campaigns" class="table-row">
+          <td>
+            <div class="campaign-name-cell">
+              <span class="campaign-name">{{ campaign.name }}</span>
+              <span class="campaign-desc" *ngIf="campaign.description">{{ campaign.description }}</span>
+            </div>
+          </td>
+          <td class="template-col">{{ campaign.templateName }}</td>
+          <td>
+            <div class="dept-tags">
+              <span class="dept-tag" *ngFor="let d of campaign.targetDepartments.slice(0, 2)">{{ d }}</span>
+              <span class="dept-tag more" *ngIf="campaign.targetDepartments.length > 2">+{{ campaign.targetDepartments.length - 2 }}</span>
+              <span class="dept-tag" *ngIf="campaign.targetDepartments.length === 0">{{ campaign.targetEmployeeIds.length }} employees</span>
+            </div>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(campaign.status)">
+              {{ campaign.status | titlecase }}
+            </span>
+          </td>
+          <td class="stat-col">{{ campaign.stats?.totalSent ?? 0 }}</td>
+          <td class="stat-col">{{ campaign.stats?.clicked ?? 0 }}</td>
+          <td>
+            <div class="click-rate-wrapper">
+              <span class="click-rate-num">{{ getClickRate(campaign) }}%</span>
+              <div class="click-rate-bar">
+                <div class="click-rate-fill" [style.width.%]="getClickRate(campaign)"></div>
+              </div>
+            </div>
+          </td>
+          <td class="stat-col danger-col">{{ campaign.stats?.credentialAttempts ?? 0 }}</td>
+          <td class="actions-col">
+            <a [routerLink]="['/admin/campaigns', campaign.id]" class="icon-action-btn view-btn" title="View">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </a>
+            <button class="icon-action-btn delete-btn" (click)="deleteCampaign(campaign.id)" title="Delete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

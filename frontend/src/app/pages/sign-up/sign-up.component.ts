@@ -18,6 +18,11 @@ export class SignUpComponent implements AfterViewInit {
   password = '';
   errorMessage = '';
   isSubmitting = false;
+  showPassword = false;
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
 
   constructor(private authService: AuthService) {}
 

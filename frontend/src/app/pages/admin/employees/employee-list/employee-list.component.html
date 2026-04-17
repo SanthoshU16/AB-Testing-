@@ -1,0 +1,163 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2 class="page-title">Employees Directory</h2>
+      <p class="page-subtitle">Manage company staff and access their phishing risk scores.</p>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" placeholder="Search employees..."
+          class="search-input"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="applyFilter()">
+      </div>
+
+      <!-- Hidden CSV file input -->
+      <input type="file" id="csvFileInput" accept=".csv" style="display:none"
+        (change)="onCSVFileSelected($event)">
+
+      <button class="apple-btn-secondary" (click)="triggerFileInput()" title="Import CSV">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        Import CSV
+      </button>
+
+      <button class="apple-btn-primary" (click)="openAddModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Employee
+      </button>
+    </div>
+  </div>
+
+  <!-- CSV Import Error -->
+  <div class="import-error" *ngIf="importError">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+      <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    {{ importError }}
+    <button class="dismiss-btn" (click)="importError = null">×</button>
+  </div>
+
+  <!-- CSV Import Preview Modal -->
+  <div class="modal-overlay" *ngIf="showImportPreview" (click)="cancelImport()">
+    <div class="import-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">Import Preview — {{ importPreview.length }} employees</h3>
+        <button class="close-btn" (click)="cancelImport()">×</button>
+      </div>
+      <div class="import-table-wrap">
+        <table class="apple-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let emp of importPreview">
+              <td>{{ emp.firstName }} {{ emp.lastName }}</td>
+              <td class="emp-email">{{ emp.email }}</td>
+              <td>{{ emp.department }}</td>
+              <td><span class="status-badge" [ngClass]="emp.status">{{ emp.status }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="apple-btn-secondary" (click)="cancelImport()">Cancel</button>
+        <button class="apple-btn-primary" (click)="confirmImport()" [disabled]="isImporting">
+          <span *ngIf="!isImporting">Upload {{ importPreview.length }} Employees</span>
+          <span *ngIf="isImporting" class="btn-spinner"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-table-container">
+    <table class="apple-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Department</th>
+          <th>Status</th>
+          <th>Risk Score</th>
+          <th class="actions-col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Empty State -->
+        <tr *ngIf="filteredEmployees.length === 0">
+          <td colspan="6" class="empty-state">
+            <div class="empty-state-content">
+              <svg viewBox="0 0 24 24" fill="none" class="empty-icon" stroke="currentColor" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+              </svg>
+              <h3>No Employees Found</h3>
+              <p>Add an employee or import a CSV to get started.</p>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Data Rows -->
+        <tr *ngFor="let emp of filteredEmployees" class="table-row">
+          <td>
+            <div class="emp-name-cell">
+              <div class="emp-avatar">
+                {{ emp.firstName.charAt(0) }}{{ emp.lastName.charAt(0) }}
+              </div>
+              <span class="emp-name">{{ emp.firstName }} {{ emp.lastName }}</span>
+            </div>
+          </td>
+          <td class="emp-email">{{ emp.email }}</td>
+          <td><span class="emp-department">{{ emp.department }}</span></td>
+          <td>
+            <span class="status-badge" [ngClass]="emp.status">
+              {{ emp.status === 'active' ? 'Active' : 'Inactive' }}
+            </span>
+          </td>
+          <td>
+            <div class="risk-score-wrapper">
+              <span class="risk-label-badge"
+                [style.background]="getRiskColor(emp.riskScore) + '22'"
+                [style.color]="getRiskColor(emp.riskScore)">
+                {{ getRiskLabel(emp.riskScore) }}
+              </span>
+              <span class="risk-number" [style.color]="getRiskColor(emp.riskScore)">
+                {{ emp.riskScore || 0 }}%
+              </span>
+              <div class="risk-bar-container">
+                <div class="risk-bar-fill"
+                     [style.width.%]="emp.riskScore || 0"
+                     [style.background-color]="getRiskColor(emp.riskScore)">
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="actions-col">
+            <button class="icon-action-btn delete-btn" (click)="deleteEmployee(emp.id)" title="Delete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add Employee Modal -->
+<app-employee-add
+  *ngIf="isAddModalOpen"
+  (close)="closeAddModal()"
+  (onAdded)="applyFilter()">
+</app-employee-add>

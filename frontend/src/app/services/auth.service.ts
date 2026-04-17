@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,13 +11,6 @@ import {
   signInWithPopup,
   User
 } from 'firebase/auth';
-import {
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  serverTimestamp
-} from 'firebase/firestore';
 import { FirebaseService } from './firebase.service';
 import { UserProfile } from '../models/user.model';
 
@@ -26,70 +20,50 @@ import { UserProfile } from '../models/user.model';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private userProfileSubject = new BehaviorSubject<UserProfile | null>(null);
+  private apiUrl = 'http://localhost:8080/api/users';
 
-  /** Observable of the raw Firebase Auth user */
   currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
-
-  /** Observable of the full Firestore user profile */
   userProfile$: Observable<UserProfile | null> = this.userProfileSubject.asObservable();
-
-  /** True while we're still waiting for the initial auth check */
   isLoading = true;
 
   constructor(
     private firebase: FirebaseService,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private http: HttpClient
   ) {
-    // Listen for auth state changes
     onAuthStateChanged(this.firebase.auth, async (user) => {
       this.currentUserSubject.next(user);
-
       if (user) {
-        const profile = await this.fetchUserProfile(user.uid);
-        this.userProfileSubject.next(profile);
+        try {
+          const profile = await this.fetchUserProfile();
+          this.userProfileSubject.next(profile);
+        } catch (e) {
+          console.error('Error fetching profile from backend:', e);
+        }
       } else {
         this.userProfileSubject.next(null);
       }
-
       this.isLoading = false;
     });
   }
 
   // ─── Email / Password Sign Up ────────────────────────────────────────
 
-  async signUp(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ): Promise<void> {
-    const credential = await createUserWithEmailAndPassword(
-      this.firebase.auth,
-      email,
-      password
-    );
-
-    // Create the Firestore user document
-    const userProfile: Omit<UserProfile, 'uid'> & { uid: string } = {
+  async signUp(email: string, password: string, firstName: string, lastName: string): Promise<void> {
+    const credential = await createUserWithEmailAndPassword(this.firebase.auth, email, password);
+    
+    const userProfile: UserProfile = {
       uid: credential.user.uid,
       email,
       firstName,
       lastName,
-      role: 'admin', // First user gets admin — adjust later
-      createdAt: new Date(),
-      lastLogin: new Date()
+      role: 'admin'
     };
 
-    await setDoc(
-      doc(this.firebase.firestore, 'users', credential.user.uid),
-      {
-        ...userProfile,
-        createdAt: serverTimestamp(),
-        lastLogin: serverTimestamp()
-      }
-    );
-
+    // Sync to backend
+    await firstValueFrom(this.http.post(`${this.apiUrl}/sync`, userProfile));
+    
     this.userProfileSubject.next(userProfile);
     this.ngZone.run(() => this.router.navigate(['/admin']));
   }
@@ -97,19 +71,12 @@ export class AuthService {
   // ─── Email / Password Sign In ────────────────────────────────────────
 
   async signIn(email: string, password: string): Promise<void> {
-    const credential = await signInWithEmailAndPassword(
-      this.firebase.auth,
-      email,
-      password
-    );
-
-    // Update last login
-    await updateDoc(
-      doc(this.firebase.firestore, 'users', credential.user.uid),
-      { lastLogin: serverTimestamp() }
-    );
-
-    const profile = await this.fetchUserProfile(credential.user.uid);
+    await signInWithEmailAndPassword(this.firebase.auth, email, password);
+    
+    // Record login in backend
+    await firstValueFrom(this.http.post(`${this.apiUrl}/login-event`, {}));
+    
+    const profile = await this.fetchUserProfile();
     this.userProfileSubject.next(profile);
     this.ngZone.run(() => this.router.navigate(['/admin']));
   }
@@ -121,35 +88,24 @@ export class AuthService {
     const credential = await signInWithPopup(this.firebase.auth, provider);
     const user = credential.user;
 
-    // Check if user doc exists — if not, create it
-    const userDocRef = doc(this.firebase.firestore, 'users', user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-
-    if (!userDocSnap.exists()) {
+    // Check if profile exists via backend
+    let profile = await this.fetchUserProfile();
+    
+    if (!profile) {
       const names = (user.displayName || '').split(' ');
-      const newProfile: Omit<UserProfile, 'uid'> & { uid: string } = {
+      profile = {
         uid: user.uid,
         email: user.email || '',
         firstName: names[0] || '',
         lastName: names.slice(1).join(' ') || '',
-        role: 'admin',
-        createdAt: new Date(),
-        lastLogin: new Date()
+        role: 'admin'
       };
-
-      await setDoc(userDocRef, {
-        ...newProfile,
-        createdAt: serverTimestamp(),
-        lastLogin: serverTimestamp()
-      });
-
-      this.userProfileSubject.next(newProfile);
+      await firstValueFrom(this.http.post(`${this.apiUrl}/sync`, profile));
     } else {
-      await updateDoc(userDocRef, { lastLogin: serverTimestamp() });
-      const profile = userDocSnap.data() as UserProfile;
-      this.userProfileSubject.next(profile);
+      await firstValueFrom(this.http.post(`${this.apiUrl}/login-event`, {}));
     }
 
+    this.userProfileSubject.next(profile);
     this.ngZone.run(() => this.router.navigate(['/admin']));
   }
 
@@ -163,21 +119,14 @@ export class AuthService {
 
   // ─── Helpers ─────────────────────────────────────────────────────────
 
-  get isAuthenticated(): boolean {
-    return this.currentUserSubject.value !== null;
-  }
-
-  get currentProfile(): UserProfile | null {
-    return this.userProfileSubject.value;
-  }
-
-  private async fetchUserProfile(uid: string): Promise<UserProfile | null> {
-    const userDocRef = doc(this.firebase.firestore, 'users', uid);
-    const userDocSnap = await getDoc(userDocRef);
-
-    if (userDocSnap.exists()) {
-      return userDocSnap.data() as UserProfile;
+  private async fetchUserProfile(): Promise<UserProfile | null> {
+    try {
+      return await firstValueFrom(this.http.get<UserProfile>(`${this.apiUrl}/me`));
+    } catch (e) {
+      return null;
     }
-    return null;
   }
+
+  get isAuthenticated(): boolean { return this.currentUserSubject.value !== null; }
+  get currentProfile(): UserProfile | null { return this.userProfileSubject.value; }
 }

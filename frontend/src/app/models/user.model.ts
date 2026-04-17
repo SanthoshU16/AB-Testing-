@@ -4,6 +4,6 @@ export interface UserProfile {
   firstName: string;
   lastName: string;
   role: 'admin' | 'viewer';
-  createdAt: Date;
-  lastLogin: Date;
+  createdAt?: any;
+  lastLogin?: any;
 }

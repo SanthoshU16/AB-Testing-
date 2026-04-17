@@ -1,0 +1,98 @@
+<div class="page-container" *ngIf="!isLoading && campaign">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <button class="back-btn" (click)="goBack()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        Campaigns
+      </button>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">{{ campaign.name }}</span>
+    </div>
+    <div class="header-right">
+      <span class="status-badge" [ngClass]="'status-' + campaign.status">{{ campaign.status | titlecase }}</span>
+      <button class="apple-btn-secondary" *ngIf="campaign.status === 'active'" (click)="markCompleted()">
+        Mark Completed
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="mini-stat">
+      <span class="mini-stat-value">{{ campaign.stats?.totalSent ?? 0 }}</span>
+      <span class="mini-stat-label">Emails Sent</span>
+    </div>
+    <div class="mini-stat">
+      <span class="mini-stat-value">{{ campaign.stats?.opened ?? 0 }}</span>
+      <span class="mini-stat-label">Opened</span>
+    </div>
+    <div class="mini-stat clicked">
+      <span class="mini-stat-value">{{ campaign.stats?.clicked ?? 0 }}</span>
+      <span class="mini-stat-label">Link Clicks</span>
+    </div>
+    <div class="mini-stat danger">
+      <span class="mini-stat-value">{{ campaign.stats?.credentialAttempts ?? 0 }}</span>
+      <span class="mini-stat-label">Cred Attempts</span>
+    </div>
+    <div class="mini-stat accent">
+      <span class="mini-stat-value">{{ getClickRate() }}%</span>
+      <span class="mini-stat-label">Click Rate</span>
+    </div>
+  </div>
+
+  <div class="detail-layout">
+    <!-- Campaign Info -->
+    <div class="glass-card info-card">
+      <h3 class="section-label">Campaign Info</h3>
+      <div class="info-row"><span class="info-label">Template</span><span class="info-value">{{ campaign.templateName }}</span></div>
+      <div class="info-row" *ngIf="campaign.description"><span class="info-label">Description</span><span class="info-value">{{ campaign.description }}</span></div>
+      <div class="info-row">
+        <span class="info-label">Departments</span>
+        <span class="info-value">
+          <span *ngIf="campaign.targetDepartments.length > 0">{{ campaign.targetDepartments.join(', ') }}</span>
+          <span *ngIf="campaign.targetDepartments.length === 0">{{ campaign.targetEmployeeIds.length }} employees</span>
+        </span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status</span>
+        <span class="status-badge" [ngClass]="'status-' + campaign.status">{{ campaign.status | titlecase }}</span>
+      </div>
+
+      <!-- Tracking URL -->
+      <div class="tracking-url-section">
+        <h4 class="section-label" style="margin-top: 20px;">Phishing Tracking URL</h4>
+        <p class="hint-text">Share this URL with employees to track clicks. Replace <code>EMPLOYEE_ID</code> with the actual employee ID.</p>
+        <div class="url-box">
+          <code>{{ 'window.location.origin' }}/track/{{ campaign.id }}/EMPLOYEE_ID</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Feed -->
+    <div class="glass-card events-card">
+      <h3 class="section-label">Tracking Events ({{ events.length }})</h3>
+      <div class="events-empty" *ngIf="events.length === 0">
+        <p>No tracking events recorded yet.</p>
+      </div>
+      <div class="events-feed">
+        <div class="event-item" *ngFor="let ev of events" [ngClass]="getEventClass(ev.eventType)">
+          <div class="event-dot"></div>
+          <div class="event-content">
+            <div class="event-type">{{ getEventLabel(ev.eventType) }}</div>
+            <div class="event-email">{{ ev.employeeEmail }}</div>
+            <div class="event-time">{{ ev.timestamp?.toDate() | date: 'MMM d, y · h:mm a' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="loading-state" *ngIf="isLoading">
+  <div class="spinner"></div>
+  <p>Loading campaign...</p>
+</div>
