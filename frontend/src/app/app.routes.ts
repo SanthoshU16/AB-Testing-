@@ -16,6 +16,14 @@ export const routes: Routes = [
     component: PhishingLandingComponent
   },
 
+  // ── Protected Intro Route ──────────────────────────────────────────────
+  {
+    path: 'intro',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./pages/intro/intro.component').then((m) => m.IntroComponent)
+  },
+
   // ── Protected Admin routes ─────────────────────────────────────────────
   {
     path: 'admin',

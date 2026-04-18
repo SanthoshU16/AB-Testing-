@@ -21,27 +21,32 @@ public class TemplateService {
     private static final String COLLECTION = "templates";
 
     @PostConstruct
-    public void seedTemplates() throws ExecutionException, InterruptedException {
-        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION).limit(1).get();
-        if (future.get().isEmpty()) {
-            System.out.println("🌱 Seeding default phishing templates...");
-            String[] names = {
-                "Microsoft 365 Security Alert",
-                "Google Workspace: New Sign-in",
-                "Corporate Salary Update",
-                "IT Department: Urgent Policy Change"
-            };
+    public void seedTemplates() {
+        try {
+            ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION).limit(1).get();
+            if (future.get().isEmpty()) {
+                System.out.println("🌱 Seeding default phishing templates...");
+                String[] names = {
+                    "Microsoft 365 Security Alert",
+                    "Google Workspace: New Sign-in",
+                    "Corporate Salary Update",
+                    "IT Department: Urgent Policy Change"
+                };
 
-            for (String name : names) {
-                PhishingTemplate t = new PhishingTemplate();
-                t.setName(name);
-                t.setType("Email");
-                t.setCategory("Credential Harvesting");
-                t.setDifficulty("Medium");
-                t.setSubject("Urgent Action Required");
-                t.setContent("<p>Please review the attached document and update your details.</p>");
-                saveTemplate(t);
+                for (String name : names) {
+                    PhishingTemplate t = new PhishingTemplate();
+                    t.setName(name);
+                    t.setType("Email");
+                    t.setCategory("Credential Harvesting");
+                    t.setDifficulty("Medium");
+                    t.setSubject("Urgent Action Required");
+                    t.setContent("<p>Please review the attached document and update your details.</p>");
+                    saveTemplate(t);
+                }
             }
+        } catch (Exception e) {
+            System.err.println("⚠️ Warning: Failed to seed templates during startup. Firestore might be unreachable.");
+            e.printStackTrace();
         }
     }
 

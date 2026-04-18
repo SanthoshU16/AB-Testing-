@@ -65,7 +65,7 @@ export class AuthService {
     await firstValueFrom(this.http.post(`${this.apiUrl}/sync`, userProfile));
     
     this.userProfileSubject.next(userProfile);
-    this.ngZone.run(() => this.router.navigate(['/admin']));
+    this.ngZone.run(() => this.router.navigate(['/intro']));
   }
 
   // ─── Email / Password Sign In ────────────────────────────────────────
@@ -78,7 +78,7 @@ export class AuthService {
     
     const profile = await this.fetchUserProfile();
     this.userProfileSubject.next(profile);
-    this.ngZone.run(() => this.router.navigate(['/admin']));
+    this.ngZone.run(() => this.router.navigate(['/intro']));
   }
 
   // ─── Google OAuth ────────────────────────────────────────────────────
@@ -106,7 +106,7 @@ export class AuthService {
     }
 
     this.userProfileSubject.next(profile);
-    this.ngZone.run(() => this.router.navigate(['/admin']));
+    this.ngZone.run(() => this.router.navigate(['/intro']));
   }
 
   // ─── Sign Out ────────────────────────────────────────────────────────
