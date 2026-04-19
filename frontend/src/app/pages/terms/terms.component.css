@@ -1,0 +1,140 @@
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(180deg, #f8fafc, #eef2ff);
+}
+
+/* ✅ HEADER (NORMAL SCROLL — NO FIXED) */
+.hero {
+  text-align: center;
+  padding: 60px 20px 30px;
+
+  /* same page color */
+   background: linear-gradient(135deg, #071c40, #071c40);
+}
+
+.hero h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #fcfcfc;
+}
+
+.hero p {
+  margin-top: 10px;
+  color: #adb5c1;
+}
+
+/* ✅ LAYOUT */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 50px;
+  padding: 30px 70px;
+   margin-top: 60px;
+}
+
+/* ✅ SIDEBAR (STICKY WORKING 🔥) */
+.sidebar {
+  position: sticky;
+  top: 20px;   /* 🔥 important fix */
+  height: fit-content;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #64748b;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  background: rgba(59,130,246,0.1);
+}
+
+.sidebar a.active {
+  background: rgba(59,130,246,0.2);
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* ✅ CONTENT */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* ✅ CARD */
+.card {
+  position: relative;
+  padding: 32px 34px;   /* 🔥 increase spacing */
+  border-radius: 18px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  transition: 0.3s;
+}
+
+/* LEFT LINE */
+.card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 24px;
+  bottom: 24px;
+  width: 4px;
+  border-radius: 10px;
+  background: linear-gradient(#3b82f6, #60a5fa);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card ul {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+/* END TEXT */
+.legal-end-text {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.legal-end-text p {
+  color: #64748b;
+}
+
+/* SCROLL */
+html {
+  scroll-behavior: smooth;
+}
+
+section {
+  scroll-margin-top: 40px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .sidebar {
+    display: none;
+  }
+}

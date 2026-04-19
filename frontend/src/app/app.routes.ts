@@ -4,11 +4,29 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PhishingLandingComponent } from './pages/phishing-landing/phishing-landing.component';
+import { AboutComponent } from './pages/about/about.component';
+import { BlogComponent } from './pages/blog/blog.component';
+import { CareerComponent } from './pages/career/career.component';
+import { ContactComponent } from './pages/contact/contact.component';
+import { TermsComponent } from './pages/terms/terms.component';
+import { PrivacyComponent } from './pages/privacy/privacy.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
+
+  { path: 'about', component: AboutComponent },
+
+  { path: 'blog', component: BlogComponent },
+
+  { path: 'career', component: CareerComponent },
+
+  { path: 'contact', component: ContactComponent },
+
+  { path: 'terms', component: TermsComponent },
+
+  { path: 'privacy', component: PrivacyComponent },
 
   // ── Public phishing tracking route (no auth required) ──────────────────
   {

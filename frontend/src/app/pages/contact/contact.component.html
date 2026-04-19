@@ -1,0 +1,67 @@
+<!-- HERO -->
+<section class="hero">
+  <h1>Contact Us</h1>
+  <p>We’d love to hear from you</p>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-wrapper">
+
+ <div class="contact-left glass-box">
+  <h1 class="section-title">Get in Touch</h1>
+  <p class="sub-text">Reach out anytime. We’re here to help.</p>
+
+  <div class="contact-item">
+    <div class="icon">📍</div>
+    <div>
+      <h4>Location</h4>
+      <p>London, United Kingdom</p>
+    </div>
+  </div>
+
+  <div class="contact-item">
+    <div class="icon">📞</div>
+    <div>
+      <h4>Phone</h4>
+      <p>+44 20 7946 0958</p>
+    </div>
+  </div>
+
+  <div class="contact-item">
+    <div class="icon">✉️</div>
+    <div>
+      <h4>Email</h4>
+      <p>support&#64;armorbridz.com</p>
+    </div>
+  </div>
+
+</div>
+  <!-- RIGHT -->
+  <div class="contact-right glass-box">
+    <h1 class="section-title">Send Message</h1>
+
+    <form #form="ngForm" (ngSubmit)="submitForm(form)">
+
+      <input type="text" name="name" ngModel required #name="ngModel" placeholder="Your Name">
+      <small *ngIf="name.invalid && (name.touched || form.submitted)">
+        Name is required
+      </small>
+
+      <input type="email" name="email" ngModel required 
+             pattern="^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+             #email="ngModel" placeholder="Your Email">
+      <small *ngIf="email.invalid && (email.touched || form.submitted)">
+        Enter valid email
+      </small>
+
+      <textarea name="message" ngModel required #msg="ngModel" placeholder="Your Message"></textarea>
+      <small *ngIf="msg.invalid && (msg.touched || form.submitted)">
+        Message is required
+      </small>
+
+      <button type="submit">Send Message →</button>
+
+    </form>
+  </div>
+
+</section>

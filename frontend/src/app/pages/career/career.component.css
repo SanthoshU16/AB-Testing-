@@ -1,0 +1,192 @@
+/* HOST */
+:host {
+  display: block;
+  background: #f1f5f9;
+  padding-bottom: 40px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* HERO */
+.hero {
+ background: linear-gradient(135deg, #103069, #0e3270);
+  color: white;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  opacity: 0.8;
+}
+
+/* SECTION */
+section {
+  padding: 50px 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* FEATURES */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.feature {
+  background: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  transition: 0.3s;
+}
+
+.feature:hover {
+  box-shadow: 0 0 20px rgba(59,130,246,0.4);
+  transform: scale(1.05);
+}
+
+/* BOX (MISSION STYLE REUSE) */
+.about-mission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  padding: 40px;
+}
+
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  transition: 0.3s;
+}
+
+.box:hover {
+  box-shadow: 0 0 25px rgba(59,130,246,0.5);
+  transform: translateY(-5px);
+}
+
+/* JOB LIST */
+.jobs {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* JOB CARD */
+.job-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  transition: 0.3s;
+}
+
+.job-card h4 {
+  margin-bottom: 5px;
+}
+
+.job-card p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* HOVER GLOW */
+.job-card:hover {
+  box-shadow: 0 0 30px rgba(59,130,246,0.5);
+  transform: translateY(-4px);
+}
+
+/* BUTTON */
+.job-card button {
+  background: #3b82f6;
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.job-card button:hover {
+  box-shadow: 0 0 20px rgba(59,130,246,0.7);
+}
+
+/* CTA */
+.cta {
+  background: linear-gradient(135deg, #1e3a8a, #0f172a);
+  color: white;
+  text-align: center;
+  padding: 60px;
+  margin: 30px;
+  border-radius: 16px;
+}
+
+.primary {
+  background: #3b82f6;
+  border: none;
+  padding: 10px 18px;
+  color: white;
+  border-radius: 8px;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* 🔥 SAME HOVER EFFECT */
+.primary:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 6px 16px rgba(59,130,246,0.25); /* 🔥 reduced */
+
+}
+.secondary {
+  border: 1px solid white;
+  padding: 10px 18px;
+  background: transparent;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.secondary:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 6px 14px rgba(255,255,255,0.18); /* 🔥 soft white */
+
+  background: rgba(255,255,255,0.04); /* very light */
+
+}
+
+
+
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .about-mission {
+    grid-template-columns: 1fr;
+  }
+
+  .job-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

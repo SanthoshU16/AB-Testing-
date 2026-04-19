@@ -32,10 +32,10 @@
           </a>
           <div class="nav-dropdown">
             <div class="nav-dropdown-inner">
-              <a href="#" class="dropdown-item">About</a>
-              <a href="#" class="dropdown-item">Blog</a>
-              <a href="#" class="dropdown-item">Careers</a>
-              <a href="#" class="dropdown-item">Contact</a>
+              <a routerLink="/about" class="dropdown-item">About</a>
+<a routerLink="/blog" class="dropdown-item">Blog</a>
+<a routerLink="/career" class="dropdown-item">Careers</a>
+<a routerLink="/contact" class="dropdown-item">Contact</a>
             </div>
           </div>
         </li>
@@ -100,10 +100,10 @@
           </svg>
         </a>
         <div class="mobile-dropdown" [class.open]="mobileDropdowns['company']">
-          <a href="#" class="mobile-dropdown-item">About</a>
-          <a href="#" class="mobile-dropdown-item">Blog</a>
-          <a href="#" class="mobile-dropdown-item">Careers</a>
-          <a href="#" class="mobile-dropdown-item">Contact</a>
+          <a routerLink="/about" (click)="closeMobileMenu()" class="mobile-dropdown-item">About</a>
+<a routerLink="/blog" (click)="closeMobileMenu()" class="mobile-dropdown-item">Blog</a>
+<a routerLink="/career" (click)="closeMobileMenu()" class="mobile-dropdown-item">Careers</a>
+<a routerLink="/contact" (click)="closeMobileMenu()" class="mobile-dropdown-item">Contact</a>
         </div>
       </div>
     </div>
@@ -382,56 +382,3 @@
 </section>
 
 
-<!-- ========== FOOTER ========== -->
-<footer class="footer" id="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <img src="ABLM.png" alt="Armor Bridz" class="footer-logo-img">
-        <p class="footer-tagline">
-          Proactive phishing simulation for the modern enterprise.
-        </p>
-        <div class="footer-socials">
-          <a href="#" class="social-link" id="footer-linkedin" aria-label="LinkedIn">
-            <i class="bi bi-linkedin"></i>
-          </a>
-          <a href="#" class="social-link" id="footer-twitter" aria-label="Twitter">
-            <i class="bi bi-twitter-x"></i>
-          </a>
-          <a href="#" class="social-link" id="footer-youtube" aria-label="YouTube">
-            <i class="bi bi-youtube"></i>
-          </a>
-          <a href="#" class="social-link" id="footer-instagram" aria-label="Instagram">
-            <i class="bi bi-instagram"></i>
-          </a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h6 class="footer-heading">Product</h6>
-        <ul class="footer-links">
-          <li><a href="#" id="footer-overview">Overview</a></li>
-          <li><a (click)="scrollTo('product')" style="cursor:pointer;">Why Armor Bridz</a></li>
-          <li><a (click)="scrollTo('impact')" style="cursor:pointer;">The Impact</a></li>
-          <li><a (click)="scrollTo('features')" style="cursor:pointer;" id="footer-features">Features</a></li>
-          <li><a href="#" id="footer-pricing">Pricing</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h6 class="footer-heading">Company</h6>
-        <ul class="footer-links">
-          <li><a href="#" id="footer-about">About</a></li>
-          <li><a href="#" id="footer-blog">Blog</a></li>
-          <li><a href="#" id="footer-careers">Careers</a></li>
-          <li><a href="#" id="footer-contact">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-bottom">
-      <p class="footer-copy">&copy; 2026 Armor Bridz. All rights reserved.</p>
-    </div>
-  </div>
-</footer>

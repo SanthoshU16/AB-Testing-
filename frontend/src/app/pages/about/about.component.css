@@ -1,0 +1,219 @@
+/* HOST FIX (IMPORTANT) */
+:host {
+  display: block;
+  background: #f1f5f9;
+  padding-bottom: 40px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #103069, #0e3270);
+  color: white;
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  opacity: 0.8;
+}
+
+/* SECTION */
+section {
+  padding: 50px 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* ================= */
+/* WHO WE ARE */
+/* ================= */
+.about-box {
+  max-width: 800px;
+  margin: auto;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.about-box:hover {
+  box-shadow: 0 0 30px rgba(59,130,246,0.4);
+  transform: translateY(-5px);
+}
+
+/* ================= */
+/* FEATURES */
+/* ================= */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.feature {
+  background: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  transition: 0.3s;
+}
+
+.feature:hover {
+  box-shadow: 0 0 20px rgba(59,130,246,0.4);
+  transform: scale(1.05);
+}
+
+/* ================= */
+/* MISSION */
+/* ================= */
+.about-mission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  padding: 40px;
+}
+
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  transition: 0.3s;
+}
+
+.box:hover {
+  box-shadow: 0 0 25px rgba(59,130,246,0.5);
+  transform: translateY(-5px);
+}
+
+/* ================= */
+/* STEPS */
+/* ================= */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.step {
+  background: white;
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.step:hover {
+  box-shadow: 0 0 25px rgba(59,130,246,0.6);
+  transform: translateY(-5px);
+}
+
+/* ================= */
+/* STATS */
+/* ================= */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  padding: 40px;
+  margin: 30px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.stats div {
+  text-align: center;
+  transition: 0.3s;
+}
+
+.stats div:hover {
+  box-shadow: 0 0 25px rgba(59,130,246,0.4);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* ================= */
+/* CTA */
+/* ================= */
+.cta {
+  background: linear-gradient(135deg, #1e3a8a, #0f172a);
+  color: white;
+  text-align: center;
+  padding: 60px;
+  margin: 30px;
+  border-radius: 16px;
+}
+
+/* PRIMARY BUTTON */
+.primary {
+  background: #3b82f6;
+  border: none;
+  padding: 10px 18px;
+  color: white;
+  border-radius: 8px;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* 🔥 SAME HOVER EFFECT */
+.primary:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 6px 16px rgba(59,130,246,0.25); /* 🔥 reduced */
+
+}
+
+.secondary {
+  border: 1px solid white;
+  padding: 10px 18px;
+  background: transparent;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.secondary:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 6px 14px rgba(255,255,255,0.18); /* 🔥 soft white */
+
+  background: rgba(255,255,255,0.04); /* very light */
+
+}
+
+
+
+/* ================= */
+/* MOBILE */
+/* ================= */
+@media (max-width: 768px) {
+  .about-mission {
+    grid-template-columns: 1fr;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

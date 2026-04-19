@@ -66,9 +66,14 @@
         </div>
       </div>
 
-      <div class="apple-policy">
-        <p>By proceeding, you agree to the <a href="#" class="apple-link">Terms of Service</a> and <a href="#" class="apple-link">Privacy Policy</a>.</p>
-      </div>
+     <div class="apple-policy">
+  <p>
+    By proceeding, you agree to the 
+    <a routerLink="/terms" class="apple-link">Terms of Service</a> 
+    and 
+    <a routerLink="/privacy" class="apple-link">Privacy Policy</a>.
+  </p>
+</div>
 
       <button type="submit" class="apple-btn-submit-wide" [disabled]="isSubmitting" id="sign-up-submit">
         <span *ngIf="!isSubmitting">Continue</span>
