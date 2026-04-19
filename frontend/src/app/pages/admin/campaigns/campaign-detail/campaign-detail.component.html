@@ -22,19 +22,19 @@
   <!-- Stats Row -->
   <div class="stats-row">
     <div class="mini-stat">
-      <span class="mini-stat-value">{{ campaign.stats?.totalSent ?? 0 }}</span>
+      <span class="mini-stat-value">{{ campaign.stats.totalSent }}</span>
       <span class="mini-stat-label">Emails Sent</span>
     </div>
     <div class="mini-stat">
-      <span class="mini-stat-value">{{ campaign.stats?.opened ?? 0 }}</span>
+      <span class="mini-stat-value">{{ campaign.stats.opened }}</span>
       <span class="mini-stat-label">Opened</span>
     </div>
     <div class="mini-stat clicked">
-      <span class="mini-stat-value">{{ campaign.stats?.clicked ?? 0 }}</span>
+      <span class="mini-stat-value">{{ campaign.stats.clicked }}</span>
       <span class="mini-stat-label">Link Clicks</span>
     </div>
     <div class="mini-stat danger">
-      <span class="mini-stat-value">{{ campaign.stats?.credentialAttempts ?? 0 }}</span>
+      <span class="mini-stat-value">{{ campaign.stats.credentialAttempts }}</span>
       <span class="mini-stat-label">Cred Attempts</span>
     </div>
     <div class="mini-stat accent">
@@ -83,7 +83,7 @@
           <div class="event-content">
             <div class="event-type">{{ getEventLabel(ev.eventType) }}</div>
             <div class="event-email">{{ ev.employeeEmail }}</div>
-            <div class="event-time">{{ ev.timestamp?.toDate() | date: 'MMM d, y · h:mm a' }}</div>
+            <div class="event-time">{{ ev.timestamp.toDate() | date: 'MMM d, y · h:mm a' }}</div>
           </div>
         </div>
       </div>

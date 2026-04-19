@@ -67,8 +67,8 @@
               {{ campaign.status | titlecase }}
             </span>
           </td>
-          <td class="stat-col">{{ campaign.stats?.totalSent ?? 0 }}</td>
-          <td class="stat-col">{{ campaign.stats?.clicked ?? 0 }}</td>
+          <td class="stat-col">{{ campaign.stats.totalSent }}</td>
+          <td class="stat-col">{{ campaign.stats.clicked }}</td>
           <td>
             <div class="click-rate-wrapper">
               <span class="click-rate-num">{{ getClickRate(campaign) }}%</span>
@@ -77,7 +77,7 @@
               </div>
             </div>
           </td>
-          <td class="stat-col danger-col">{{ campaign.stats?.credentialAttempts ?? 0 }}</td>
+          <td class="stat-col danger-col">{{ campaign.stats.credentialAttempts }}</td>
           <td class="actions-col">
             <a [routerLink]="['/admin/campaigns', campaign.id]" class="icon-action-btn view-btn" title="View">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
