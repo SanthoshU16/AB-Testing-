@@ -7,6 +7,7 @@ const prodFile = 'environment.prod.ts';
 
 const content = `export const environment = {
   production: true,
+  apiUrl: "${process.env.API_URL || 'http://localhost:8080/api'}",
   firebase: {
     apiKey: "${process.env.FIREBASE_API_KEY || 'dummy_api_key'}",
     authDomain: "${process.env.FIREBASE_AUTH_DOMAIN || 'dummy_auth_domain'}",
