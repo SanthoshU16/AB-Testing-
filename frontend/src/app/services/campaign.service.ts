@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, of } from 'rxjs';
 import { Campaign } from '../models/campaign.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CampaignService {
-  private apiUrl = 'http://localhost:8080/api/campaigns';
+  private apiUrl = `${environment.apiUrl}/campaigns`;
   private campaignsSubject = new BehaviorSubject<Campaign[]>([]);
   public campaigns$ = this.campaignsSubject.asObservable();
 

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PhishingTemplate } from '../models/template.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TemplateService {
-  private apiUrl = 'http://localhost:8080/api/templates';
+  private apiUrl = `${environment.apiUrl}/templates`;
   private templatesSubject = new BehaviorSubject<PhishingTemplate[]>([]);
   public templates$ = this.templatesSubject.asObservable();
 

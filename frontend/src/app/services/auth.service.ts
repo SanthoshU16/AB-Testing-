@@ -13,6 +13,7 @@ import {
 } from 'firebase/auth';
 import { FirebaseService } from './firebase.service';
 import { UserProfile } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ import { UserProfile } from '../models/user.model';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private userProfileSubject = new BehaviorSubject<UserProfile | null>(null);
-  private apiUrl = 'http://localhost:8080/api/users';
+  private apiUrl = `${environment.apiUrl}/users`;
 
   currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
   userProfile$: Observable<UserProfile | null> = this.userProfileSubject.asObservable();

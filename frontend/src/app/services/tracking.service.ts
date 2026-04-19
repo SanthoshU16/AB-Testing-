@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { TrackingEvent } from '../models/tracking-event.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrackingService {
-  private apiUrl = 'http://localhost:8080/api/tracking';
+  private apiUrl = `${environment.apiUrl}/tracking`;
   private eventsSubject = new BehaviorSubject<TrackingEvent[]>([]);
   public events$ = this.eventsSubject.asObservable();
 

@@ -20,13 +20,23 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
-        if (FirebaseApp.getApps().isEmpty()) {
-            FirebaseOptions options = FirebaseOptions.builder()
-                    .setCredentials(GoogleCredentials.fromStream(firebaseConfig.getInputStream()))
-                    .build();
-            return FirebaseApp.initializeApp(options);
+        if (!FirebaseApp.getApps().isEmpty()) {
+            return FirebaseApp.getInstance();
         }
-        return FirebaseApp.getInstance();
+
+        String serviceAccountJson = System.getenv("FIREBASE_SERVICE_ACCOUNT");
+        GoogleCredentials credentials;
+
+        if (serviceAccountJson != null && !serviceAccountJson.isEmpty()) {
+            credentials = GoogleCredentials.fromStream(new java.io.ByteArrayInputStream(serviceAccountJson.getBytes()));
+        } else {
+            credentials = GoogleCredentials.fromStream(firebaseConfig.getInputStream());
+        }
+
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(credentials)
+                .build();
+        return FirebaseApp.initializeApp(options);
     }
 
     @Bean

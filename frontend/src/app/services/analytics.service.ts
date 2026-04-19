@@ -4,6 +4,7 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { Employee } from '../models/employee.model';
 import { Campaign } from '../models/campaign.model';
 import { TrackingEvent } from '../models/tracking-event.model';
+import { environment } from '../../environments/environment';
 
 export interface DepartmentStat {
   department: string;
@@ -28,7 +29,7 @@ export interface PlatformSummary {
   providedIn: 'root'
 })
 export class AnalyticsService {
-  private apiUrl = 'http://localhost:8080/api/analytics';
+  private apiUrl = `${environment.apiUrl}/analytics`;
 
   constructor(private http: HttpClient) {}
 
