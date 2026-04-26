@@ -1,110 +1,270 @@
-<div class="legal-page">
+<app-navbar activePage=""></app-navbar>
 
-  <!-- 🔥 FIXED HEADER -->
- <div class="hero">
-
-    <h1>Privacy Policy</h1>
-
-    <p>Your privacy matters. We are committed to transparency and data protection.</p>
-
+<!-- ========== HERO ========== -->
+<section class="page-hero" id="privacy-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
   </div>
+  <div class="container">
+    <div class="hero-content">
+      <p class="section-overline reveal">Legal</p>
+      <h1 class="page-headline reveal" style="transition-delay:0.1s">
+        Privacy <span class="headline-accent">Policy</span>
+      </h1>
+      <p class="page-description reveal" style="transition-delay:0.2s">
+        How Armor Bridz collects, uses, and protects your data in phishing simulations.
+      </p>
+    </div>
+  </div>
+</section>
 
-  <div class="layout">
+<!-- ========== TAB BAR ========== -->
+<nav class="page-tabs">
+  <div class="page-tabs-inner">
+    <a routerLink="/privacy" class="page-tab active">Privacy Policy</a>
+    <a routerLink="/terms" class="page-tab">Terms of Service</a>
+  </div>
+</nav>
 
-    <!-- SIDEBAR -->
+<!-- ========== CONTENT ========== -->
+<div class="legal-body">
+  <div class="legal-container">
+
+    <!-- Google-style Sticky Sidebar -->
     <aside class="sidebar">
-      <h3>Contents</h3>
-      <ul>
-        <li><a href="#t1" [class.active]="activeSection==='t1'">Data Collection</a></li>
-        <li><a href="#t2" [class.active]="activeSection==='t2'">Data Usage</a></li>
-        <li><a href="#t3" [class.active]="activeSection==='t3'">Protection</a></li>
-        <li><a href="#t4" [class.active]="activeSection==='t4'">Sharing</a></li>
-        <li><a href="#t5" [class.active]="activeSection==='t5'">User Rights</a></li>
-        <li><a href="#t6" [class.active]="activeSection==='t6'">Cookies</a></li>
-        <li><a href="#t7" [class.active]="activeSection==='t7'">Updates</a></li>
-      </ul>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="#t1" [class.active]="activeSection==='t1'">Introduction</a></li>
+          <li><a href="#t2" [class.active]="activeSection==='t2'">Data We Collect</a></li>
+          <li><a href="#t3" [class.active]="activeSection==='t3'">How We Use Data</a></li>
+          <li><a href="#t4" [class.active]="activeSection==='t4'">Credential Safety</a></li>
+          <li><a href="#t5" [class.active]="activeSection==='t5'">Data Storage</a></li>
+          <li><a href="#t6" [class.active]="activeSection==='t6'">Data Sharing</a></li>
+          <li><a href="#t7" [class.active]="activeSection==='t7'">Your Rights</a></li>
+          <li><a href="#t8" [class.active]="activeSection==='t8'">Cookies & Tracking</a></li>
+          <li><a href="#t9" [class.active]="activeSection==='t9'">Policy Updates</a></li>
+        </ul>
+      </nav>
     </aside>
 
-    <!-- CONTENT -->
+    <!-- Content Area -->
     <main class="content">
 
-      <section id="t1" class="card">
-        <h2>1. Data Collection</h2>
-        <p>We collect only necessary information to provide and improve our services.</p>
-        <ul>
-          <li>Basic user details</li>
-          <li>Account credentials</li>
-          <li>Usage analytics</li>
-        </ul>
-      </section>
-
-      <section id="t2" class="card">
-        <h2>2. Data Usage</h2>
-        <p>Your data is used only for platform functionality and improvement.</p>
-        <ul>
-          <li>Service delivery</li>
-          <li>Performance improvement</li>
-          <li>Security monitoring</li>
-        </ul>
-      </section>
-
-      <section id="t3" class="card">
-        <h2>3. Data Protection</h2>
-        <p>We apply strong security practices to protect your data.</p>
-        <ul>
-          <li>Encryption</li>
-          <li>Secure storage</li>
-          <li>Access control</li>
-        </ul>
-      </section>
-
-      <section id="t4" class="card">
-        <h2>4. Data Sharing</h2>
-        <p>We do not sell your data. Sharing happens only if required.</p>
-        <ul>
-          <li>No selling</li>
-          <li>Trusted services only</li>
-          <li>Legal compliance</li>
-        </ul>
-      </section>
-
-      <section id="t5" class="card">
-        <h2>5. User Rights</h2>
-        <p>You have full control over your data.</p>
-        <ul>
-          <li>Access data</li>
-          <li>Edit data</li>
-          <li>Delete account</li>
-        </ul>
-      </section>
-
-      <section id="t6" class="card">
-        <h2>6. Cookies</h2>
-        <p>Cookies help improve user experience and analytics.</p>
-        <ul>
-          <li>Session tracking</li>
-          <li>Analytics</li>
-          <li>Performance optimization</li>
-        </ul>
-      </section>
-
-      <section id="t7" class="card">
-        <h2>7. Updates</h2>
-        <p>We may update this policy based on changes in services or law.</p>
-        <ul>
-          <li>Policy updates</li>
-          <li>Regulatory compliance</li>
-        </ul>
-      </section>
-
-      <div class="legal-end-text">
-        <p>
-          This Privacy Policy ensures transparency and protection of your data.
-          By using our platform, you agree to these practices.
+      <!-- Intro block -->
+      <div class="content-intro reveal">
+        <p class="overline-label">ARMOR BRIDZ PRIVACY POLICY</p>
+        <h2 class="intro-headline">
+          When your organization uses Armor Bridz to run phishing simulations,
+          you're trusting us with employee data. We take this responsibility
+          seriously and are committed to protecting every piece of information.
+        </h2>
+        <p class="intro-body">
+          This Privacy Policy explains what data we collect through the Armor Bridz phishing
+          simulation platform, how we use it, how we protect it, and what rights you have
+          regarding your data.
         </p>
+      </div>
+
+      <hr class="section-divider">
+
+      <section id="t1" class="legal-section reveal">
+        <h3>1. Introduction</h3>
+        <p>
+          Armor Bridz is a phishing simulation and security awareness platform that helps
+          organizations assess employee readiness against phishing attacks. The platform
+          involves sending simulated phishing emails, tracking employee interactions,
+          and generating risk scores and compliance reports.
+        </p>
+        <p>
+          Because of the nature of our service, we handle employee information, simulation
+          tracking data, and organizational data. This policy governs how all such data
+          is collected, processed, stored, and shared.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t2" class="legal-section reveal">
+        <h3>2. Data We Collect</h3>
+        <p>We collect the following categories of data to operate the phishing simulation platform:</p>
+
+        <h4>Administrator Data</h4>
+        <ul>
+          <li>Name, email address, and authentication credentials (managed through Firebase Authentication)</li>
+          <li>Account activity including campaign creation, template management, and report generation</li>
+        </ul>
+
+        <h4>Employee Data</h4>
+        <ul>
+          <li>First name, last name, and email address</li>
+          <li>Department, role (optional), and employment status (active/inactive)</li>
+          <li>Risk score — computed based on simulation interaction history</li>
+          <li>Last phishing test date</li>
+        </ul>
+
+        <h4>Simulation Tracking Data</h4>
+        <ul>
+          <li>Email delivery status (delivered/failed)</li>
+          <li>Email open events</li>
+          <li>Link click events with timestamp</li>
+          <li>Credential submission attempt flags (boolean only — see Section 4)</li>
+          <li>IP address (optional) and browser user agent</li>
+        </ul>
+
+        <h4>Campaign & Template Data</h4>
+        <ul>
+          <li>Campaign names, descriptions, target departments, and scheduling details</li>
+          <li>Phishing template content including subject lines, sender details, and HTML body</li>
+          <li>Campaign performance statistics (sent, delivered, opened, clicked, credential attempts)</li>
+        </ul>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t3" class="legal-section reveal">
+        <h3>3. How We Use Your Data</h3>
+        <p>Data collected through the platform is used exclusively for:</p>
+        <ul>
+          <li><strong>Phishing simulation delivery</strong> — To send simulated phishing emails to enrolled employees and track their interactions</li>
+          <li><strong>Risk assessment</strong> — To calculate per-employee and per-department risk scores based on simulation behavior (opened email = low risk, clicked link = medium risk, credential attempt = high risk)</li>
+          <li><strong>Analytics & dashboards</strong> — To display campaign performance, department statistics, risk distribution, and trend data on the admin dashboard</li>
+          <li><strong>Compliance reporting</strong> — To generate campaign summary reports, employee failure reports, and department risk reports in PDF and CSV formats for ISO 27001 readiness and security audits</li>
+          <li><strong>Platform improvement</strong> — To improve the accuracy and effectiveness of our simulation engine and template library</li>
+        </ul>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t4" class="legal-section reveal">
+        <h3>4. Credential Safety — Our Core Promise</h3>
+        <p>
+          This is the most important section of our privacy policy. When employees interact
+          with simulated phishing pages on Armor Bridz:
+        </p>
+        <ul>
+          <li><strong>We NEVER store actual passwords.</strong> When an employee enters credentials on a fake login page, the system records only a boolean flag: <code>credentialAttempted: true</code></li>
+          <li>No password data is captured, logged, transmitted, or stored at any point</li>
+          <li>The username/email field may be recorded solely to identify which employee triggered the event</li>
+          <li>This design is intentional and fundamental to the platform's architecture</li>
+        </ul>
+        <p>
+          This safeguard exists in both the frontend
+          (<a routerLink="/terms" class="inline-link">phishing landing component</a>) and the backend
+          tracking service. There is no mechanism in the system capable of storing password data.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t5" class="legal-section reveal">
+        <h3>5. Data Storage & Security</h3>
+        <p>We implement robust security measures to protect your data:</p>
+        <ul>
+          <li><strong>Database:</strong> All data is stored in Google Firebase Firestore, benefiting from Google's infrastructure-level security, encryption at rest, and automatic backups</li>
+          <li><strong>Authentication:</strong> Admin access is secured through Firebase Authentication with JWT-based token verification on every API request</li>
+          <li><strong>API Security:</strong> The Spring Boot backend uses Spring Security with a custom Firebase filter to validate all authenticated requests</li>
+          <li><strong>Transport Security:</strong> All data in transit is encrypted using TLS/HTTPS</li>
+          <li><strong>Access Control:</strong> Admin endpoints are protected; only the tracking log endpoint is publicly accessible (for phishing landing page interactions)</li>
+        </ul>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t6" class="legal-section reveal">
+        <h3>6. Data Sharing</h3>
+        <p>We treat your data with strict confidentiality:</p>
+        <ul>
+          <li>We <strong>never sell</strong> employee data, tracking data, or any organizational information to third parties</li>
+          <li>We <strong>do not share</strong> data with advertising networks, data brokers, or marketing platforms</li>
+          <li>Firebase Firestore (Google Cloud) is our sole infrastructure provider and processes data under Google's enterprise data processing terms</li>
+          <li>We may disclose data if required by law, regulation, or valid legal process</li>
+          <li>Aggregated, fully anonymized data may be used internally for platform performance analysis</li>
+        </ul>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t7" class="legal-section reveal">
+        <h3>7. Your Rights</h3>
+        <p>As an organization administrator, you have full control over your data:</p>
+        <ul>
+          <li><strong>Access:</strong> View all employee records, campaign data, and tracking events through the admin dashboard</li>
+          <li><strong>Export:</strong> Download campaign summaries, employee reports, and department risk data in CSV and PDF formats</li>
+          <li><strong>Modification:</strong> Edit employee details, update campaign configurations, and modify templates at any time</li>
+          <li><strong>Deletion:</strong> Remove employees, campaigns, and associated tracking data from the platform</li>
+          <li><strong>Portability:</strong> Export all your data in standard formats for migration or compliance purposes</li>
+        </ul>
+        <p>
+          Employees enrolled in simulations may request access to their risk score and
+          simulation history through their organization's administrator.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t8" class="legal-section reveal">
+        <h3>8. Cookies & Tracking Technologies</h3>
+        <p>The Armor Bridz platform uses minimal tracking technologies:</p>
+        <ul>
+          <li><strong>Session cookies:</strong> Required for authentication and maintaining your admin session</li>
+          <li><strong>Firebase Auth tokens:</strong> JWT tokens stored in browser local storage for secure API access</li>
+          <li><strong>Simulation tracking:</strong> Tracking pixels and unique link parameters are used in phishing simulation emails to detect opens and clicks — these are core to the platform's functionality</li>
+        </ul>
+        <p>
+          We do not use third-party advertising cookies, social media tracking pixels,
+          or analytics tools that share data with external parties.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t9" class="legal-section reveal">
+        <h3>9. Updates to This Policy</h3>
+        <p>We may update this Privacy Policy when:</p>
+        <ul>
+          <li>New features are added to the phishing simulation platform (e.g., LMS integration, automated training assignment)</li>
+          <li>Our data handling practices evolve to meet new security standards</li>
+          <li>Legal or regulatory requirements change in the jurisdictions where our platform operates</li>
+        </ul>
+        <p>
+          Significant changes will be communicated through email or in-platform notifications.
+          We encourage administrators to review this policy periodically.
+        </p>
+      </section>
+
+      <div class="legal-footer reveal">
+        <p>
+          This Privacy Policy governs how Armor Bridz handles data within the phishing
+          simulation platform. Our commitment is simple: we collect only what's necessary,
+          we never store passwords, and we never sell your data.
+        </p>
+        <p>
+          For privacy-related questions, data requests, or concerns, please contact our
+          support team. Your trust is the foundation of our platform.
+        </p>
+        <p class="last-updated">Last updated: April 2026</p>
       </div>
 
     </main>
 
   </div>
 </div>
+
+<!-- Google-style Bottom Bar -->
+<footer class="legal-bottom-bar">
+  <div class="bottom-bar-inner">
+    <div class="bottom-bar-links">
+      <a routerLink="/">Armor Bridz</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/about">About</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/privacy" class="current-page">Privacy</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/terms">Terms</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/contact">Contact</a>
+    </div>
+  </div>
+</footer>

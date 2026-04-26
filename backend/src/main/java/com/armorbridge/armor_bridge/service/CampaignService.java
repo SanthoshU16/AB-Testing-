@@ -30,11 +30,29 @@ public class CampaignService {
     }
 
     public String createCampaign(Campaign campaign) throws ExecutionException, InterruptedException {
+        long now = System.currentTimeMillis();
+        campaign.setCreatedAt(now);
+        campaign.setUpdatedAt(now);
         ApiFuture<DocumentReference> future = firestore.collection(COLLECTION).add(campaign);
         return future.get().getId();
     }
 
-    public void updateCampaign(String id, Campaign campaign) {
-        firestore.collection(COLLECTION).document(id).set(campaign, SetOptions.merge());
+    public Campaign getCampaign(String id) throws ExecutionException, InterruptedException {
+        DocumentSnapshot doc = firestore.collection(COLLECTION).document(id).get().get();
+        if (doc.exists()) {
+            Campaign campaign = doc.toObject(Campaign.class);
+            if (campaign != null) campaign.setId(doc.getId());
+            return campaign;
+        }
+        return null;
+    }
+
+    public void updateCampaign(String id, java.util.Map<String, Object> updates) {
+        updates.put("updatedAt", System.currentTimeMillis());
+        firestore.collection(COLLECTION).document(id).set(updates, SetOptions.merge());
+    }
+
+    public void deleteCampaign(String id) {
+        firestore.collection(COLLECTION).document(id).delete();
     }
 }

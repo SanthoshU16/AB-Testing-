@@ -18,6 +18,14 @@ interface StatCardData {
   gradient: string;
 }
 
+interface ActivityItem {
+  type: 'success' | 'danger' | 'info' | 'warning';
+  title: string;
+  meta: string;
+  time: number;
+  badgeText: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -30,6 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentTime = '';
   greeting = '';
   stats: StatCardData[] = [];
+  recentActivities: ActivityItem[] = [];
   private sub?: Subscription;
 
   constructor(
@@ -66,28 +75,69 @@ export class DashboardComponent implements OnInit, OnDestroy {
         {
           title: 'Total Employees',
           value: String(summary.totalEmployees),
-          gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`)
+          gradient: 'linear-gradient(135deg, #5E5CE6 0%, #4F46E5 100%)',
+          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`)
         },
         {
           title: 'Active Campaigns',
           value: String(summary.activeCampaigns),
-          gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`)
+          gradient: 'linear-gradient(135deg, #41A4FF 0%, #007AFF 100%)',
+          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`)
         },
         {
           title: 'Avg Click Rate',
           value: `${summary.avgClickRate}%`,
-          gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`)
+          gradient: 'linear-gradient(135deg, #34C759 0%, #28A745 100%)',
+          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`)
         },
         {
           title: 'High Risk Employees',
           value: String(summary.highRiskCount),
-          gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`)
+          gradient: 'linear-gradient(135deg, #FF3B30 0%, #D32F2F 100%)',
+          iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`)
         }
       ];
+
+      // Map Tracking Events to Recent Activities
+      const activities: ActivityItem[] = evts.map(evt => {
+        let type: ActivityItem['type'] = 'info';
+        let title = '';
+        let badgeText = '';
+
+        switch (evt.eventType) {
+          case 'email_delivered':
+            type = 'success';
+            title = 'Phishing Simulation Delivered';
+            badgeText = 'Delivered';
+            break;
+          case 'email_opened':
+            type = 'info';
+            title = 'Email Opened';
+            badgeText = 'Opened';
+            break;
+          case 'link_clicked':
+            type = 'warning';
+            title = 'Link Clicked Warning';
+            badgeText = 'Clicked';
+            break;
+          case 'credential_attempt':
+            type = 'danger';
+            title = 'Credential Compromise';
+            badgeText = 'Compromised';
+            break;
+        }
+
+        return {
+          type,
+          title,
+          meta: `${evt.employeeEmail || 'Unknown'} · ${evt.campaignName || 'Unknown Campaign'}`,
+          time: evt.timestamp,
+          badgeText
+        };
+      });
+
+      // Sort by time descending and take top 5
+      this.recentActivities = activities.sort((a, b) => b.time - a.time).slice(0, 5);
     });
   }
 

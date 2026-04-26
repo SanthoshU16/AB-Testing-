@@ -18,6 +18,6 @@ export interface PhishingTemplate {
   bodyHtml: string;
   previewText?: string;
   isDefault: boolean;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt?: number;
+  updatedAt?: number;
 }

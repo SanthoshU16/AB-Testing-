@@ -22,19 +22,19 @@
   <!-- Stats Row -->
   <div class="stats-row">
     <div class="mini-stat">
-      <span class="mini-stat-value">{{ campaign.stats.totalSent }}</span>
+      <span class="mini-stat-value">{{ campaign.stats?.totalSent || 0 }}</span>
       <span class="mini-stat-label">Emails Sent</span>
     </div>
     <div class="mini-stat">
-      <span class="mini-stat-value">{{ campaign.stats.opened }}</span>
+      <span class="mini-stat-value">{{ campaign.stats?.opened || 0 }}</span>
       <span class="mini-stat-label">Opened</span>
     </div>
     <div class="mini-stat clicked">
-      <span class="mini-stat-value">{{ campaign.stats.clicked }}</span>
+      <span class="mini-stat-value">{{ campaign.stats?.clicked || 0 }}</span>
       <span class="mini-stat-label">Link Clicks</span>
     </div>
     <div class="mini-stat danger">
-      <span class="mini-stat-value">{{ campaign.stats.credentialAttempts }}</span>
+      <span class="mini-stat-value">{{ campaign.stats?.credentialAttempts || 0 }}</span>
       <span class="mini-stat-label">Cred Attempts</span>
     </div>
     <div class="mini-stat accent">
@@ -49,17 +49,37 @@
       <h3 class="section-label">Campaign Info</h3>
       <div class="info-row"><span class="info-label">Template</span><span class="info-value">{{ campaign.templateName }}</span></div>
       <div class="info-row" *ngIf="campaign.description"><span class="info-label">Description</span><span class="info-value">{{ campaign.description }}</span></div>
-      <div class="info-row">
-        <span class="info-label">Departments</span>
-        <span class="info-value">
-          <span *ngIf="campaign.targetDepartments.length > 0">{{ campaign.targetDepartments.join(', ') }}</span>
-          <span *ngIf="campaign.targetDepartments.length === 0">{{ campaign.targetEmployeeIds.length }} employees</span>
-        </span>
-      </div>
+      <ng-container *ngIf="campaign.targetDepartments?.length; else employeeTarget">
+        <div class="info-row">
+          <span class="info-label">Departments</span>
+          <span class="info-value">{{ campaign.targetDepartments.join(', ') }}</span>
+        </div>
+      </ng-container>
+      <ng-template #employeeTarget>
+        <div class="info-row">
+          <span class="info-label">Employees Target</span>
+          <span class="info-value">
+            <span *ngFor="let empId of (campaign.targetEmployeeIds || []); let last = last">
+              {{ getEmployeeName(empId) }}{{ !last ? ', ' : '' }}
+            </span>
+            <span *ngIf="!campaign.targetEmployeeIds?.length">No targets</span>
+          </span>
+        </div>
+      </ng-template>
       <div class="info-row">
         <span class="info-label">Status</span>
         <span class="status-badge" [ngClass]="'status-' + campaign.status">{{ campaign.status | titlecase }}</span>
       </div>
+      <ng-container *ngIf="campaign.status === 'scheduled'">
+        <div class="info-row">
+          <span class="info-label">Scheduled Date</span>
+          <span class="info-value">{{ campaign.scheduledAt | date:'mediumDate' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Scheduled Time</span>
+          <span class="info-value">{{ campaign.scheduledAt | date:'shortTime' }}</span>
+        </div>
+      </ng-container>
 
       <!-- Tracking URL -->
       <div class="tracking-url-section">
@@ -83,7 +103,7 @@
           <div class="event-content">
             <div class="event-type">{{ getEventLabel(ev.eventType) }}</div>
             <div class="event-email">{{ ev.employeeEmail }}</div>
-            <div class="event-time">{{ ev.timestamp.toDate() | date: 'MMM d, y · h:mm a' }}</div>
+            <div class="event-time">{{ ev.timestamp | date: 'MMM d, y · h:mm a' }}</div>
           </div>
         </div>
       </div>

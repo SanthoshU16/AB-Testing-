@@ -14,6 +14,8 @@ public class UserProfile {
     private String firstName;
     private String lastName;
     private String role;
-    private Object createdAt;
-    private Object lastLogin;
+    private Long createdAt;
+    private Long updatedAt;
+    private Long lastLogin;
+    private String status; // active, suspended
 }

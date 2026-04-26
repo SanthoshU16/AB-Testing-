@@ -19,10 +19,10 @@ export interface Campaign {
   targetDepartments: string[];
   targetEmployeeIds: string[];
   status: CampaignStatus;
-  scheduledAt?: Timestamp | null;
-  sentAt?: Timestamp | null;
-  completedAt?: Timestamp | null;
+  scheduledAt?: number | null;
+  sentAt?: number | null;
+  completedAt?: number | null;
   createdBy: string;
-  createdAt: Timestamp;
-  stats: CampaignStats;
+  createdAt: number;
+  stats?: CampaignStats | null;
 }

@@ -15,7 +15,7 @@ export interface TrackingEvent {
   employeeName?: string;
   department?: string;
   eventType: TrackingEventType;
-  timestamp: Timestamp;
+  timestamp: number;
   ipAddress?: string;
   userAgent?: string;
   /** Never true with password stored — only "attempt detected" flag */

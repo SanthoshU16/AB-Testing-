@@ -1,11 +1,11 @@
 
 <router-outlet></router-outlet>
-<app-footer></app-footer>
+<app-footer *ngIf="showFooter"></app-footer>
 
 
 
 <!-- Global floating scroll buttons -->
-<div class="floating-actions" *ngIf="isHome">
+<div class="floating-actions" *ngIf="showFloatingActions">
   <div class="floating-icons">
     <button class="float-icon-btn up-btn" [class.hidden]="!showUp" (click)="scrollToTop()" aria-label="Scroll to top">
       <div class="float-icon">

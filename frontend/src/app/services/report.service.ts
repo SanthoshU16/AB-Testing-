@@ -9,6 +9,17 @@ export class ReportService {
 
   // ─── CSV Export ────────────────────────────────────────────────────────
 
+  exportExecutiveSummaryCSV(summary: { campaigns: number, employees: number, events: number, credAttempts: number }): void {
+    const headers = ['Metric', 'Value'];
+    const rows = [
+      ['Total Campaigns', summary.campaigns],
+      ['Total Employees', summary.employees],
+      ['Tracking Events', summary.events],
+      ['Credential Attempts', summary.credAttempts]
+    ];
+    this.downloadCSV('executive_summary', headers, rows);
+  }
+
   exportCampaignSummaryCSV(campaigns: Campaign[]): void {
     const headers = ['Campaign Name', 'Status', 'Template', 'Departments', 'Total Sent', 'Delivered', 'Opened', 'Clicked', 'Cred Attempts', 'Click Rate'];
     const rows = campaigns.map(c => [
@@ -71,7 +82,37 @@ export class ReportService {
 
   // ─── PDF Export ────────────────────────────────────────────────────────
 
-  async exportCampaignSummaryPDF(campaigns: Campaign[]): Promise<void> {
+  async exportExecutiveSummaryPDF(summary: { campaigns: number, employees: number, events: number, credAttempts: number }, preview = false): Promise<string | void> {
+    const { jsPDF } = await import('jspdf');
+    const autoTable = (await import('jspdf-autotable')).default;
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text('Executive Summary Report', 14, 20);
+    doc.setFontSize(10);
+    doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, 28);
+
+    autoTable(doc, {
+      startY: 35,
+      head: [['Metric', 'Value']],
+      body: [
+        ['Total Campaigns', summary.campaigns],
+        ['Total Employees', summary.employees],
+        ['Tracking Events', summary.events],
+        ['Credential Attempts', summary.credAttempts]
+      ],
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [10, 37, 64] }
+    });
+
+    if (preview) {
+      return doc.output('bloburl').toString();
+    } else {
+      doc.save(`executive_summary_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
+  }
+
+  async exportCampaignSummaryPDF(campaigns: Campaign[], preview = false): Promise<string | void> {
     const { jsPDF } = await import('jspdf');
     const autoTable = (await import('jspdf-autotable')).default;
     const doc = new jsPDF();
@@ -95,10 +136,14 @@ export class ReportService {
       headStyles: { fillColor: [10, 132, 255] }
     });
 
-    doc.save(`campaign_summary_${new Date().toISOString().slice(0, 10)}.pdf`);
+    if (preview) {
+      return doc.output('bloburl').toString();
+    } else {
+      doc.save(`campaign_summary_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
   }
 
-  async exportEmployeeFailurePDF(employees: Employee[], events: TrackingEvent[]): Promise<void> {
+  async exportEmployeeFailurePDF(employees: Employee[], events: TrackingEvent[], preview = false): Promise<string | void> {
     const { jsPDF } = await import('jspdf');
     const autoTable = (await import('jspdf-autotable')).default;
     const doc = new jsPDF();
@@ -128,10 +173,14 @@ export class ReportService {
       headStyles: { fillColor: [255, 59, 48] }
     });
 
-    doc.save(`employee_failure_${new Date().toISOString().slice(0, 10)}.pdf`);
+    if (preview) {
+      return doc.output('bloburl').toString();
+    } else {
+      doc.save(`employee_failure_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
   }
 
-  async exportDepartmentRiskPDF(deptStats: DepartmentStat[]): Promise<void> {
+  async exportDepartmentRiskPDF(deptStats: DepartmentStat[], preview = false): Promise<string | void> {
     const { jsPDF } = await import('jspdf');
     const autoTable = (await import('jspdf-autotable')).default;
     const doc = new jsPDF();
@@ -152,6 +201,10 @@ export class ReportService {
       headStyles: { fillColor: [52, 199, 89] }
     });
 
-    doc.save(`department_risk_${new Date().toISOString().slice(0, 10)}.pdf`);
+    if (preview) {
+      return doc.output('bloburl').toString();
+    } else {
+      doc.save(`department_risk_${new Date().toISOString().slice(0, 10)}.pdf`);
+    }
   }
 }

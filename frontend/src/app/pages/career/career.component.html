@@ -1,85 +1,99 @@
-<!-- HERO -->
-<section class="hero">
-  <h1>Careers at Armor Bridz</h1>
-  <p>Build secure futures. Grow with us 🚀</p>
-</section>
-
-<!-- WHY JOIN -->
-<section>
-  <h2>Why Join Us</h2>
-
-  <div class="features">
-    <div class="feature">🚀 Innovation First</div>
-    <div class="feature">🌍 Global Exposure</div>
-    <div class="feature">📈 Career Growth</div>
-    <div class="feature">🧠 Learning Culture</div>
-    <div class="feature">⚡ Fast-Paced Environment</div>
+<app-navbar activePage="career"></app-navbar>
+<!-- ========== HERO ========== -->
+<section class="page-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content" appHero3d>
+      <p class="section-overline reveal">Careers</p>
+      <h1 class="page-headline reveal" style="transition-delay:0.1s">
+        Build the future of<br>
+        <span class="headline-accent">cybersecurity.</span>
+      </h1>
+      <p class="page-description reveal" style="transition-delay:0.2s">
+        Join a team of passionate security experts building the tools that protect organizations worldwide.
+      </p>
+    </div>
   </div>
 </section>
 
-<!-- COMPANY CULTURE -->
-<section class="about-mission">
-  <div class="box">
-    <h3>Our Mission</h3>
-    <p>
-      Empowering organizations with proactive cybersecurity solutions.
-    </p>
-  </div>
 
-  <div class="box">
-    <h3>Our Culture</h3>
-    <p>
-      We believe in innovation, ownership, and continuous learning.
-    </p>
-  </div>
-</section>
-
-<!-- OPEN POSITIONS -->
-<section>
-  <h2>Open Positions</h2>
-
-  <div class="jobs">
-
-    <div class="job-card">
-      <div>
-        <h4>Frontend Developer</h4>
-        <p>Angular • UI/UX • 2+ Years</p>
-      </div>
-      <button>Apply →</button>
+<!-- ========== PERKS ========== -->
+<section class="perks-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-overline">Why Armor Bridz</p>
+      <h2 class="section-headline">Why you'll <span class="gradient-text">love it here.</span></h2>
     </div>
-
-    <div class="job-card">
-      <div>
-        <h4>Backend Developer</h4>
-        <p>Node.js • API • 3+ Years</p>
+    <div class="perks-grid">
+      <div class="perk-card reveal" *ngFor="let p of perks; let i = index" [style.transition-delay]="(i * 0.08 + 0.1) + 's'">
+        <div class="perk-icon">
+          <i class="bi" [ngClass]="p.icon"></i>
+        </div>
+        <h3 class="perk-title">{{ p.title }}</h3>
+        <p class="perk-desc">{{ p.desc }}</p>
       </div>
-      <button>Apply →</button>
     </div>
-
-    <div class="job-card">
-      <div>
-        <h4>Cybersecurity Analyst</h4>
-        <p>Monitoring • Threat Analysis • 2+ Years</p>
-      </div>
-      <button>Apply →</button>
-    </div>
-
-    <div class="job-card">
-      <div>
-        <h4>DevOps Engineer</h4>
-        <p>AWS • Docker • CI/CD</p>
-      </div>
-      <button>Apply →</button>
-    </div>
-
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta">
-  <h2>Don’t see your role?</h2>
-  <p>We’re always looking for talented people.</p>
 
-  <button class="primary">Send Resume →</button>
-  <button class="secondary">Contact HR</button>
+<!-- ========== OPEN POSITIONS ========== -->
+<section class="jobs-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-overline">Open Positions</p>
+      <h2 class="section-headline">Find your <span class="gradient-text">role.</span></h2>
+    </div>
+    <div class="jobs-list">
+      <div class="job-card reveal" *ngFor="let j of jobs; let i = index" [style.transition-delay]="(i * 0.06 + 0.1) + 's'">
+        <div class="job-info">
+          <h3 class="job-title">{{ j.title }}</h3>
+          <div class="job-meta">
+            <span class="job-team">{{ j.team }}</span>
+            <span class="meta-dot">·</span>
+            <span>{{ j.location }}</span>
+            <span class="meta-dot">·</span>
+            <span>{{ j.type }}</span>
+          </div>
+          <div class="job-tags">
+            <span class="job-tag" *ngFor="let tag of j.tags">{{ tag }}</span>
+          </div>
+        </div>
+        <button class="btn-apply liquid-btn">
+          Apply
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== CTA ========== -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card reveal">
+      <h2 class="cta-headline">Don't see your role?</h2>
+      <p class="cta-desc">We're always looking for talented people. Send us your resume and we'll keep you in mind.</p>
+      <div class="cta-actions">
+        <a href="mailto:careers@armorbridz.com" class="btn-primary liquid-btn">
+          Send Resume
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a routerLink="/contact" class="btn-secondary liquid-btn">
+          Contact HR
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
 </section>

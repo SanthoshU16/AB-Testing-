@@ -1,26 +1,97 @@
-<aside class="admin-sidebar">
+<aside class="admin-sidebar" [class.collapsed]="collapsed">
+  <!-- Sidebar Header with Collapse Toggle -->
   <div class="sidebar-header">
-    <img src="/ABLM.png" alt="Armor Bridz Logo" class="sidebar-logo">
-    <span class="sidebar-brand">Armor Bridz</span>
+    <img src="/ABLM.png" alt="Armor Bridge Logo" class="sidebar-brand-img" *ngIf="!collapsed">
+    <button class="collapse-btn" (click)="toggleSidebar()"
+      [attr.aria-label]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline *ngIf="!collapsed" points="15 18 9 12 15 6" />
+        <polyline *ngIf="collapsed" points="9 18 15 12 9 6" />
+      </svg>
+    </button>
   </div>
-  
+
+  <!-- Navigation -->
   <nav class="sidebar-nav">
     <ul class="nav-list">
       <li class="nav-item" *ngFor="let item of navItems">
-        <a [routerLink]="item.route"
-           routerLinkActive="active"
-           [routerLinkActiveOptions]="{ exact: item.exact }"
-           class="nav-link">
-          <i class="bi {{ item.icon }} nav-icon"></i>
-          <span class="nav-label">{{ item.label }}</span>
+        <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact }"
+          class="nav-link" [attr.title]="collapsed ? item.label : null">
+          <div class="nav-icon-wrap">
+            <i class="bi {{ item.icon }} nav-icon"></i>
+          </div>
+          <span class="nav-label" *ngIf="!collapsed">{{ item.label }}</span>
+          <span class="nav-active-indicator" *ngIf="!collapsed"></span>
         </a>
       </li>
     </ul>
   </nav>
 
+  <!-- User Profile -->
   <div class="sidebar-footer">
-    <div class="version-info">
-      <span>Version 1.0.0</span>
+    <div class="user-card-wrapper">
+      <div class="user-card" *ngIf="userProfile" (click)="toggleUserMenu()">
+        <div class="user-avatar">
+          {{ userProfile.firstName.charAt(0) || 'A' }}{{ userProfile.lastName.charAt(0) || 'B' }}
+        </div>
+        <div class="user-meta" *ngIf="!collapsed">
+          <span class="user-name">{{ userProfile.firstName }} {{ userProfile.lastName }}</span>
+          <span class="user-role">{{ userProfile.role | titlecase }}</span>
+        </div>
+        <svg *ngIf="!collapsed" class="user-chevron" [class.open]="userMenuOpen" width="16" height="16"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </div>
+
+      <!-- User Menu Popup -->
+      <div class="user-menu-popup" [class.open]="userMenuOpen">
+        <!-- User Header -->
+        <div class="popup-user-header">
+          <div class="popup-avatar">
+            {{ userProfile?.firstName?.charAt(0) || 'A' }}{{ userProfile?.lastName?.charAt(0) || 'B' }}
+          </div>
+          <div class="popup-user-info">
+            <span class="popup-user-name">{{ userProfile?.firstName }} {{ userProfile?.lastName }}</span>
+            <span class="popup-user-plan">{{ userProfile?.role | titlecase }}</span>
+          </div>
+        </div>
+
+        <div class="popup-divider"></div>
+
+        <!-- Menu Items -->
+        <button class="popup-menu-item" (click)="navigateAndClose('/admin/profile')">
+          <i class="bi bi-person-circle"></i>
+          <span>Profile</span>
+        </button>
+        <button class="popup-menu-item" (click)="navigateAndClose('/admin/personalization')">
+          <i class="bi bi-sliders"></i>
+          <span>Personalization</span>
+        </button>
+        <button class="popup-menu-item" (click)="navigateAndClose('/admin/settings')">
+          <i class="bi bi-gear"></i>
+          <span>Settings</span>
+        </button>
+
+        <div class="popup-divider"></div>
+
+        <button class="popup-menu-item" (click)="navigateAndClose('/admin/upgrade-plan')">
+          <i class="bi bi-stars"></i>
+          <span>Upgrade Plan</span>
+        </button>
+        <div class="popup-divider"></div>
+
+        <button class="popup-menu-item popup-logout" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Log out</span>
+        </button>
+      </div>
     </div>
+    <button class="back-btn" (click)="goBack()" aria-label="Go Back">
+      <i class="bi bi-arrow-left"></i>
+      <span *ngIf="!collapsed">Back</span>
+    </button>
   </div>
 </aside>

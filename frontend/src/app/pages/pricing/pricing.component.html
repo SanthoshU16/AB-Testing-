@@ -1,0 +1,319 @@
+<!-- =============================================
+     ARMOR BRIDZ – PRICING PAGE
+     Apple / Google Inspired Design
+     ============================================= -->
+
+<app-navbar activePage="pricing"></app-navbar>
+
+
+<!-- ========== HERO ========== -->
+<section class="pricing-hero" id="pricing-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+  </div>
+
+  <div class="container">
+    <div class="pricing-hero-content" appHero3d>
+      <p class="section-overline reveal" style="text-align:center;">Pricing</p>
+      <h1 class="pricing-hero-headline reveal" style="transition-delay:0.1s">
+        Simple, transparent<br>
+        <span class="hero-headline-accent">pricing that scales.</span>
+      </h1>
+      <p class="pricing-hero-description reveal" style="transition-delay:0.2s">
+        Start free and grow with confidence. No hidden fees, no surprise bills —
+        just the security training your team deserves.
+      </p>
+
+      <!-- Billing Toggle -->
+      <div class="billing-toggle reveal" style="transition-delay:0.3s">
+        <span class="toggle-label" [class.active]="!isAnnual">Monthly</span>
+        <button class="toggle-switch" [class.annual]="isAnnual" (click)="toggleBilling()" id="billing-toggle-btn"
+          aria-label="Toggle billing period">
+          <span class="toggle-knob"></span>
+        </button>
+        <span class="toggle-label" [class.active]="isAnnual">
+          Annual
+          <span class="save-badge">Save 25%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== PRICING CARDS ========== -->
+<section class="plans-section" id="plans">
+  <div class="container">
+    <div class="plans-grid">
+
+      <div *ngFor="let plan of plans; let i = index" class="plan-card reveal"
+        [class.plan-highlighted]="plan.highlighted" [style.transition-delay]="(i * 0.1) + 's'"
+        [id]="'plan-' + plan.name.toLowerCase()">
+
+        <!-- Popular badge -->
+        <div class="plan-badge" *ngIf="plan.badge">{{ plan.badge }}</div>
+
+        <!-- Glow ring for highlighted card -->
+        <div class="plan-glow" *ngIf="plan.highlighted"></div>
+
+        <div class="plan-header">
+          <h2 class="plan-name">{{ plan.name }}</h2>
+          <p class="plan-description">{{ plan.description }}</p>
+        </div>
+
+        <div class="plan-price-wrap">
+          <div class="plan-price">
+            <span class="plan-currency" *ngIf="plan.monthlyPrice > 0">$</span>
+            <span class="plan-amount">
+              {{ plan.monthlyPrice === 0
+              ? (plan.name === 'Starter' ? 'Free' : 'Custom')
+              : (isAnnual ? plan.annualPrice : plan.monthlyPrice) }}
+            </span>
+            <span class="plan-period" *ngIf="plan.monthlyPrice > 0">/mo</span>
+          </div>
+          <p class="plan-billing-note" *ngIf="plan.monthlyPrice > 0 && isAnnual">
+            Billed annually · <strong>Save {{ getSavings(plan) }}%</strong>
+          </p>
+          <p class="plan-billing-note" *ngIf="plan.monthlyPrice > 0 && !isAnnual">
+            Billed monthly
+          </p>
+          <p class="plan-billing-note" *ngIf="plan.name === 'Enterprise'">
+            Talk to us about volume pricing
+          </p>
+        </div>
+
+        <a [routerLink]="plan.ctaRoute" class="liquid-btn plan-cta" [class.plan-cta-primary]="plan.highlighted"
+          [class.plan-cta-dark]="!plan.highlighted && plan.name === 'Enterprise'"
+          [id]="'plan-cta-' + plan.name.toLowerCase()">
+          {{ plan.cta }}
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </a>
+
+        <div class="plan-divider"></div>
+
+        <ul class="plan-features">
+          <li *ngFor="let f of plan.features" class="plan-feature-item">
+            <span class="feature-check" [style.color]="plan.highlighted ? '#fff' : plan.color">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span>{{ f }}</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Trust note -->
+    <div class="trust-row reveal" style="transition-delay:0.3s">
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M8 1L10.163 5.382L15 6.18L11.5 9.618L12.326 14.764L8 12.382L3.674 14.764L4.5 9.618L1 6.18L5.837 5.382L8 1Z"
+            fill="#EAB308" />
+        </svg>
+        No credit card required
+      </div>
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5L13 3.5V8C13 11.5 10.5 13.5 8 14.5C5.5 13.5 3 11.5 3 8V3.5L8 1.5Z" fill="none" stroke="#2563EB"
+            stroke-width="1.5" />
+          <path d="M5.5 8L7 9.5L10.5 6" stroke="#2563EB" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Cancel anytime
+      </div>
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6.5" stroke="#16A34A" stroke-width="1.5" />
+          <path d="M5.5 8L7 9.5L10.5 6" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        14-day free trial on Pro
+      </div>
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="2" y="5" width="12" height="9" rx="2" stroke="#0A2540" stroke-width="1.5" />
+          <path d="M5 5V4C5 2.343 6.343 1 8 1C9.657 1 11 2.343 11 4V5" stroke="#0A2540" stroke-width="1.5"
+            stroke-linecap="round" />
+        </svg>
+        Enterprise-grade security
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== FEATURE COMPARISON ========== -->
+<section class="comparison-section" id="comparison">
+  <div class="container">
+    <div class="comparison-header">
+      <p class="section-overline reveal">Compare Plans</p>
+      <h2 class="section-headline reveal" style="transition-delay:0.1s">
+        Everything you need,<br>
+        <span class="gradient-text">nothing you don't.</span>
+      </h2>
+    </div>
+
+    <div class="comparison-table reveal" style="transition-delay:0.2s">
+      <!-- Header row -->
+      <div class="comp-row comp-header-row">
+        <div class="comp-feature-col">Feature</div>
+        <div class="comp-plan-col">Starter</div>
+        <div class="comp-plan-col comp-plan-highlighted">
+          <span>Professional</span>
+        </div>
+        <div class="comp-plan-col">Enterprise</div>
+      </div>
+
+      <!-- Data rows -->
+      <div *ngFor="let row of featureComparison; let i = index" class="comp-row" [class.comp-row-alt]="i % 2 === 1">
+        <div class="comp-feature-col">{{ row.feature }}</div>
+
+        <!-- Starter -->
+        <div class="comp-plan-col">
+          <ng-container *ngIf="row.starter === true">
+            <span class="comp-check comp-check-yes">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.starter === false">
+            <span class="comp-check comp-check-no">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.starter !== true && row.starter !== false">
+            <span class="comp-text">{{ row.starter }}</span>
+          </ng-container>
+        </div>
+
+        <!-- Pro (highlighted) -->
+        <div class="comp-plan-col comp-plan-highlighted">
+          <ng-container *ngIf="row.pro === true">
+            <span class="comp-check comp-check-yes comp-check-white">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.pro === false">
+            <span class="comp-check comp-check-no comp-check-white-no">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.pro !== true && row.pro !== false">
+            <span class="comp-text comp-text-white">{{ row.pro }}</span>
+          </ng-container>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="comp-plan-col">
+          <ng-container *ngIf="row.enterprise === true">
+            <span class="comp-check comp-check-yes">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.enterprise === false">
+            <span class="comp-check comp-check-no">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.enterprise !== true && row.enterprise !== false">
+            <span class="comp-text">{{ row.enterprise }}</span>
+          </ng-container>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== FAQ ========== -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <p class="section-overline reveal">FAQ</p>
+      <h2 class="section-headline reveal" style="transition-delay:0.1s">
+        Questions? We've got<br>
+        <span class="gradient-text">answers.</span>
+      </h2>
+    </div>
+
+    <div class="faq-list">
+      <div *ngFor="let item of faqs; let i = index" class="faq-item reveal" [class.faq-open]="item.open"
+        [style.transition-delay]="(i * 0.07) + 's'" [id]="'faq-' + i">
+        <button class="faq-question" (click)="toggleFaq(i)" [id]="'faq-btn-' + i">
+          <span>{{ item.question }}</span>
+          <span class="faq-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <p>{{ item.answer }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== CTA ========== -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-content reveal">
+      <h2 class="cta-headline">
+        Ready to defend your<br>
+        organization?
+      </h2>
+      <p class="cta-description">
+        Start with a free 14-day trial. No credit card required.
+      </p>
+      <div class="cta-actions">
+        <!-- Guest CTA -->
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/sign-up" class="btn-primary btn-lg liquid-btn" id="cta-trial-btn">
+            Start Free Trial
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+          <a routerLink="/contact" class="btn-secondary btn-lg liquid-btn" id="cta-sales-btn">Contact Sales</a>
+        </ng-container>
+        <!-- Authenticated CTA -->
+        <ng-container *ngIf="isLoggedIn">
+          <a routerLink="/intro" class="btn-primary btn-lg liquid-btn" id="cta-home-btn">
+            Explore more
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+          <a routerLink="/contact" class="btn-secondary btn-lg liquid-btn" id="cta-sales-btn">Contact Sales</a>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</section>

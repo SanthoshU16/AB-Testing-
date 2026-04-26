@@ -130,7 +130,7 @@
       </div>
       <div class="form-group" *ngIf="scheduleType === 'later'" style="margin-top: 20px;">
         <label>Launch Date & Time *</label>
-        <input type="datetime-local" class="apple-input" [(ngModel)]="scheduledAt">
+        <input type="datetime-local" class="apple-input" name="scheduledAt" [(ngModel)]="scheduledAt" (change)="scheduledAt = $any($event.target).value" (input)="scheduledAt = $any($event.target).value">
       </div>
     </div>
   </div>
@@ -164,7 +164,7 @@
         </div>
         <div class="review-item">
           <span class="review-label">Launch</span>
-          <span class="review-value">{{ scheduleType === 'now' ? 'Immediately' : scheduledAt }}</span>
+          <span class="review-value">{{ scheduleType === 'now' ? 'Immediately' : (scheduledAt | date: 'MMM d, y, h:mm a') }}</span>
         </div>
       </div>
     </div>

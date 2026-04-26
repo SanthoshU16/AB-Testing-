@@ -1,7 +1,12 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
+import { EmployeeService } from '../../services/employee.service';
+import { CampaignService } from '../../services/campaign.service';
+import { TrackingService } from '../../services/tracking.service';
+import { AnalyticsService } from '../../services/analytics.service';
 
 @Component({
   selector: 'app-intro',
@@ -10,21 +15,75 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './intro.component.html',
   styleUrls: ['./intro.component.css']
 })
-export class IntroComponent implements OnInit, AfterViewInit {
+export class IntroComponent implements OnInit, AfterViewInit, OnDestroy {
   userName = 'User';
   userEmail = '';
   userInitials = 'U';
+  userRole = 'viewer';
+  greeting = 'Hello';
   isSidebarHidden = typeof window !== 'undefined' ? window.innerWidth <= 1024 : false;
+  
+  // Real stats
+  activeCampaignsCount = 0;
+  phishPronePercentage = '0%';
+  securityScore = '0%';
+  totalEmployees = 0;
+  failedTestCount = 0;
+  
+  private sub?: Subscription;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router, 
+    private authService: AuthService,
+    private employeeService: EmployeeService,
+    private campaignService: CampaignService,
+    private trackingService: TrackingService,
+    private analyticsService: AnalyticsService
+  ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const profile = this.authService.currentProfile;
     if (profile) {
       this.userName = profile.firstName || 'User';
       this.userEmail = profile.email || '';
       this.userInitials = profile.firstName ? profile.firstName.charAt(0).toUpperCase() : 'U';
+      this.userRole = profile.role || 'viewer';
     }
+    this.updateGreeting();
+
+    // Load live data
+    await Promise.all([
+      this.employeeService.loadEmployees(),
+      this.campaignService.loadCampaigns(),
+      this.trackingService.loadAllEvents()
+    ]);
+
+    this.sub = combineLatest([
+      this.employeeService.employees$,
+      this.campaignService.campaigns$,
+      this.trackingService.events$
+    ]).subscribe(async ([emps, camps, evts]) => {
+      this.totalEmployees = emps.length;
+      const summary = await this.analyticsService.getPlatformSummary(emps, camps);
+      this.activeCampaignsCount = summary.activeCampaigns;
+      this.phishPronePercentage = `${summary.avgClickRate}%`;
+      // High risk count used for failed tests indicator
+      this.failedTestCount = summary.highRiskCount;
+      // Security Score can be inversely proportional to risk (just an example calculation)
+      const avgRisk = emps.reduce((acc, emp) => acc + (emp.riskScore || 0), 0) / (emps.length || 1);
+      this.securityScore = `${Math.round(100 - avgRisk)}%`;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
+  private updateGreeting(): void {
+    const hour = new Date().getHours();
+    if (hour < 12) this.greeting = 'Good morning';
+    else if (hour < 17) this.greeting = 'Good afternoon';
+    else this.greeting = 'Good evening';
   }
 
   ngAfterViewInit(): void {
@@ -39,8 +98,8 @@ export class IntroComponent implements OnInit, AfterViewInit {
     this.isSidebarHidden = !this.isSidebarHidden;
   }
 
-  goIn(): void {
-    this.router.navigate(['/admin/dashboard']);
+  goIn(path: string = '/admin/dashboard'): void {
+    this.router.navigate([path]);
   }
 
   private setupLiquidButtons(): void {

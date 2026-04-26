@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/tracking/public/**").permitAll()
                 .requestMatchers("/api/public/**").permitAll()
                 .requestMatchers("/track/**").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new FirebaseFilter(), UsernamePasswordAuthenticationFilter.class);

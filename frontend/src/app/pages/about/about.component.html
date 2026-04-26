@@ -1,98 +1,170 @@
-<!-- HERO -->
-<section class="hero">
-  <h1>About Armor Bridz</h1>
-  <p>Building the future of cybersecurity awareness</p>
-</section>
-
-<!-- WHO WE ARE -->
-<section>
-  <div class="about-box">
-    <h2>Who We Are</h2>
-    <p>
-      Armor Bridz helps organizations defend against phishing attacks using
-      real-world simulations and employee training.
-    </p>
+<app-navbar activePage="about"></app-navbar>
+<!-- ========== HERO ========== -->
+<section class="page-hero" id="about-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
   </div>
-</section>
-
-<!-- FEATURES -->
-<section>
-  <h2>Why Choose Us</h2>
-  <div class="features">
-    <div class="feature">Realistic Simulations</div>
-    <div class="feature">Actionable Insights</div>
-    <div class="feature">Enterprise Security</div>
-    <div class="feature">Progress Tracking</div>
-  </div>
-</section>
-
-<!-- MISSION / VISION -->
-<section class="about-mission">
-  <div class="box">
-    <h3>Our Mission</h3>
-    <p>
-      Empowering organizations with proactive cybersecurity solutions.
-    </p>
-  </div>
-
-  <div class="box">
-    <h3>Our Vision</h3>
-    <p>
-      Transforming how people think about digital security globally.
-    </p>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section>
-  <h2>How It Works</h2>
-
-  <div class="steps">
-    <div class="step">
-      <h4>Simulate</h4>
-      <p>Real-world phishing simulations</p>
-    </div>
-
-    <div class="step">
-      <h4>Analyze</h4>
-      <p>Identify vulnerabilities</p>
-    </div>
-
-    <div class="step">
-      <h4>Train</h4>
-      <p>Targeted awareness training</p>
-    </div>
-
-    <div class="step">
-      <h4>Improve</h4>
-      <p>Continuous security growth</p>
+  <div class="container">
+    <div class="hero-content" appHero3d>
+      <p class="section-overline reveal">About Us</p>
+      <h1 class="page-headline reveal" style="transition-delay:0.1s">
+        Defending the human layer<br>
+        <span class="headline-accent">of cybersecurity.</span>
+      </h1>
+      <p class="page-description reveal" style="transition-delay:0.2s">
+        Armor Bridz was founded on a simple belief: the best defense against phishing
+        isn't better filters — it's better-prepared people.
+      </p>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<section class="stats">
-  <div>
-    <h3>500+</h3>
-    <p>Organizations</p>
-  </div>
 
-  <div>
-    <h3>10M+</h3>
-    <p>Simulations</p>
-  </div>
-
-  <div>
-    <h3>99%</h3>
-    <p>Success Rate</p>
+<!-- ========== MISSION / VISION ========== -->
+<section class="mission-section">
+  <div class="container">
+    <div class="mission-grid">
+      <div class="mission-card reveal" style="transition-delay:0.1s">
+        <div class="mission-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </div>
+        <h3 class="mission-title">Our Mission</h3>
+        <p class="mission-text">
+          Empower every organization to build a resilient, security-aware workforce
+          through realistic phishing simulations and actionable intelligence.
+        </p>
+      </div>
+      <div class="mission-card reveal" style="transition-delay:0.2s">
+        <div class="mission-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </div>
+        <h3 class="mission-title">Our Vision</h3>
+        <p class="mission-text">
+          A world where every employee is the first line of defense — making phishing
+          attacks extinct through awareness, not just technology.
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta">
-  <h2>Ready to protect your organization?</h2>
-  <p>Start your journey with Armor Bridz today.</p>
 
-  <button class="primary">Start Free Trial →</button>
-  <button class="secondary">Watch Demo</button>
+<!-- ========== VALUES ========== -->
+<section class="values-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-overline">What Drives Us</p>
+      <h2 class="section-headline">Our core <span class="gradient-text">values.</span></h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal" *ngFor="let v of values; let i = index"
+        [style.transition-delay]="(i * 0.1 + 0.1) + 's'">
+        <div class="value-icon-wrap">
+          <i class="bi" [ngClass]="v.icon"></i>
+        </div>
+        <h3 class="value-title">{{ v.title }}</h3>
+        <p class="value-desc">{{ v.desc }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== STATS ========== -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-glass-pill reveal" #statsPill>
+      <div class="stats-pill-shine"></div>
+      <div class="stats-pill-inner">
+        <div class="stat-item" *ngFor="let s of stats; let i = index; let last = last" #statCard>
+          <span class="stat-value">{{ s.displayValue }}</span>
+          <span class="stat-label">{{ s.label }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== TEAM ========== -->
+<section class="team-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-overline">Leadership</p>
+      <h2 class="section-headline">Meet our <span class="gradient-text">team.</span></h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal" *ngFor="let m of team; let i = index"
+        [style.transition-delay]="(i * 0.1 + 0.1) + 's'">
+        <div class="team-avatar">
+          <span class="avatar-initials">{{ m.name.split(' ')[0][0] }}{{ m.name.split(' ')[1][0] }}</span>
+        </div>
+        <h3 class="team-name">{{ m.name }}</h3>
+        <p class="team-role">{{ m.role }}</p>
+        <p class="team-bio">{{ m.bio }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== CTA ========== -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content reveal">
+      <h2 class="cta-headline">
+        Ready to <span class="gradient-text">protect your team?</span>
+      </h2>
+      <p class="cta-description">
+        Start with a free 14-day trial. No credit card required.
+      </p>
+      <div class="cta-actions">
+        <!-- Guest CTA -->
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/sign-up" class="btn-primary liquid-btn">
+            Start Free Trial
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+          <a routerLink="/contact" class="btn-secondary liquid-btn">
+            Contact Sales
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+        </ng-container>
+        <!-- Authenticated CTA -->
+        <ng-container *ngIf="isLoggedIn">
+          <a routerLink="/intro" class="btn-primary liquid-btn">
+            Explore more
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+          <a routerLink="/contact" class="btn-secondary liquid-btn">
+            Contact Sales
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </section>

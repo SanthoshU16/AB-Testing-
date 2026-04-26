@@ -24,17 +24,18 @@ if (!fs.existsSync(dir)) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
-// Only create files if they don't already exist.
-// This prevents overriding the developer's local environment files containing real keys.
-if (!fs.existsSync(path.join(dir, file))) {
-  console.log('Generating missing environment.ts for CI/CD build...');
+// In CI/CD environments like Vercel, we want to OVERWRITE the files with the injected variables.
+const isCI = process.env.VERCEL === '1' || process.env.CI === 'true';
+
+if (isCI || !fs.existsSync(path.join(dir, file))) {
+  console.log('Generating environment.ts for CI/CD build...');
   fs.writeFileSync(path.join(dir, file), content);
 } else {
   console.log('environment.ts already exists. Skipping generation.');
 }
 
-if (!fs.existsSync(path.join(dir, prodFile))) {
-  console.log('Generating missing environment.prod.ts for CI/CD build...');
+if (isCI || !fs.existsSync(path.join(dir, prodFile))) {
+  console.log('Generating environment.prod.ts for CI/CD build...');
   fs.writeFileSync(path.join(dir, prodFile), content);
 } else {
   console.log('environment.prod.ts already exists. Skipping generation.');

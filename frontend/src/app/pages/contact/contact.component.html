@@ -1,67 +1,110 @@
-<!-- HERO -->
-<section class="hero">
-  <h1>Contact Us</h1>
-  <p>We’d love to hear from you</p>
+<app-navbar activePage="contact"></app-navbar>
+<!-- ========== HERO ========== -->
+<section class="page-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content" appHero3d>
+      <p class="section-overline reveal">Contact</p>
+      <h1 class="page-headline reveal" style="transition-delay:0.1s">
+        Let's start a<br>
+        <span class="headline-accent">conversation.</span>
+      </h1>
+      <p class="page-description reveal" style="transition-delay:0.2s">
+        Have a question about our platform? Want a demo? We'd love to hear from you.
+      </p>
+    </div>
+  </div>
 </section>
 
-<!-- CONTACT -->
-<section class="contact-wrapper">
 
- <div class="contact-left glass-box">
-  <h1 class="section-title">Get in Touch</h1>
-  <p class="sub-text">Reach out anytime. We’re here to help.</p>
+<!-- ========== CONTACT GRID ========== -->
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-grid">
 
-  <div class="contact-item">
-    <div class="icon">📍</div>
-    <div>
-      <h4>Location</h4>
-      <p>London, United Kingdom</p>
+      <!-- LEFT: Contact Info -->
+      <div class="contact-info reveal" style="transition-delay:0.1s">
+        <h2 class="info-headline">Get in touch</h2>
+        <p class="info-desc">Reach out anytime. Our team typically responds within 24 hours.</p>
+
+        <div class="info-list">
+          <div class="info-item" *ngFor="let item of contactInfo">
+            <div class="info-icon">
+              <i class="bi" [ngClass]="item.icon"></i>
+            </div>
+            <div>
+              <h4 class="info-label">{{ item.title }}</h4>
+              <p class="info-value">{{ item.value }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="#" class="social-btn" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="social-btn" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+          <a href="#" class="social-btn" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+
+      <!-- RIGHT: Form -->
+      <div class="contact-form-wrap reveal" style="transition-delay:0.2s">
+        <!-- Success State -->
+        <div *ngIf="formSubmitted" class="success-state">
+          <div class="success-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h3 class="success-title">Message sent!</h3>
+          <p class="success-desc">We'll get back to you within 24 hours.</p>
+        </div>
+
+        <!-- Form -->
+        <form *ngIf="!formSubmitted" #contactForm="ngForm" (ngSubmit)="submitForm(contactForm)" class="contact-form">
+          <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input type="text" id="name" name="name" [(ngModel)]="formData.name"
+              required #name="ngModel" class="form-input" placeholder="John Doe">
+            <small *ngIf="name.invalid && (name.touched || contactForm.submitted)" class="form-error">Name is required</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input type="email" id="email" name="email" [(ngModel)]="formData.email"
+              required pattern="^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+              #email="ngModel" class="form-input" placeholder="john@company.com">
+            <small *ngIf="email.invalid && (email.touched || contactForm.submitted)" class="form-error">Enter a valid email</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" [(ngModel)]="formData.subject"
+              class="form-input" placeholder="How can we help?">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message">Message</label>
+            <textarea id="message" name="message" [(ngModel)]="formData.message"
+              required #msg="ngModel" class="form-input form-textarea" rows="5"
+              placeholder="Tell us about your needs..."></textarea>
+            <small *ngIf="msg.invalid && (msg.touched || contactForm.submitted)" class="form-error">Message is required</small>
+          </div>
+
+          <button type="submit" class="btn-submit liquid-btn">
+            Send Message
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+
     </div>
   </div>
-
-  <div class="contact-item">
-    <div class="icon">📞</div>
-    <div>
-      <h4>Phone</h4>
-      <p>+44 20 7946 0958</p>
-    </div>
-  </div>
-
-  <div class="contact-item">
-    <div class="icon">✉️</div>
-    <div>
-      <h4>Email</h4>
-      <p>support&#64;armorbridz.com</p>
-    </div>
-  </div>
-
-</div>
-  <!-- RIGHT -->
-  <div class="contact-right glass-box">
-    <h1 class="section-title">Send Message</h1>
-
-    <form #form="ngForm" (ngSubmit)="submitForm(form)">
-
-      <input type="text" name="name" ngModel required #name="ngModel" placeholder="Your Name">
-      <small *ngIf="name.invalid && (name.touched || form.submitted)">
-        Name is required
-      </small>
-
-      <input type="email" name="email" ngModel required 
-             pattern="^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-             #email="ngModel" placeholder="Your Email">
-      <small *ngIf="email.invalid && (email.touched || form.submitted)">
-        Enter valid email
-      </small>
-
-      <textarea name="message" ngModel required #msg="ngModel" placeholder="Your Message"></textarea>
-      <small *ngIf="msg.invalid && (msg.touched || form.submitted)">
-        Message is required
-      </small>
-
-      <button type="submit">Send Message →</button>
-
-    </form>
-  </div>
-
 </section>

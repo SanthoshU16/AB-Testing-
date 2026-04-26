@@ -11,15 +11,15 @@
   gap: 16px;
 }
 
-.page-title { font-size: 28px; font-weight: 700; color: #f5f5f7; margin: 0 0 4px; }
-.page-subtitle { font-size: 14px; color: #86868b; margin: 0; }
+.page-title { font-size: 28px; font-weight: 700; color: #0A2540; margin: 0 0 4px; }
+.page-subtitle { font-size: 14px; color: rgba(10, 37, 64, 0.6); margin: 0; }
 
 .apple-btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: #0a84ff;
+  background: #2563EB;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -30,17 +30,17 @@
   transition: background 0.2s, transform 0.15s;
   white-space: nowrap;
 }
-.apple-btn-primary:hover { background: #0071e3; transform: translateY(-1px); }
+.apple-btn-primary:hover { background: #1D4ED8; transform: translateY(-1px); }
 
 .loading-state {
   display: flex; flex-direction: column; align-items: center;
-  justify-content: center; padding: 80px; gap: 16px; color: #86868b;
+  justify-content: center; padding: 80px; gap: 16px; color: rgba(10, 37, 64, 0.4);
 }
 
 .spinner {
   width: 36px; height: 36px;
-  border: 3px solid rgba(255,255,255,0.1);
-  border-top-color: #0a84ff;
+  border: 3px solid rgba(10, 37, 64, 0.08);
+  border-top-color: #2563EB;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -48,18 +48,19 @@
 
 .empty-state {
   display: flex; flex-direction: column; align-items: center;
-  padding: 80px; gap: 12px; color: #86868b; text-align: center;
+  padding: 80px; gap: 12px; color: rgba(10, 37, 64, 0.4); text-align: center;
 }
 .empty-icon { width: 56px; height: 56px; opacity: 0.4; margin-bottom: 8px; }
-.empty-state h3 { color: #aeaeb2; margin: 0; }
+.empty-state h3 { color: rgba(10, 37, 64, 0.6); margin: 0; }
 .empty-state p { margin: 0 0 16px; }
 
 /* Table */
 .glass-table-container {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: white;
+  border: 1px solid rgba(10, 37, 64, 0.08);
   border-radius: 16px;
   overflow: auto;
+  box-shadow: 0 2px 12px rgba(10, 37, 64, 0.04);
 }
 
 .apple-table {
@@ -69,49 +70,49 @@
 }
 
 .apple-table thead tr {
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(10, 37, 64, 0.06);
 }
 .apple-table th {
   padding: 14px 16px;
   text-align: left;
   font-size: 12px;
   font-weight: 600;
-  color: #636366;
+  color: rgba(10, 37, 64, 0.55);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
 }
 
 .table-row {
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(10, 37, 64, 0.05);
   transition: background 0.15s;
 }
 .table-row:last-child { border-bottom: none; }
-.table-row:hover { background: rgba(255,255,255,0.03); }
+.table-row:hover { background: rgba(37, 99, 235, 0.03); }
 
 .apple-table td {
   padding: 14px 16px;
-  color: #e5e5e7;
+  color: #0A2540;
   vertical-align: middle;
 }
 
 .campaign-name-cell { display: flex; flex-direction: column; gap: 3px; }
-.campaign-name { font-weight: 600; color: #f5f5f7; }
-.campaign-desc { font-size: 12px; color: #636366; }
+.campaign-name { font-weight: 600; color: #0A2540; }
+.campaign-desc { font-size: 12px; color: rgba(10, 37, 64, 0.55); }
 
-.template-col { color: #aeaeb2; font-size: 13px; }
+.template-col { color: rgba(10, 37, 64, 0.65); font-size: 13px; }
 
 .dept-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .dept-tag {
   padding: 3px 8px;
-  background: rgba(10, 132, 255, 0.12);
-  border: 1px solid rgba(10, 132, 255, 0.2);
-  color: #0a84ff;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  color: #2563EB;
   border-radius: 12px;
   font-size: 11px;
   font-weight: 500;
 }
-.dept-tag.more { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #86868b; }
+.dept-tag.more { background: rgba(10, 37, 64, 0.04); border-color: rgba(10, 37, 64, 0.08); color: rgba(10, 37, 64, 0.45); }
 
 /* Status Badges */
 .status-badge {
@@ -120,19 +121,19 @@
   font-size: 12px;
   font-weight: 600;
 }
-.status-draft { background: rgba(255,255,255,0.06); color: #86868b; }
-.status-scheduled { background: rgba(255, 149, 0, 0.15); color: #ff9500; }
-.status-active { background: rgba(52, 199, 89, 0.15); color: #34c759; }
-.status-completed { background: rgba(10, 132, 255, 0.15); color: #0a84ff; }
+.status-draft { background: rgba(10, 37, 64, 0.06); color: rgba(10, 37, 64, 0.5); }
+.status-scheduled { background: rgba(245, 158, 11, 0.1); color: #D97706; }
+.status-active { background: rgba(16, 185, 129, 0.1); color: #059669; }
+.status-completed { background: rgba(37, 99, 235, 0.1); color: #2563EB; }
 
 .stat-col { text-align: center; font-weight: 500; }
-.danger-col { color: #ff3b30; }
+.danger-col { color: #EF4444; }
 
 /* Click Rate Bar */
 .click-rate-wrapper { display: flex; align-items: center; gap: 10px; min-width: 100px; }
-.click-rate-num { font-size: 13px; font-weight: 600; color: #f5f5f7; min-width: 36px; }
-.click-rate-bar { flex: 1; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
-.click-rate-fill { height: 100%; background: linear-gradient(90deg, #0a84ff, #5ac8fa); border-radius: 3px; transition: width 0.5s ease; }
+.click-rate-num { font-size: 13px; font-weight: 600; color: #0A2540; min-width: 36px; }
+.click-rate-bar { flex: 1; height: 5px; background: rgba(10, 37, 64, 0.06); border-radius: 3px; overflow: hidden; }
+.click-rate-fill { height: 100%; background: linear-gradient(90deg, #2563EB, #60A5FA); border-radius: 3px; transition: width 0.5s ease; }
 
 /* Actions */
 .actions-col { display: flex; gap: 6px; justify-content: flex-end; }
@@ -146,10 +147,10 @@
   text-decoration: none;
 }
 .icon-action-btn svg { width: 16px; height: 16px; }
-.view-btn { background: rgba(10, 132, 255, 0.1); color: #0a84ff; }
-.view-btn:hover { background: rgba(10, 132, 255, 0.2); }
-.delete-btn { background: rgba(255, 59, 48, 0.08); color: #ff3b30; }
-.delete-btn:hover { background: rgba(255, 59, 48, 0.18); }
+.view-btn { background: rgba(37, 99, 235, 0.08); color: #2563EB; }
+.view-btn:hover { background: rgba(37, 99, 235, 0.15); }
+.delete-btn { background: rgba(239, 68, 68, 0.06); color: #EF4444; }
+.delete-btn:hover { background: rgba(239, 68, 68, 0.12); }
 
 @media (max-width: 768px) {
   .page-container { padding: 20px 16px; }

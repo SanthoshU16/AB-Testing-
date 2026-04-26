@@ -53,7 +53,7 @@ export class AuthService {
 
   async signUp(email: string, password: string, firstName: string, lastName: string): Promise<void> {
     const credential = await createUserWithEmailAndPassword(this.firebase.auth, email, password);
-    
+
     const userProfile: UserProfile = {
       uid: credential.user.uid,
       email,
@@ -64,22 +64,22 @@ export class AuthService {
 
     // Sync to backend
     await firstValueFrom(this.http.post(`${this.apiUrl}/sync`, userProfile));
-    
+
     this.userProfileSubject.next(userProfile);
-    this.ngZone.run(() => this.router.navigate(['/intro']));
+    this.ngZone.run(() => this.router.navigate(['/']));
   }
 
   // ─── Email / Password Sign In ────────────────────────────────────────
 
   async signIn(email: string, password: string): Promise<void> {
     await signInWithEmailAndPassword(this.firebase.auth, email, password);
-    
+
     // Record login in backend
     await firstValueFrom(this.http.post(`${this.apiUrl}/login-event`, {}));
-    
+
     const profile = await this.fetchUserProfile();
     this.userProfileSubject.next(profile);
-    this.ngZone.run(() => this.router.navigate(['/intro']));
+    this.ngZone.run(() => this.router.navigate(['/']));
   }
 
   // ─── Google OAuth ────────────────────────────────────────────────────
@@ -91,7 +91,7 @@ export class AuthService {
 
     // Check if profile exists via backend
     let profile = await this.fetchUserProfile();
-    
+
     if (!profile) {
       const names = (user.displayName || '').split(' ');
       profile = {
@@ -107,7 +107,7 @@ export class AuthService {
     }
 
     this.userProfileSubject.next(profile);
-    this.ngZone.run(() => this.router.navigate(['/intro']));
+    this.ngZone.run(() => this.router.navigate(['/']));
   }
 
   // ─── Sign Out ────────────────────────────────────────────────────────

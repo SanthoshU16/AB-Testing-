@@ -1,114 +1,270 @@
-<div class="legal-page">
+<app-navbar activePage=""></app-navbar>
 
-    
-
-  <!-- HERO -->
-  <div class="hero">
-    <h1>Terms of Service</h1>
-    <p>Use our platform responsibly. Built for trust, security, and transparency.</p>
+<!-- ========== HERO ========== -->
+<section class="page-hero" id="terms-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
   </div>
+  <div class="container">
+    <div class="hero-content">
+      <p class="section-overline reveal">Legal</p>
+      <h1 class="page-headline reveal" style="transition-delay:0.1s">
+        Terms of <span class="headline-accent">Service</span>
+      </h1>
+      <p class="page-description reveal" style="transition-delay:0.2s">
+        The rules that govern your use of the Armor Bridz phishing simulation platform.
+      </p>
+    </div>
+  </div>
+</section>
 
-  <div class="layout">
+<!-- ========== TAB BAR ========== -->
+<nav class="page-tabs">
+  <div class="page-tabs-inner">
+    <a routerLink="/privacy" class="page-tab">Privacy Policy</a>
+    <a routerLink="/terms" class="page-tab active">Terms of Service</a>
+  </div>
+</nav>
 
-    <!-- SIDEBAR -->
+<!-- ========== CONTENT ========== -->
+<div class="legal-body">
+  <div class="legal-container">
+
+    <!-- Google-style Sticky Sidebar -->
     <aside class="sidebar">
-      <h3>Contents</h3>
-      <ul>
-        <li><a href="#t1" [class.active]="activeSection==='t1'">Acceptance</a></li>
-        <li><a href="#t2" [class.active]="activeSection==='t2'">Usage</a></li>
-        <li><a href="#t3" [class.active]="activeSection==='t3'">Account</a></li>
-        <li><a href="#t4" [class.active]="activeSection==='t4'">Security</a></li>
-        <li><a href="#t5" [class.active]="activeSection==='t5'">Privacy</a></li>
-        <li><a href="#t6" [class.active]="activeSection==='t6'">IP Rights</a></li>
-        <li><a href="#t7" [class.active]="activeSection==='t7'">Updates</a></li>
-      </ul>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="#t1" [class.active]="activeSection==='t1'">Acceptance</a></li>
+          <li><a href="#t2" [class.active]="activeSection==='t2'">Platform Purpose</a></li>
+          <li><a href="#t3" [class.active]="activeSection==='t3'">Account & Access</a></li>
+          <li><a href="#t4" [class.active]="activeSection==='t4'">Acceptable Use</a></li>
+          <li><a href="#t5" [class.active]="activeSection==='t5'">Simulated Phishing</a></li>
+          <li><a href="#t6" [class.active]="activeSection==='t6'">Data & Privacy</a></li>
+          <li><a href="#t7" [class.active]="activeSection==='t7'">IP Rights</a></li>
+          <li><a href="#t8" [class.active]="activeSection==='t8'">Liability</a></li>
+          <li><a href="#t9" [class.active]="activeSection==='t9'">Changes & Updates</a></li>
+        </ul>
+      </nav>
     </aside>
 
-    <!-- CONTENT -->
+    <!-- Content Area -->
     <main class="content">
 
-      <section id="t1" class="card">
-        <h2>1. Acceptance of Terms</h2>
+      <!-- Intro block -->
+      <div class="content-intro reveal">
+        <p class="overline-label">ARMOR BRIDZ TERMS OF SERVICE</p>
+        <h2 class="intro-headline">
+          Armor Bridz is a phishing simulation and security awareness platform
+          designed to help organizations measure employee readiness and reduce
+          cyber risk through controlled, safe simulations.
+        </h2>
+        <p class="intro-body">
+          These Terms of Service establish the rules and responsibilities for using our
+          platform. By accessing or using Armor Bridz, you agree to be bound by these terms.
+          Please read them carefully.
+        </p>
+      </div>
+
+      <hr class="section-divider">
+
+      <section id="t1" class="legal-section reveal">
+        <h3>1. Acceptance of Terms</h3>
         <p>
-          By accessing or using Armor Bridz, you agree to be bound by these Terms of Service.
-          If you do not agree, you must stop using the platform.
+          By accessing or using the Armor Bridz platform, you confirm that you have read,
+          understood, and agree to be bound by these Terms of Service. If you do not agree
+          with any part of these terms, you must discontinue use of the platform immediately.
         </p>
         <p>
-          These terms apply to all users including visitors, registered users, and customers.
+          These terms apply to all users of the platform, including organization administrators,
+          employees enrolled in simulations, and any individuals accessing the platform's
+          public-facing pages.
         </p>
       </section>
 
-      <section id="t2" class="card">
-        <h2>2. Use of Service</h2>
-        <p>You agree to use the platform only for lawful purposes.</p>
+      <hr class="section-divider">
+
+      <section id="t2" class="legal-section reveal">
+        <h3>2. Platform Purpose & Scope</h3>
+        <p>
+          Armor Bridz is an enterprise phishing simulation platform that enables organizations to:
+        </p>
         <ul>
-          <li>No hacking or unauthorized access</li>
-          <li>No misuse of data</li>
-          <li>No system disruption</li>
+          <li>Create and deploy simulated phishing campaigns to test employee awareness</li>
+          <li>Track employee interactions including email opens, link clicks, and credential submission attempts</li>
+          <li>Generate risk scores for individual employees and departments</li>
+          <li>Produce compliance reports for security audits and ISO 27001 readiness</li>
+          <li>Manage phishing email templates with customizable subjects, sender details, and HTML body content</li>
+        </ul>
+        <p>
+          The platform is intended exclusively for authorized security awareness testing
+          within your own organization. It must not be used for malicious purposes, unauthorized
+          access attempts, or targeting individuals outside your organization.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t3" class="legal-section reveal">
+        <h3>3. Account & Access Control</h3>
+        <p>
+          Access to the Armor Bridz admin panel requires authentication through Firebase
+          Authentication. As an administrator, you are responsible for:
+        </p>
+        <ul>
+          <li>Maintaining the confidentiality of your login credentials</li>
+          <li>All activity that occurs under your account, including campaign creation and employee management</li>
+          <li>Ensuring that only authorized personnel within your organization have admin access</li>
+          <li>Reporting any unauthorized access or security breaches immediately</li>
+        </ul>
+        <p>
+          Employee accounts are managed by administrators. Employees are enrolled in simulations
+          through manual entry or CSV upload and do not require separate login credentials to
+          participate in phishing simulations.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t4" class="legal-section reveal">
+        <h3>4. Acceptable Use Policy</h3>
+        <p>You agree to use Armor Bridz only for lawful, authorized security awareness testing. You must not:</p>
+        <ul>
+          <li>Use the platform to conduct actual phishing attacks or target individuals outside your organization</li>
+          <li>Attempt to compromise, reverse-engineer, or exploit the platform's infrastructure</li>
+          <li>Use simulated phishing templates or fake login pages for malicious credential harvesting</li>
+          <li>Interfere with the platform's tracking, analytics, or reporting services</li>
+          <li>Share, redistribute, or resell access to the platform without authorization</li>
+          <li>Upload malicious content, malware, or harmful attachments through the template editor</li>
+        </ul>
+        <p>
+          Violation of this acceptable use policy may result in immediate account suspension
+          or termination, and may be reported to relevant authorities.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t5" class="legal-section reveal">
+        <h3>5. Simulated Phishing Campaigns</h3>
+        <p>
+          Armor Bridz enables administrators to create phishing simulation campaigns that may include:
+        </p>
+        <ul>
+          <li>Simulated phishing emails sent to employee inboxes using customizable templates</li>
+          <li>Fake login pages designed to detect credential submission attempts</li>
+          <li>Tracking mechanisms that record email delivery, opens, link clicks, and form submissions</li>
+        </ul>
+        <p>
+          <strong>Important safety guarantee:</strong> Armor Bridz does not store actual employee
+          passwords or credentials. When an employee submits credentials on a simulated login page,
+          the system records only a boolean flag indicating that a credential attempt was detected.
+          No password data is captured, transmitted, or stored.
+        </p>
+        <p>
+          Organizations are responsible for informing employees about the existence of phishing
+          simulation programs as part of their security awareness policy.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t6" class="legal-section reveal">
+        <h3>6. Data Handling & Privacy</h3>
+        <p>
+          Armor Bridz collects and processes the following data to operate the platform:
+        </p>
+        <ul>
+          <li>Employee information: name, email address, department, role, and status</li>
+          <li>Campaign data: template content, target groups, scheduling, and delivery status</li>
+          <li>Tracking events: email opens, link clicks, credential attempt flags, timestamps, and optional IP addresses</li>
+          <li>Risk scores: computed per-employee based on simulation interaction history</li>
+        </ul>
+        <p>
+          All data is stored in Firebase Firestore and transmitted securely. For full details
+          on how we handle your data, please review our
+          <a routerLink="/privacy" class="inline-link">Privacy Policy</a>.
+        </p>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t7" class="legal-section reveal">
+        <h3>7. Intellectual Property</h3>
+        <p>All intellectual property rights related to the Armor Bridz platform are reserved:</p>
+        <ul>
+          <li>The platform's code, design, branding, and default phishing templates are the exclusive property of Armor Bridz</li>
+          <li>Custom templates and employee data created by your organization remain your property</li>
+          <li>Unauthorized reproduction, modification, or distribution of platform assets is prohibited</li>
+          <li>Exported reports (PDF/CSV) generated through the platform may be used internally within your organization</li>
         </ul>
       </section>
 
-      <section id="t3" class="card">
-        <h2>3. Account Responsibility</h2>
-        <p>You are responsible for your account credentials and activities.</p>
+      <hr class="section-divider">
+
+      <section id="t8" class="legal-section reveal">
+        <h3>8. Limitation of Liability</h3>
+        <p>
+          Armor Bridz is provided as a security awareness tool. While we take every precaution
+          to ensure the platform operates safely and reliably:
+        </p>
         <ul>
-          <li>Keep your password secure</li>
-          <li>Report suspicious activity</li>
-          <li>Do not share your account</li>
+          <li>We are not liable for any misuse of the platform by administrators or users</li>
+          <li>We do not guarantee that phishing simulations will prevent actual security breaches</li>
+          <li>Organizations are responsible for ensuring their use of the platform complies with local employment and privacy laws</li>
+          <li>The platform is provided "as is" without warranties of any kind, express or implied</li>
         </ul>
       </section>
 
-      <section id="t4" class="card">
-        <h2>4. Security & Compliance</h2>
-        <p>We follow strong security practices.</p>
-        <p>Any misuse will lead to termination.</p>
-      </section>
+      <hr class="section-divider">
 
-      <section id="t5" class="card">
-        <h2>5. Privacy & Data Protection</h2>
-        <p>Your data is protected and never sold.</p>
+      <section id="t9" class="legal-section reveal">
+        <h3>9. Changes to These Terms</h3>
+        <p>We may update these Terms of Service to reflect:</p>
         <ul>
-          <li>Secure storage</li>
-          <li>Encryption used</li>
-          <li>Transparent policies</li>
+          <li>New features or changes to the phishing simulation platform</li>
+          <li>Evolving legal, regulatory, or compliance requirements</li>
+          <li>Improvements to our security practices and data handling procedures</li>
         </ul>
+        <p>
+          Material changes will be communicated through email or in-platform notifications.
+          Continued use of the platform after changes are published constitutes acceptance
+          of the updated terms.
+        </p>
       </section>
 
-     <section id="t6" class="card">
-  <h2>6. Intellectual Property</h2>
-
-  <p>All rights related to Armor Bridz are protected:</p>
-
-  <ul>
-    <li>All content, design, and branding belong to Armor Bridz</li>
-    <li>Unauthorized copying or reuse is strictly prohibited</li>
-  </ul>
-</section>
-      <section id="t7" class="card">
-  <h2>7. Updates</h2>
-
-  <p>We may update these Terms of Service from time to time:</p>
-
-  <ul>
-    <li>To reflect changes in our services</li>
-    <li>To comply with legal and regulatory requirements</li>
-    
-  </ul>
-
-</section>
-
-      <div class="legal-end-text">
-  <p>
-    These Terms of Service are designed to ensure a safe, secure, and reliable
-    experience for all users of Armor Bridz. By continuing to use our platform,
-    you acknowledge that you understand and agree to these terms.
-
-    If you have any questions or concerns, please contact our support team at
-    any time. We are committed to transparency and user trust.
-  </p>
-</div>
+      <div class="legal-footer reveal">
+        <p>
+          These Terms of Service govern the use of the Armor Bridz phishing simulation
+          platform. By continuing to use our services, you acknowledge and accept these terms.
+        </p>
+        <p>
+          For questions about these terms or the platform, contact our support team.
+          We are committed to helping organizations strengthen their security posture
+          through responsible, ethical simulation testing.
+        </p>
+        <p class="last-updated">Last updated: April 2026</p>
+      </div>
 
     </main>
 
   </div>
 </div>
+
+<!-- Google-style Bottom Bar -->
+<footer class="legal-bottom-bar">
+  <div class="bottom-bar-inner">
+    <div class="bottom-bar-links">
+      <a routerLink="/">Armor Bridz</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/about">About</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/privacy">Privacy</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/terms" class="current-page">Terms</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/contact">Contact</a>
+    </div>
+  </div>
+</footer>

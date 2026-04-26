@@ -21,18 +21,41 @@ public class UserService {
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
         if (document.exists()) {
-            UserProfile profile = document.toObject(UserProfile.class);
+            UserProfile profile = new UserProfile();
             profile.setUid(document.getId());
+            profile.setEmail(document.getString("email"));
+            profile.setFirstName(document.getString("firstName"));
+            profile.setLastName(document.getString("lastName"));
+            profile.setRole(document.getString("role"));
+            profile.setStatus(document.getString("status"));
+            
+            // Safe timestamp conversion
+            profile.setCreatedAt(safeGetLong(document, "createdAt"));
+            profile.setUpdatedAt(safeGetLong(document, "updatedAt"));
+            profile.setLastLogin(safeGetLong(document, "lastLogin"));
+            
             return profile;
         }
         return null;
     }
 
+    private Long safeGetLong(DocumentSnapshot doc, String field) {
+        Object val = doc.get(field);
+        if (val instanceof Number) return ((Number) val).longValue();
+        if (val instanceof com.google.cloud.Timestamp) return ((com.google.cloud.Timestamp) val).toSqlTimestamp().getTime();
+        return null;
+    }
+
     public void saveUserProfile(UserProfile profile) {
+        long now = System.currentTimeMillis();
+        if (profile.getCreatedAt() == null) {
+            profile.setCreatedAt(now);
+        }
+        profile.setUpdatedAt(now);
         firestore.collection(COLLECTION).document(profile.getUid()).set(profile, SetOptions.merge());
     }
 
     public void updateLastLogin(String uid) {
-        firestore.collection(COLLECTION).document(uid).update("lastLogin", FieldValue.serverTimestamp());
+        firestore.collection(COLLECTION).document(uid).update("lastLogin", System.currentTimeMillis());
     }
 }

@@ -1,0 +1,30 @@
+.page-container { padding: 32px 40px; max-width: 1000px; margin: 0 auto; }
+.page-header { margin-bottom: 32px; }
+.page-title { font-size: 28px; font-weight: 700; color: #0A2540; margin: 0 0 8px; }
+.page-subtitle { font-size: 15px; color: rgba(10, 37, 64, 0.6); margin: 0; }
+.card { background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(10, 37, 64, 0.04); border: 1px solid rgba(10, 37, 64, 0.08); }
+
+.section-title { font-size: 20px; color: #0A2540; margin: 0 0 8px; }
+.section-desc { font-size: 14px; color: rgba(10, 37, 64, 0.6); margin: 0 0 24px; }
+
+.theme-options { display: flex; gap: 24px; margin-bottom: 32px; }
+.theme-card { cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.theme-preview { width: 140px; height: 96px; border-radius: 12px; border: 2px solid rgba(10,37,64,0.1); position: relative; overflow: hidden; transition: all 0.2s; }
+.theme-card:hover .theme-preview { border-color: rgba(37,99,235,0.4); }
+.theme-card.active .theme-preview { border-color: #2563EB; box-shadow: 0 0 0 4px rgba(37,99,235,0.15); }
+
+.theme-preview.light { background: #f8fafc; }
+.theme-preview.light .tp-header { position: absolute; top: 0; left: 0; right: 0; height: 16px; background: white; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.theme-preview.light .tp-sidebar { position: absolute; top: 16px; left: 0; bottom: 0; width: 32px; background: white; border-right: 1px solid rgba(0,0,0,0.05); }
+
+.theme-preview.dark { background: #0f172a; }
+.theme-preview.dark .tp-header { position: absolute; top: 0; left: 0; right: 0; height: 16px; background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.theme-preview.dark .tp-sidebar { position: absolute; top: 16px; left: 0; bottom: 0; width: 32px; background: #1e293b; border-right: 1px solid rgba(255,255,255,0.05); }
+
+.theme-preview.auto { background: linear-gradient(135deg, #f8fafc 50%, #0f172a 50%); }
+
+.theme-name { font-size: 14px; font-weight: 600; color: #0A2540; }
+
+.mt-4 { margin-top: 32px; }
+.btn-primary { padding: 12px 24px; background: #2563EB; color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.2s; }
+.btn-primary:hover { background: #1D4ED8; }

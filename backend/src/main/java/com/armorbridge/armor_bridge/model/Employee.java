@@ -16,4 +16,7 @@ public class Employee {
     private String role;
     private String status; // active, inactive
     private Integer riskScore;
+    private Long createdAt;
+    private Long updatedAt;
+    private Long lastActivity;
 }

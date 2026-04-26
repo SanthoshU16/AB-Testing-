@@ -32,6 +32,15 @@ export class CampaignService {
     });
   }
 
+  async launchCampaign(id: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.http.post(`${this.apiUrl}/${id}/launch`, {}).subscribe({
+        next: () => resolve(),
+        error: (err) => reject(err)
+      });
+    });
+  }
+
   async getCampaign(id: string): Promise<Campaign | null> {
     return new Promise((resolve) => {
       this.http.get<Campaign>(`${this.apiUrl}/${id}`).subscribe({

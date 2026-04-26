@@ -15,6 +15,12 @@ public class TrackingEvent {
     private String employeeName;
     private String department;
     private String eventType; // email_delivered, email_opened, link_clicked, credential_attempt
-    private Object timestamp; // Can be Timestamp from Firestore
+    private Long timestamp;
     private Boolean credentialAttempted;
+    private String ipAddress;
+    private String userAgent;
+    private String browser;
+    private String os;
+    private String device;
+    private String location;
 }

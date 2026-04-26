@@ -43,7 +43,9 @@ public class TrackingService {
     }
 
     public String logEvent(TrackingEvent event) throws ExecutionException, InterruptedException {
-        event.setTimestamp(FieldValue.serverTimestamp());
+        if (event.getTimestamp() == null) {
+            event.setTimestamp(System.currentTimeMillis());
+        }
         ApiFuture<DocumentReference> future = firestore.collection(COLLECTION).add(event);
         
         // Update campaign stats summary

@@ -1,7 +1,19 @@
 <div class="stat-card" [style.animation-delay]="delay + 's'">
-  <div class="stat-icon" [style.background]="gradient" [innerHTML]="iconSvg"></div>
-  <div class="stat-content">
-    <span class="stat-value">{{ value }}</span>
+  <div class="stat-header">
     <span class="stat-label">{{ title }}</span>
+    <div class="stat-icon" [style.background]="gradient" [innerHTML]="iconSvg"></div>
+  </div>
+  <div class="stat-body">
+    <span class="stat-value">{{ value }}</span>
+  </div>
+  <div class="stat-footer">
+    <div class="stat-sparkline">
+      <svg viewBox="0 0 80 24" fill="none" preserveAspectRatio="none">
+        <path d="M0 20 C10 18, 15 12, 25 14 S 35 8, 45 10 S 55 4, 65 6 S 75 2, 80 4" 
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.3"/>
+        <path d="M0 20 C10 18, 15 12, 25 14 S 35 8, 45 10 S 55 4, 65 6 S 75 2, 80 4 V 24 H 0 Z" 
+              fill="currentColor" opacity="0.05"/>
+      </svg>
+    </div>
   </div>
 </div>

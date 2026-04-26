@@ -1,22 +1,31 @@
+/* =============================================
+   ADMIN LAYOUT — Premium Canvas
+   ============================================= */
+
 .admin-wrapper {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background-color: #f5f5f7;
+  background: #F7F8FA;
 }
 
 .main-content-wrapper {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 260px; /* Offset for the sidebar width */
+  margin-left: 264px;
   min-height: 100vh;
+  transition: margin-left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-wrapper.sidebar-collapsed .main-content-wrapper {
+  margin-left: 72px;
 }
 
 .content-area {
   flex-grow: 1;
-  padding: 32px;
-  max-width: 1200px;
+  padding: 28px 32px 40px;
+  max-width: 1320px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
@@ -24,12 +33,15 @@
 
 @media (max-width: 992px) {
   .main-content-wrapper {
-    margin-left: 0; /* Add logic for responsive sidebar later if needed */
+    margin-left: 0;
+  }
+  .admin-wrapper.sidebar-collapsed .main-content-wrapper {
+    margin-left: 0;
   }
 }
 
 @media (max-width: 768px) {
   .content-area {
-    padding: 24px 16px;
+    padding: 20px 16px;
   }
 }

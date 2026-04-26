@@ -62,7 +62,7 @@ export class TemplateEditorComponent implements OnInit {
   }
 
   insertTrackingLink(): void {
-    this.template.bodyHtml += '\n<a href="{{TRACKING_LINK}}">Click Here</a>';
+    this.template.bodyHtml += ' {{TRACKING_LINK}} ';
   }
 
   async save(): Promise<void> {
@@ -79,9 +79,9 @@ export class TemplateEditorComponent implements OnInit {
         await this.templateService.createTemplate(this.template);
       }
       this.router.navigate(['/admin/templates']);
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      alert('Failed to save template.');
+      alert('Failed to save template: ' + (e.message || JSON.stringify(e)));
     } finally {
       this.isSaving = false;
     }

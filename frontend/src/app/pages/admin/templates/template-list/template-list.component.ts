@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TemplateService } from '../../../../services/template.service';
 import { PhishingTemplate, TemplateCategory } from '../../../../models/template.model';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-template-list',
@@ -17,6 +18,9 @@ export class TemplateListComponent implements OnInit, OnDestroy {
   isLoading = true;
   private sub?: Subscription;
 
+  previewTemplateData: PhishingTemplate | null = null;
+  previewHtmlContent: SafeHtml | null = null;
+
   categoryLabels: Record<TemplateCategory, string> = {
     'password-reset': '🔐 Password Reset',
     'login-alert': '🏢 Login Alert',
@@ -26,7 +30,10 @@ export class TemplateListComponent implements OnInit, OnDestroy {
     'custom': '✏️ Custom'
   };
 
-  constructor(private templateService: TemplateService) {}
+  constructor(
+    private templateService: TemplateService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.templateService.seedDefaultTemplates();
@@ -51,5 +58,15 @@ export class TemplateListComponent implements OnInit, OnDestroy {
     if (confirm('Delete this template?')) {
       await this.templateService.deleteTemplate(id);
     }
+  }
+
+  openPreview(tpl: PhishingTemplate): void {
+    this.previewTemplateData = tpl;
+    this.previewHtmlContent = this.sanitizer.bypassSecurityTrustHtml(tpl.bodyHtml);
+  }
+
+  closePreview(): void {
+    this.previewTemplateData = null;
+    this.previewHtmlContent = null;
   }
 }

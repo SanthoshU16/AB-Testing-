@@ -1,0 +1,38 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2 class="page-title">Profile</h2>
+    <p class="page-subtitle">Manage your personal information and security preferences.</p>
+  </div>
+
+  <div class="card" *ngIf="userProfile">
+    <div class="profile-header">
+      <div class="avatar-large">
+        {{ userProfile.firstName.charAt(0) || 'A' }}{{ userProfile.lastName.charAt(0) || 'B' }}
+      </div>
+      <div class="profile-title-info">
+        <h3>{{ userProfile.firstName }} {{ userProfile.lastName }}</h3>
+        <span class="role-badge">{{ userProfile.role | titlecase }}</span>
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" [value]="userProfile.firstName" disabled class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" [value]="userProfile.lastName" disabled class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" [value]="userProfile.email" disabled class="form-control">
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-primary" disabled>Update Profile</button>
+      <p class="action-hint">Please contact your administrator to change these details.</p>
+    </div>
+  </div>
+</div>

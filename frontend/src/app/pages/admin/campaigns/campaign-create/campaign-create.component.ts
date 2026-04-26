@@ -36,7 +36,10 @@ export class CampaignCreateComponent implements OnInit {
   selectedDepartments: string[] = [];
   selectedEmployeeIds: string[] = [];
   scheduleType: 'now' | 'later' = 'now';
-  scheduledAt: string = '';
+  scheduledAt: string = (() => {
+    const d = new Date();
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  })();
 
   constructor(
     private campaignService: CampaignService,
@@ -68,7 +71,7 @@ export class CampaignCreateComponent implements OnInit {
       case 2: return this.targetMode === 'departments'
         ? this.selectedDepartments.length > 0
         : this.selectedEmployeeIds.length > 0;
-      case 3: return true;
+      case 3: return this.scheduleType === 'later' ? !!this.scheduledAt : true;
       default: return true;
     }
   }
@@ -110,10 +113,10 @@ export class CampaignCreateComponent implements OnInit {
 
       let scheduledAt = null;
       if (this.scheduleType === 'later' && this.scheduledAt) {
-        scheduledAt = Timestamp.fromDate(new Date(this.scheduledAt));
+        scheduledAt = new Date(this.scheduledAt).getTime();
       }
 
-      await this.campaignService.createCampaign({
+      const newCampaignId = await this.campaignService.createCampaign({
         name: this.name,
         description: this.description,
         templateId: this.selectedTemplateId,
@@ -121,11 +124,12 @@ export class CampaignCreateComponent implements OnInit {
         targetDepartments: this.selectedDepartments,
         targetEmployeeIds,
         status: this.scheduleType === 'later' ? 'scheduled' : 'active',
-        scheduledAt,
-        sentAt: this.scheduleType === 'now' ? Timestamp.now() : null,
-        completedAt: null,
-        createdBy: this.authService.currentProfile?.uid ?? 'admin'
-      });
+        scheduledAt: scheduledAt as any
+      } as any);
+
+      if (this.scheduleType === 'now') {
+        await this.campaignService.launchCampaign(newCampaignId);
+      }
 
       this.router.navigate(['/admin/campaigns']);
     } catch (e) {

@@ -41,13 +41,15 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       this.filteredEmployees = [...this.employees];
       return;
     }
-    const q = this.searchQuery.toLowerCase();
-    this.filteredEmployees = this.employees.filter(emp =>
-      emp.firstName.toLowerCase().includes(q) ||
-      emp.lastName.toLowerCase().includes(q) ||
-      emp.email.toLowerCase().includes(q) ||
-      emp.department.toLowerCase().includes(q)
-    );
+    const terms = this.searchQuery.toLowerCase().trim().split(/\s+/);
+    
+    this.filteredEmployees = this.employees.filter(emp => {
+      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
+      const dept = (emp.department || '').toLowerCase();
+      
+      // Ensure all search terms match either the name or the department
+      return terms.every(term => fullName.includes(term) || dept.includes(term));
+    });
   }
 
   getRiskColor(score: number | undefined): string {

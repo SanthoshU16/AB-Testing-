@@ -1,115 +1,188 @@
-<div class="analytics-container">
-  <div class="page-header">
-    <div>
-      <h2 class="page-title">Analytics</h2>
-      <p class="page-subtitle">Real-time phishing simulation performance data.</p>
+<div class="pbi-dashboard">
+  <!-- Filter Bar -->
+  <div class="pbi-filter-bar">
+    <div class="pbi-filter-left">
+      <h2 class="pbi-title">Phishing Analytics Dashboard</h2>
+      <span class="pbi-subtitle">Armor Bridge Security Insights</span>
+    </div>
+    <div class="pbi-filter-right">
+      <span class="pbi-last-refresh">Last refreshed: {{ lastRefresh }}</span>
     </div>
   </div>
 
   <!-- Loading -->
   <div class="loading-state" *ngIf="isLoading">
-    <div class="spinner"></div><p>Loading analytics...</p>
+    <div class="spinner"></div><p>Loading dashboard...</p>
   </div>
 
-  <div *ngIf="!isLoading">
-    <!-- Summary Cards -->
-    <div class="summary-grid">
-      <div class="summary-card">
-        <div class="sc-icon blue-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div>
-          <div class="sc-value">{{ summary.totalEmployees }}</div>
-          <div class="sc-label">Total Employees</div>
-        </div>
+  <div class="pbi-content" *ngIf="!isLoading">
+
+    <!-- Slicer Panel -->
+    <div class="pbi-slicer-panel">
+      <div class="pbi-slicer">
+        <label class="pbi-slicer-label">Department</label>
+        <select class="pbi-slicer-select" (change)="onFilterChange('department', $any($event.target).value)">
+          <option value="all">All Departments</option>
+          <option *ngFor="let d of allDepartments" [value]="d">{{ d }}</option>
+        </select>
       </div>
-      <div class="summary-card">
-        <div class="sc-icon purple-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <div>
-          <div class="sc-value">{{ summary.activeCampaigns }}</div>
-          <div class="sc-label">Active Campaigns</div>
-        </div>
+      <div class="pbi-slicer">
+        <label class="pbi-slicer-label">Campaign</label>
+        <select class="pbi-slicer-select" (change)="onFilterChange('campaign', $any($event.target).value)">
+          <option value="all">All Campaigns</option>
+          <option *ngFor="let c of allCampaignNames" [value]="c">{{ c }}</option>
+        </select>
       </div>
-      <div class="summary-card">
-        <div class="sc-icon orange-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
-        <div>
-          <div class="sc-value">{{ summary.avgClickRate }}%</div>
-          <div class="sc-label">Avg Click Rate</div>
-        </div>
+      <div class="pbi-slicer">
+        <label class="pbi-slicer-label">Risk Level</label>
+        <select class="pbi-slicer-select" (change)="onFilterChange('risk', $any($event.target).value)">
+          <option value="all">All Levels</option>
+          <option value="high">High Risk</option>
+          <option value="medium">Medium Risk</option>
+          <option value="low">Low Risk</option>
+        </select>
       </div>
-      <div class="summary-card">
-        <div class="sc-icon red-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div class="pbi-slicer">
+        <label class="pbi-slicer-label">Event Type</label>
+        <select class="pbi-slicer-select" (change)="onFilterChange('event', $any($event.target).value)">
+          <option value="all">All Events</option>
+          <option value="email_delivered">Delivered</option>
+          <option value="email_opened">Opened</option>
+          <option value="link_clicked">Clicked</option>
+          <option value="credential_attempt">Credentials</option>
+        </select>
+      </div>
+      <button class="pbi-clear-btn" (click)="clearFilters()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+        Clear
+      </button>
+      <span class="pbi-filter-count" *ngIf="activeFilterCount > 0">{{ activeFilterCount }} filter{{ activeFilterCount > 1 ? 's' : '' }} active</span>
+    </div>
+
+    <!-- Row 1: KPI Cards -->
+    <div class="pbi-kpi-row">
+      <div class="pbi-kpi-card" *ngFor="let kpi of kpiCards">
+        <div class="pbi-kpi-header">{{ kpi.label }}</div>
+        <div class="pbi-kpi-body">
+          <span class="pbi-kpi-value">{{ kpi.value }}</span>
+          <span class="pbi-kpi-trend" [ngClass]="kpi.trendDir">
+            <svg *ngIf="kpi.trendDir === 'up'" width="12" height="12" viewBox="0 0 12 12"><path d="M6 2L10 7H2L6 2Z" fill="currentColor"/></svg>
+            <svg *ngIf="kpi.trendDir === 'down'" width="12" height="12" viewBox="0 0 12 12"><path d="M6 10L2 5H10L6 10Z" fill="currentColor"/></svg>
+            <svg *ngIf="kpi.trendDir === 'neutral'" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="2" rx="1" fill="currentColor"/></svg>
+            {{ kpi.trendText }}
+          </span>
         </div>
-        <div>
-          <div class="sc-value">{{ summary.highRiskCount }}</div>
-          <div class="sc-label">High Risk Employees</div>
+        <div class="pbi-kpi-bar">
+          <div class="pbi-kpi-bar-fill" [style.width.%]="kpi.barPercent" [style.background]="kpi.color"></div>
         </div>
       </div>
     </div>
 
-    <!-- Charts Row -->
-    <div class="charts-grid">
-      <div class="glass-card chart-card wide">
-        <h3 class="section-label">Department Click Rates</h3>
-        <div class="chart-wrap">
-          <canvas #deptChart></canvas>
+    <!-- Row 2: Main Charts -->
+    <div class="pbi-grid-2col">
+      <!-- Department Click Rates -->
+      <div class="pbi-tile">
+        <div class="pbi-tile-header">Department Click Rates <small>(Click to filter)</small></div>
+        <div class="pbi-tile-body">
+          <div class="pbi-chart-area">
+            <canvas #deptChart></canvas>
+          </div>
         </div>
       </div>
-      <div class="glass-card chart-card">
-        <h3 class="section-label">Risk Distribution</h3>
-        <div class="chart-wrap">
-          <canvas #riskChart></canvas>
+
+      <!-- Risk Gauge + Distribution -->
+      <div class="pbi-tile">
+        <div class="pbi-tile-header">Risk Distribution <small>(Click to filter)</small></div>
+        <div class="pbi-tile-body">
+          <div class="pbi-chart-area">
+            <canvas #riskChart></canvas>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Trend Chart -->
-    <div class="glass-card chart-card full-width">
-      <h3 class="section-label">Campaign Performance Trend</h3>
-      <div class="chart-wrap tall">
-        <canvas #trendChart></canvas>
+    <!-- Row 3: Trend + Events -->
+    <div class="pbi-grid-2col">
+      <div class="pbi-tile wide">
+        <div class="pbi-tile-header">Campaign Performance Trend</div>
+        <div class="pbi-tile-body">
+          <div class="pbi-chart-area tall">
+            <canvas #trendChart></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="pbi-tile">
+        <div class="pbi-tile-header">Event Funnel <small>(Click to filter)</small></div>
+        <div class="pbi-tile-body">
+          <div class="pbi-chart-area tall">
+            <canvas #funnelChart></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Department Table -->
-    <div class="glass-card" *ngIf="deptStats.length > 0">
-      <h3 class="section-label">Department Breakdown</h3>
-      <table class="dept-table">
-        <thead>
-          <tr>
-            <th>Department</th>
-            <th>Employees</th>
-            <th>Clicked</th>
-            <th>Cred Attempts</th>
-            <th>Click Rate</th>
-            <th>Avg Risk</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let d of deptStats">
-            <td class="dept-name">{{ d.department }}</td>
-            <td>{{ d.totalCount }}</td>
-            <td [class.warn]="d.clicked > 0">{{ d.clicked }}</td>
-            <td [class.danger]="d.credentialAttempts > 0">{{ d.credentialAttempts }}</td>
-            <td>
-              <div class="inline-bar">
-                <span>{{ d.clickRate }}%</span>
-                <div class="bar-track"><div class="bar-fill" [style.width.%]="d.clickRate"></div></div>
-              </div>
-            </td>
-            <td>
-              <span class="risk-badge" [ngClass]="d.avgRiskScore >= 70 ? 'risk-high' : d.avgRiskScore >= 30 ? 'risk-medium' : 'risk-low'">
-                {{ d.avgRiskScore >= 70 ? 'High' : d.avgRiskScore >= 30 ? 'Medium' : 'Low' }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Row 4: Radar + Stacked -->
+    <div class="pbi-grid-2col">
+      <div class="pbi-tile">
+        <div class="pbi-tile-header">Department Risk Radar</div>
+        <div class="pbi-tile-body">
+          <div class="pbi-chart-area tall">
+            <canvas #radarChart></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="pbi-tile wide">
+        <div class="pbi-tile-header">Department Threat Breakdown</div>
+        <div class="pbi-tile-body">
+          <div class="pbi-chart-area tall">
+            <canvas #stackedChart></canvas>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Row 5: Data Table -->
+    <div class="pbi-tile full-width">
+      <div class="pbi-tile-header">Department Breakdown</div>
+      <div class="pbi-tile-body no-pad">
+        <table class="pbi-table" *ngIf="deptStats.length > 0">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th class="num">Employees</th>
+              <th class="num">Clicked</th>
+              <th class="num">Cred Attempts</th>
+              <th>Click Rate</th>
+              <th class="num">Avg Risk</th>
+              <th>Risk Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of deptStats">
+              <td class="dept-name">{{ d.department }}</td>
+              <td class="num">{{ d.totalCount }}</td>
+              <td class="num" [class.warn-cell]="d.clicked > 0">{{ d.clicked }}</td>
+              <td class="num" [class.danger-cell]="d.credentialAttempts > 0">{{ d.credentialAttempts }}</td>
+              <td>
+                <div class="pbi-inline-bar">
+                  <span class="pbi-bar-label">{{ d.clickRate }}%</span>
+                  <div class="pbi-bar-track"><div class="pbi-bar-fill" [style.width.%]="d.clickRate"></div></div>
+                </div>
+              </td>
+              <td class="num">{{ d.avgRiskScore }}</td>
+              <td>
+                <span class="pbi-risk-badge" [ngClass]="d.avgRiskScore >= 70 ? 'high' : d.avgRiskScore >= 30 ? 'medium' : 'low'">
+                  {{ d.avgRiskScore >= 70 ? 'HIGH' : d.avgRiskScore >= 30 ? 'MEDIUM' : 'LOW' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pbi-empty" *ngIf="deptStats.length === 0">No department data available.</div>
+      </div>
+    </div>
+
   </div>
 </div>

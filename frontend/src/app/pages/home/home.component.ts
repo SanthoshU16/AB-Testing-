@@ -1,21 +1,24 @@
-import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { Hero3dDirective } from '../../shared/directives/hero-3d.directive';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NavbarComponent, Hero3dDirective],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   title = 'Armor Bridz';
-  navScrolled = false;
-  showBackToTop = false;
-  showScrollDown = true;
-  mobileMenuOpen = false;
-  mobileDropdowns: { [key: string]: boolean } = {};
+  isLoggedIn = false;
+  private authSub?: Subscription;
+
+  constructor(private authService: AuthService) {}
 
   stats = [
     { prefix: '', target: 91, suffix: '%', current: '0', isFloat: false, label: 'of breaches start with phishing' },
@@ -86,7 +89,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     { label: 'Mar', height: '15%', color: '#2563EB' }
   ];
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.authSub = this.authService.currentUser$.subscribe(user => {
+      this.isLoggedIn = !!user;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.authSub?.unsubscribe();
+  }
 
   ngAfterViewInit(): void {
     this.observeAnimations();
@@ -128,28 +139,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         card.style.setProperty('--tilt-y', '0deg');
       });
     });
-  }
-
-  @HostListener('window:scroll')
-  onScroll(): void {
-    this.navScrolled = window.scrollY > 20;
-    this.showBackToTop = window.scrollY > 200;
-    this.showScrollDown = window.scrollY > 200;
-  }
-
-  toggleMobileMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
-    document.body.style.overflow = this.mobileMenuOpen ? 'hidden' : '';
-  }
-
-  closeMobileMenu(): void {
-    this.mobileMenuOpen = false;
-    this.mobileDropdowns = {};
-    document.body.style.overflow = '';
-  }
-
-  toggleMobileDropdown(key: string): void {
-    this.mobileDropdowns[key] = !this.mobileDropdowns[key];
   }
 
   animationGeneration = 0;
@@ -277,15 +266,5 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       requestAnimationFrame(update);
     });
-  }
-
-  scrollTo(id: string): void {
-    this.closeMobileMenu();
-    const el = document.getElementById(id);
-    if (el) {
-      const offset = 80;
-      const top = el.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
   }
 }

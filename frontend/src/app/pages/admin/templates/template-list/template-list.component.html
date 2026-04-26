@@ -37,6 +37,13 @@
       </p>
 
       <div class="template-card-footer">
+        <button class="tpl-action-btn preview-btn" (click)="openPreview(tpl)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          Preview
+        </button>
         <a [routerLink]="['/admin/templates', tpl.id]" class="tpl-action-btn edit-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -66,6 +73,23 @@
       </svg>
       <h3>No Templates Yet</h3>
       <p>Create your first phishing template.</p>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal-overlay" *ngIf="previewTemplateData" (click)="closePreview()">
+    <div class="preview-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3 class="modal-title">Template Preview</h3>
+        <button class="close-btn" (click)="closePreview()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="email-preview-header">
+          <div class="preview-row"><strong>From:</strong> {{ previewTemplateData.senderName }} &lt;{{ previewTemplateData.senderEmail }}&gt;</div>
+          <div class="preview-row"><strong>Subject:</strong> {{ previewTemplateData.subject }}</div>
+        </div>
+        <div class="email-preview-content" [innerHTML]="previewHtmlContent"></div>
+      </div>
     </div>
   </div>
 </div>

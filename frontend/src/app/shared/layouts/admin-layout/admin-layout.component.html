@@ -1,11 +1,11 @@
-<div class="admin-wrapper">
+<div class="admin-wrapper" [class.sidebar-collapsed]="sidebarCollapsed">
   <!-- Sidebar -->
-  <app-admin-sidebar></app-admin-sidebar>
+  <app-admin-sidebar [collapsed]="sidebarCollapsed" (toggle)="toggleSidebar()"></app-admin-sidebar>
 
   <!-- Main Content Area -->
   <div class="main-content-wrapper">
     <!-- Topbar -->
-    <app-admin-topbar></app-admin-topbar>
+    <app-admin-topbar [sidebarCollapsed]="sidebarCollapsed" (toggleSidebar)="toggleSidebar()"></app-admin-topbar>
     
     <!-- Render child routes here -->
     <main class="content-area">

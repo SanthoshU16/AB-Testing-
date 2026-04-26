@@ -31,6 +31,9 @@ public class EmployeeService {
     }
 
     public String createEmployee(Employee employee) throws ExecutionException, InterruptedException {
+        long now = System.currentTimeMillis();
+        employee.setCreatedAt(now);
+        employee.setUpdatedAt(now);
         ApiFuture<DocumentReference> future = firestore.collection(COLLECTION).add(employee);
         return future.get().getId();
     }
@@ -41,7 +44,10 @@ public class EmployeeService {
 
     public void uploadMultipleEmployees(List<Employee> employees) throws ExecutionException, InterruptedException {
         WriteBatch batch = firestore.batch();
+        long now = System.currentTimeMillis();
         for (Employee emp : employees) {
+            emp.setCreatedAt(now);
+            emp.setUpdatedAt(now);
             DocumentReference docRef = firestore.collection(COLLECTION).document();
             batch.set(docRef, emp);
         }

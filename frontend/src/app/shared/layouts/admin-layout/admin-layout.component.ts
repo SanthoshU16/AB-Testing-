@@ -12,4 +12,9 @@ import { AdminTopbarComponent } from '../../../components/admin-topbar/admin-top
   styleUrls: ['./admin-layout.component.css']
 })
 export class AdminLayoutComponent {
+  sidebarCollapsed = false;
+
+  toggleSidebar(): void {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
 }

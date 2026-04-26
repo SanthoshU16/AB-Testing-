@@ -10,6 +10,7 @@ import { CareerComponent } from './pages/career/career.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { TermsComponent } from './pages/terms/terms.component';
 import { PrivacyComponent } from './pages/privacy/privacy.component';
+import { PricingComponent } from './pages/pricing/pricing.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,6 +28,8 @@ export const routes: Routes = [
   { path: 'terms', component: TermsComponent },
 
   { path: 'privacy', component: PrivacyComponent },
+
+  { path: 'pricing', component: PricingComponent },
 
   // ── Public phishing tracking route (no auth required) ──────────────────
   {
@@ -131,6 +134,45 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/admin/reports/reports.component').then(
             (m) => m.ReportsComponent
+          )
+      },
+
+      // Notifications
+      {
+        path: 'notifications',
+        loadComponent: () =>
+          import('./pages/admin/notifications/notifications.component').then(
+            (m) => m.NotificationsComponent
+          )
+      },
+
+      // User Menu Pages
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/admin/profile/profile.component').then(
+            (m) => m.ProfileComponent
+          )
+      },
+      {
+        path: 'personalization',
+        loadComponent: () =>
+          import('./pages/admin/personalization/personalization.component').then(
+            (m) => m.PersonalizationComponent
+          )
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./pages/admin/settings/settings.component').then(
+            (m) => m.SettingsComponent
+          )
+      },
+      {
+        path: 'upgrade-plan',
+        loadComponent: () =>
+          import('./pages/admin/upgrade-plan/upgrade-plan.component').then(
+            (m) => m.UpgradePlanComponent
           )
       }
     ]

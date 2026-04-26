@@ -71,7 +71,7 @@
 
       <div class="glass-card">
         <div class="body-header">
-          <h3 class="section-label">Email Body (HTML) *</h3>
+          <h3 class="section-label">Email Body *</h3>
           <button class="insert-link-btn" (click)="insertTrackingLink()" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
               <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
@@ -82,7 +82,7 @@
         </div>
         <div class="hint-text">Use <code>&#123;&#123;TRACKING_LINK&#125;&#125;</code> as the phishing URL placeholder.</div>
         <textarea class="apple-input body-textarea" [(ngModel)]="template.bodyHtml"
-          placeholder="Enter HTML email body here..."></textarea>
+          placeholder="Enter email content here..."></textarea>
       </div>
     </div>
 

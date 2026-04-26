@@ -7,38 +7,81 @@
   </div>
 
   <div class="loading-state" *ngIf="isLoading">
-    <div class="spinner"></div><p>Preparing reports...</p>
+    <div class="spinner"></div>
+    <p>Preparing reports...</p>
   </div>
 
   <div *ngIf="!isLoading">
-    <!-- Summary Bar -->
-    <div class="summary-bar">
-      <div class="sb-item">
-        <span class="sb-val">{{ campaigns.length }}</span>
-        <span class="sb-lbl">Total Campaigns</span>
-      </div>
-      <div class="sb-item">
-        <span class="sb-val">{{ employees.length }}</span>
-        <span class="sb-lbl">Employees</span>
-      </div>
-      <div class="sb-item">
-        <span class="sb-val">{{ events.length }}</span>
-        <span class="sb-lbl">Tracking Events</span>
-      </div>
-      <div class="sb-item">
-        <span class="sb-val danger">{{ events | credCount }}</span>
-        <span class="sb-lbl">Cred Attempts</span>
-      </div>
+    <!-- Summary Stat Cards -->
+    <div class="stats-grid">
+      <app-stat-card *ngFor="let stat of stats; let i = index" 
+        [title]="stat.title" 
+        [value]="stat.value"
+        [iconSvg]="stat.iconSvg" 
+        [gradient]="stat.gradient" 
+        [delay]="i * 0.08">
+      </app-stat-card>
     </div>
 
     <!-- Report Cards -->
     <div class="report-cards-grid">
+      <!-- Executive Summary Report -->
+      <div class="report-card">
+        <div class="rc-icon" style="background: linear-gradient(135deg, #0A2540 0%, #1A365D 100%);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+        </div>
+        <div class="rc-body">
+          <h3 class="rc-title">Executive Summary Report</h3>
+          <p class="rc-desc">High-level overview of platform totals including total campaigns, employees, tracking events, and credential attempts.</p>
+          <div class="rc-meta">
+            <span class="format-badge">PDF</span>
+            <span class="format-badge csv">CSV</span>
+            <span class="rc-count">Platform wide</span>
+          </div>
+        </div>
+        <div class="rc-actions">
+          <button class="export-btn preview-btn" (click)="previewReport('exec')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            Preview
+          </button>
+          <button class="export-btn pdf-btn" (click)="exportExecutiveSummary('pdf')"
+            [class.loading]="exportingCard === 'exec-pdf'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Export PDF
+          </button>
+          <button class="export-btn csv-btn" (click)="exportExecutiveSummary('csv')"
+            [class.loading]="exportingCard === 'exec-csv'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export CSV
+          </button>
+        </div>
+      </div>
+
       <!-- Campaign Summary Report -->
       <div class="report-card">
-        <div class="rc-icon">📊</div>
+        <div class="rc-icon chart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </div>
         <div class="rc-body">
           <h3 class="rc-title">Campaign Summary Report</h3>
-          <p class="rc-desc">Overview of all campaigns including send counts, click rates, and credential attempts. Ideal for security briefings.</p>
+          <p class="rc-desc">Overview of all campaigns including send counts, click rates, and credential attempts.
+            Ideal for security briefings.</p>
           <div class="rc-meta">
             <span class="format-badge">PDF</span>
             <span class="format-badge csv">CSV</span>
@@ -46,17 +89,27 @@
           </div>
         </div>
         <div class="rc-actions">
+          <button class="export-btn preview-btn" (click)="previewReport('campaign')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            Preview
+          </button>
           <button class="export-btn pdf-btn" (click)="exportCampaignSummary('pdf')"
             [class.loading]="exportingCard === 'campaign-pdf'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
             </svg>
             Export PDF
           </button>
           <button class="export-btn csv-btn" (click)="exportCampaignSummary('csv')"
             [class.loading]="exportingCard === 'campaign-csv'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
             Export CSV
           </button>
@@ -65,10 +118,18 @@
 
       <!-- Employee Failure Report -->
       <div class="report-card">
-        <div class="rc-icon">👤</div>
+        <div class="rc-icon user">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <line x1="23" y1="11" x2="17" y2="11"></line>
+            <line x1="20" y1="8" x2="20" y2="14"></line>
+          </svg>
+        </div>
         <div class="rc-body">
           <h3 class="rc-title">Employee Failure Report</h3>
-          <p class="rc-desc">Detailed list of employees who clicked phishing links or submitted credentials. Used for targeted training.</p>
+          <p class="rc-desc">Detailed list of employees who clicked phishing links or submitted credentials. Used for
+            targeted training.</p>
           <div class="rc-meta">
             <span class="format-badge">PDF</span>
             <span class="format-badge csv">CSV</span>
@@ -76,17 +137,27 @@
           </div>
         </div>
         <div class="rc-actions">
+          <button class="export-btn preview-btn" (click)="previewReport('employee')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            Preview
+          </button>
           <button class="export-btn pdf-btn" (click)="exportEmployeeFailure('pdf')"
             [class.loading]="exportingCard === 'employee-pdf'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
             </svg>
             Export PDF
           </button>
           <button class="export-btn csv-btn" (click)="exportEmployeeFailure('csv')"
             [class.loading]="exportingCard === 'employee-csv'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
             Export CSV
           </button>
@@ -95,10 +166,17 @@
 
       <!-- Department Risk Report -->
       <div class="report-card">
-        <div class="rc-icon">🏢</div>
+        <div class="rc-icon office">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+        </div>
         <div class="rc-body">
           <h3 class="rc-title">Department Risk Report</h3>
-          <p class="rc-desc">Aggregated risk scores and phishing click rates grouped by department. Required for ISO 27001 and compliance audits.</p>
+          <p class="rc-desc">Aggregated risk scores and phishing click rates grouped by department. Required for ISO
+            27001 and compliance audits.</p>
           <div class="rc-meta">
             <span class="format-badge">PDF</span>
             <span class="format-badge csv">CSV</span>
@@ -106,17 +184,27 @@
           </div>
         </div>
         <div class="rc-actions">
+          <button class="export-btn preview-btn" (click)="previewReport('department')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            Preview
+          </button>
           <button class="export-btn pdf-btn" (click)="exportDepartmentRisk('pdf')"
             [class.loading]="exportingCard === 'dept-pdf'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
             </svg>
             Export PDF
           </button>
           <button class="export-btn csv-btn" (click)="exportDepartmentRisk('csv')"
             [class.loading]="exportingCard === 'dept-csv'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
             Export CSV
           </button>
@@ -127,9 +215,30 @@
     <!-- Compliance Note -->
     <div class="compliance-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
       </svg>
       <span>Reports are generated from live data and can be used for <strong>ISO 27001</strong>, security awareness audits, and corporate compliance tracking.</span>
+    </div>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="preview-modal-backdrop" *ngIf="isPreviewOpen" (click)="closePreview()">
+    <div class="preview-modal-content" (click)="$event.stopPropagation()">
+      <div class="preview-modal-header">
+        <button class="back-btn" (click)="closePreview()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Back
+        </button>
+        <h3>Report Preview</h3>
+      </div>
+      <div class="preview-modal-body">
+        <iframe *ngIf="safePreviewUrl" [src]="safePreviewUrl" width="100%" height="100%" frameborder="0"></iframe>
+      </div>
     </div>
   </div>
 </div>

@@ -1,114 +1,221 @@
+/* =============================================
+   ADMIN TOPBAR — Minimal Apple-inspired
+   ============================================= */
+
 .admin-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 80px;
   padding: 0 32px;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(10, 37, 64, 0.08);
   position: sticky;
   top: 0;
-  z-index: 100;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  z-index: 500;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* ─── Left Section ───────────────────────────────── */
 .topbar-left {
-  display: flex;
-  align-items: center;
-}
-
-.page-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin: 0;
-  letter-spacing: -0.02em;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.user-info {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
+/* ─── Breadcrumb ─────────────────────────────────── */
+.breadcrumb-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  letter-spacing: 0.5px;
+  gap: 10px;
 }
 
-.user-details {
+.breadcrumb-root {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(10, 37, 64, 0.45);
+  letter-spacing: -0.01em;
+}
+
+.breadcrumb-sep {
+  color: rgba(10, 37, 64, 0.25);
   display: flex;
-  flex-direction: column;
+  align-items: center;
 }
 
-.user-name {
-  font-size: 0.9rem;
+.breadcrumb-current {
+  font-size: 1.05rem;
   font-weight: 600;
-  color: #1d1d1f;
-  line-height: 1.2;
+  color: var(--text-primary, #0A2540);
+  letter-spacing: -0.01em;
 }
 
-.user-role {
-  font-size: 0.75rem;
-  color: #86868b;
-  margin-top: 2px;
-}
-
-.sign-out-btn {
+/* ─── Right Section ──────────────────────────────── */
+.topbar-right {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+}
+
+.topbar-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(10, 37, 64, 0.04);
+  border: 1px solid rgba(10, 37, 64, 0.06);
+  border-radius: 12px;
+  color: rgba(10, 37, 64, 0.35);
+  cursor: text;
+  transition: all 0.2s ease;
+  width: 280px;
+  position: relative;
+}
+
+.topbar-search:focus-within {
+  background: rgba(10, 37, 64, 0.06);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.search-input {
   background: transparent;
-  border: 1px solid #d2d2d7;
-  border-radius: 10px;
-  color: #1d1d1f;
-  font-size: 0.85rem;
-  font-weight: 500;
+  border: none;
+  outline: none;
+  font-size: 0.9375rem;
+  color: #0A2540;
+  width: 100%;
+  font-family: inherit;
+}
+
+.search-input::placeholder {
+  color: rgba(10, 37, 64, 0.35);
+}
+
+/* ─── Search Dropdown ────────────────────────────── */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(10, 37, 64, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(10, 37, 64, 0.12),
+              0 4px 12px rgba(10, 37, 64, 0.05);
+  padding: 6px;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.sign-out-btn:hover {
-  background: #f5f5f7;
-  border-color: #b0b0b5;
+.search-item:hover {
+  background: rgba(37, 99, 235, 0.06);
 }
 
-.sign-out-btn i {
-  font-size: 1rem;
+.search-item-icon-wrap {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 37, 64, 0.04);
+  border-radius: 6px;
+  color: rgba(10, 37, 64, 0.5);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
 }
 
+.search-item:hover .search-item-icon-wrap {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563EB;
+}
+
+.search-item-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #0A2540;
+}
+
+@keyframes dropdownFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.topbar-icon-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: rgba(10, 37, 64, 0.45);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.topbar-icon-btn:hover {
+  background: rgba(10, 37, 64, 0.05);
+  color: var(--text-primary, #0A2540);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: #2563EB;
+  color: white;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background: #2563EB;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+}
+
+/* ─── Responsive ─────────────────────────────────── */
 @media (max-width: 768px) {
-  .user-details {
-    display: none;
-  }
-  
-  .sign-out-text {
-    display: none;
-  }
-  
-  .sign-out-btn {
-    padding: 8px;
-  }
-  
   .admin-topbar {
     padding: 0 16px;
+    height: 72px;
+  }
+  
+  .topbar-search {
+    display: none;
   }
 }
