@@ -59,10 +59,10 @@ export class AdminTopbarComponent implements OnInit, OnDestroy {
     this.updatePageTitle(this.router.url);
     this.trackingService.loadAllEvents();
     
-    // Poll for new events to keep notifications updated
+    // Poll for new events to keep notifications updated (reduced frequency to save Firebase quota)
     this.pollInterval = setInterval(() => {
       this.trackingService.loadAllEvents();
-    }, 5000);
+    }, 60000);
 
     this.notificationService.unreadCount$.subscribe((count: number) => {
       this.unreadCount = count;
