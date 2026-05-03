@@ -24,4 +24,9 @@ public class PhishingTemplate {
     private Boolean isDefault;
     private Long createdAt;
     private Long updatedAt;
+    // Landing page customization
+    private String landingBrand;
+    private String landingLogoUrl;
+    private String landingPrimaryColor;
+    private String landingBgColor;
 }

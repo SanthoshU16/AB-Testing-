@@ -12,7 +12,8 @@
 
   <!-- Loading -->
   <div class="loading-state" *ngIf="isLoading">
-    <div class="spinner"></div><p>Loading dashboard...</p>
+    <div class="spinner"></div>
+    <p>Loading dashboard...</p>
   </div>
 
   <div class="pbi-content" *ngIf="!isLoading">
@@ -53,10 +54,15 @@
         </select>
       </div>
       <button class="pbi-clear-btn" (click)="clearFilters()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 6h18" />
+          <path d="M8 6V4h8v2" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+        </svg>
         Clear
       </button>
-      <span class="pbi-filter-count" *ngIf="activeFilterCount > 0">{{ activeFilterCount }} filter{{ activeFilterCount > 1 ? 's' : '' }} active</span>
+      <span class="pbi-filter-count" *ngIf="activeFilterCount > 0">{{ activeFilterCount }} filter{{ activeFilterCount >
+        1 ? 's' : '' }} active</span>
     </div>
 
     <!-- Row 1: KPI Cards -->
@@ -66,9 +72,15 @@
         <div class="pbi-kpi-body">
           <span class="pbi-kpi-value">{{ kpi.value }}</span>
           <span class="pbi-kpi-trend" [ngClass]="kpi.trendDir">
-            <svg *ngIf="kpi.trendDir === 'up'" width="12" height="12" viewBox="0 0 12 12"><path d="M6 2L10 7H2L6 2Z" fill="currentColor"/></svg>
-            <svg *ngIf="kpi.trendDir === 'down'" width="12" height="12" viewBox="0 0 12 12"><path d="M6 10L2 5H10L6 10Z" fill="currentColor"/></svg>
-            <svg *ngIf="kpi.trendDir === 'neutral'" width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5" width="10" height="2" rx="1" fill="currentColor"/></svg>
+            <svg *ngIf="kpi.trendDir === 'up'" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M6 2L10 7H2L6 2Z" fill="currentColor" />
+            </svg>
+            <svg *ngIf="kpi.trendDir === 'down'" width="12" height="12" viewBox="0 0 12 12">
+              <path d="M6 10L2 5H10L6 10Z" fill="currentColor" />
+            </svg>
+            <svg *ngIf="kpi.trendDir === 'neutral'" width="12" height="12" viewBox="0 0 12 12">
+              <rect x="1" y="5" width="10" height="2" rx="1" fill="currentColor" />
+            </svg>
             {{ kpi.trendText }}
           </span>
         </div>
@@ -168,12 +180,15 @@
               <td>
                 <div class="pbi-inline-bar">
                   <span class="pbi-bar-label">{{ d.clickRate }}%</span>
-                  <div class="pbi-bar-track"><div class="pbi-bar-fill" [style.width.%]="d.clickRate"></div></div>
+                  <div class="pbi-bar-track">
+                    <div class="pbi-bar-fill" [style.width.%]="d.clickRate"></div>
+                  </div>
                 </div>
               </td>
               <td class="num">{{ d.avgRiskScore }}</td>
               <td>
-                <span class="pbi-risk-badge" [ngClass]="d.avgRiskScore >= 70 ? 'high' : d.avgRiskScore >= 30 ? 'medium' : 'low'">
+                <span class="pbi-risk-badge"
+                  [ngClass]="d.avgRiskScore >= 70 ? 'high' : d.avgRiskScore >= 30 ? 'medium' : 'low'">
                   {{ d.avgRiskScore >= 70 ? 'HIGH' : d.avgRiskScore >= 30 ? 'MEDIUM' : 'LOW' }}
                 </span>
               </td>

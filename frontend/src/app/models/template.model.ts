@@ -20,4 +20,9 @@ export interface PhishingTemplate {
   isDefault: boolean;
   createdAt?: number;
   updatedAt?: number;
+  // Landing page customization
+  landingBrand?: string;        // e.g. "LinkedIn", "Google", "Dropbox"
+  landingLogoUrl?: string;      // URL to brand logo image
+  landingPrimaryColor?: string; // Button/accent color, e.g. "#0a66c2"
+  landingBgColor?: string;      // Page background color, e.g. "#f3f2ef"
 }

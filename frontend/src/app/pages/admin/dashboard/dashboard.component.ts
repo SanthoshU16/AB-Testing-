@@ -24,6 +24,7 @@ interface ActivityItem {
   meta: string;
   time: number;
   badgeText: string;
+  campaignId?: string;
 }
 
 @Component({
@@ -70,7 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.campaignService.campaigns$,
       this.trackingService.events$
     ]).subscribe(async ([emps, camps, evts]) => {
-      const summary = await this.analyticsService.getPlatformSummary(emps, camps);
+      const summary = this.analyticsService.getPlatformSummary(emps, camps, evts);
       this.stats = [
         {
           title: 'Total Employees',
@@ -127,12 +128,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
             break;
         }
 
+        const campaign = camps.find((c: any) => c.id === evt.campaignId);
+        const campaignName = campaign?.name || evt.campaignName || 'Unknown Campaign';
+
+        const employee = emps.find((e: any) => e.id === evt.employeeId);
+        const employeeEmail = employee?.email || evt.employeeEmail || 'Unknown';
+
         return {
           type,
           title,
-          meta: `${evt.employeeEmail || 'Unknown'} · ${evt.campaignName || 'Unknown Campaign'}`,
+          meta: `${employeeEmail} · ${campaignName}`,
           time: evt.timestamp,
-          badgeText
+          badgeText,
+          campaignId: evt.campaignId
         };
       });
 

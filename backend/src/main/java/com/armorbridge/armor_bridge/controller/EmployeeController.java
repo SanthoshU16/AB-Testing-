@@ -34,4 +34,9 @@ public class EmployeeController {
     public void deleteEmployee(@PathVariable String id) {
         employeeService.deleteEmployee(id);
     }
+
+    @DeleteMapping("/all")
+    public void deleteAllEmployees() throws ExecutionException, InterruptedException {
+        employeeService.deleteAllEmployees();
+    }
 }

@@ -149,14 +149,28 @@
 
 /* ─── Loading ────────────────────────────────────── */
 .loading-state {
-  display: flex; flex-direction: column; align-items: center;
-  padding: 120px; gap: 16px; color: rgba(10, 37, 64, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120px;
+  gap: 16px;
+  color: rgba(10, 37, 64, 0.4);
 }
+
 .spinner {
-  width: 36px; height: 36px; border: 3px solid rgba(10, 37, 64, 0.08);
-  border-top-color: #2563EB; border-radius: 50%; animation: spin 0.8s linear infinite;
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(10, 37, 64, 0.08);
+  border-top-color: #2563EB;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* ─── KPI Cards Row ──────────────────────────────── */
 .pbi-kpi-row {
@@ -176,8 +190,13 @@
   gap: 4px;
 }
 
-.pbi-kpi-card:nth-child(n) { border-left-color: #2563EB; }
-.pbi-kpi-card:nth-child(2n) { border-left-color: #3B82F6; }
+.pbi-kpi-card:nth-child(n) {
+  border-left-color: #2563EB;
+}
+
+.pbi-kpi-card:nth-child(2n) {
+  border-left-color: #3B82F6;
+}
 
 .pbi-kpi-header {
   font-size: 0.6875rem;
@@ -209,9 +228,17 @@
   gap: 3px;
 }
 
-.pbi-kpi-trend.up { color: #34C759; }
-.pbi-kpi-trend.down { color: #FF3B30; }
-.pbi-kpi-trend.neutral { color: rgba(0, 0, 0, 0.3); }
+.pbi-kpi-trend.up {
+  color: #34C759;
+}
+
+.pbi-kpi-trend.down {
+  color: #FF3B30;
+}
+
+.pbi-kpi-trend.neutral {
+  color: rgba(0, 0, 0, 0.3);
+}
 
 .pbi-kpi-bar {
   height: 4px;
@@ -402,14 +429,29 @@
 
 /* ─── Responsive ─────────────────────────────────── */
 @media (max-width: 1200px) {
-  .pbi-grid-2col { grid-template-columns: 1fr; }
-  .pbi-kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .pbi-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .pbi-kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .pbi-content { padding: 12px; }
-  .pbi-kpi-row { grid-template-columns: 1fr 1fr; }
-  .pbi-filter-bar { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .pbi-content {
+    padding: 12px;
+  }
+
+  .pbi-kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pbi-filter-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
 }
 
 .pbi-tile-header small {

@@ -38,4 +38,16 @@ export class TrackingService {
       });
     });
   }
+
+  async resetAllData(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.apiUrl}/reset`).subscribe({
+        next: () => {
+          this.eventsSubject.next([]);
+          resolve();
+        },
+        error: (err) => reject(err)
+      });
+    });
+  }
 }

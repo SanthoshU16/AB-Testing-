@@ -29,6 +29,22 @@ public class CampaignService {
         return campaigns;
     }
 
+    public List<Campaign> getPendingScheduledCampaigns(long now) throws ExecutionException, InterruptedException {
+        List<Campaign> campaigns = new ArrayList<>();
+        // Query only for 'scheduled' campaigns where scheduledAt <= now
+        Query query = firestore.collection(COLLECTION)
+                .whereEqualTo("status", "scheduled")
+                .whereLessThanOrEqualTo("scheduledAt", now);
+        
+        ApiFuture<QuerySnapshot> future = query.get();
+        for (QueryDocumentSnapshot document : future.get().getDocuments()) {
+            Campaign campaign = document.toObject(Campaign.class);
+            campaign.setId(document.getId());
+            campaigns.add(campaign);
+        }
+        return campaigns;
+    }
+
     public String createCampaign(Campaign campaign) throws ExecutionException, InterruptedException {
         long now = System.currentTimeMillis();
         campaign.setCreatedAt(now);
@@ -47,12 +63,22 @@ public class CampaignService {
         return null;
     }
 
-    public void updateCampaign(String id, java.util.Map<String, Object> updates) {
+    public void updateCampaign(String id, java.util.Map<String, Object> updates) throws ExecutionException, InterruptedException {
         updates.put("updatedAt", System.currentTimeMillis());
-        firestore.collection(COLLECTION).document(id).set(updates, SetOptions.merge());
+        firestore.collection(COLLECTION).document(id).set(updates, SetOptions.merge()).get();
     }
 
-    public void deleteCampaign(String id) {
-        firestore.collection(COLLECTION).document(id).delete();
+    public void deleteCampaign(String id) throws ExecutionException, InterruptedException {
+        firestore.collection(COLLECTION).document(id).delete().get();
+    }
+
+    public void deleteAllCampaigns() throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        WriteBatch batch = firestore.batch();
+        for (QueryDocumentSnapshot document : documents) {
+            batch.delete(document.getReference());
+        }
+        batch.commit().get();
     }
 }

@@ -1,8 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
 import { TrackingService } from '../../../services/tracking.service';
 import { NotificationService } from '../../../services/notification.service';
+import { CampaignService } from '../../../services/campaign.service';
+import { EmployeeService } from '../../../services/employee.service';
 
 interface NotificationItem {
   type: 'success' | 'danger' | 'info' | 'warning';
@@ -10,12 +13,13 @@ interface NotificationItem {
   meta: string;
   time: number;
   badgeText: string;
+  campaignId?: string;
 }
 
 @Component({
   selector: 'app-notifications',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <main class="notifications-main">
       <div class="page-header">
@@ -25,7 +29,9 @@ interface NotificationItem {
 
       <div class="notifications-panel">
         <div class="activity-feed">
-          <div class="activity-item" *ngFor="let activity of notifications">
+          <div class="activity-item" *ngFor="let activity of notifications"
+               [routerLink]="activity.campaignId ? ['/admin/campaigns', activity.campaignId] : null"
+               [style.cursor]="activity.campaignId ? 'pointer' : 'default'">
             <div class="activity-dot" [ngClass]="activity.type"></div>
             <div class="activity-body">
               <div class="activity-title">{{ activity.title }}</div>
@@ -90,13 +96,21 @@ interface NotificationItem {
       display: flex;
       align-items: flex-start;
       gap: 16px;
-      padding-bottom: 20px;
+      padding: 16px 12px;
+      margin: 0 -12px;
+      border-radius: 12px;
       border-bottom: 1px solid rgba(10, 37, 64, 0.06);
+      transition: all 0.2s ease;
     }
 
     .activity-item:last-child {
       border-bottom: none;
       padding-bottom: 0;
+    }
+
+    .activity-item[style*="pointer"]:hover {
+      background-color: rgba(10, 37, 64, 0.03);
+      border-bottom-color: transparent;
     }
 
     .activity-item.empty-state {
@@ -173,15 +187,25 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   constructor(
     private trackingService: TrackingService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private campaignService: CampaignService,
+    private employeeService: EmployeeService
   ) {}
 
   async ngOnInit(): Promise<void> {
-    await this.trackingService.loadAllEvents();
+    await Promise.all([
+      this.trackingService.loadAllEvents(),
+      this.campaignService.loadCampaigns(),
+      this.employeeService.loadEmployees()
+    ]);
     this.notificationService.markAllAsRead();
     
-    this.sub = this.trackingService.events$.subscribe((evts: any[]) => {
-      this.notifications = evts.map(evt => {
+    this.sub = combineLatest([
+      this.trackingService.events$,
+      this.campaignService.campaigns$,
+      this.employeeService.employees$
+    ]).subscribe(([evts, camps, emps]) => {
+      this.notifications = evts.map((evt: any) => {
         let type: NotificationItem['type'] = 'info';
         let title = '';
         let badgeText = '';
@@ -209,14 +233,21 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             break;
         }
 
+        const campaign = camps.find((c: any) => c.id === evt.campaignId);
+        const campaignName = campaign?.name || evt.campaignName || 'Unknown Campaign';
+        
+        const employee = emps.find((e: any) => e.id === evt.employeeId);
+        const employeeEmail = employee?.email || evt.employeeEmail || 'Unknown';
+
         return {
           type,
           title,
-          meta: `${evt.employeeEmail || 'Unknown'} · ${evt.campaignName || 'Unknown Campaign'}`,
+          meta: `${employeeEmail} · ${campaignName}`,
           time: evt.timestamp,
-          badgeText
+          badgeText,
+          campaignId: evt.campaignId
         };
-      }).sort((a, b) => b.time - a.time);
+      }).sort((a: any, b: any) => b.time - a.time);
     });
   }
 

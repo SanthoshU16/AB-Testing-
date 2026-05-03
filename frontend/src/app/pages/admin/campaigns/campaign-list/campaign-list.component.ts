@@ -32,7 +32,8 @@ export class CampaignListComponent implements OnInit, OnDestroy {
   getClickRate(campaign: Campaign): number {
     const sent = campaign.stats?.totalSent ?? 0;
     const clicked = campaign.stats?.clicked ?? 0;
-    return sent > 0 ? Math.round((clicked / sent) * 100) : 0;
+    const rate = sent > 0 ? Math.round((clicked / sent) * 100) : 0;
+    return Math.min(100, rate);
   }
 
   getStatusClass(status: string): string {

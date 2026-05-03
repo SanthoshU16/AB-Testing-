@@ -110,12 +110,22 @@ export class AuthService {
     this.ngZone.run(() => this.router.navigate(['/']));
   }
 
-  // ─── Sign Out ────────────────────────────────────────────────────────
+  // ─── Sign Out / Delete ───────────────────────────────────────────────
 
   async signOut(): Promise<void> {
     await signOut(this.firebase.auth);
     this.userProfileSubject.next(null);
     this.ngZone.run(() => this.router.navigate(['/sign-in']));
+  }
+
+  async deleteAccount(): Promise<void> {
+    // 1. Tell backend to delete from Firestore and Firebase Auth
+    await firstValueFrom(this.http.delete(`${this.apiUrl}/me`));
+    
+    // 2. Clear local state and redirect
+    this.userProfileSubject.next(null);
+    this.currentUserSubject.next(null);
+    this.ngZone.run(() => this.router.navigate(['/sign-up']));
   }
 
   // ─── Helpers ─────────────────────────────────────────────────────────

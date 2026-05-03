@@ -73,4 +73,16 @@ export class CampaignService {
       });
     });
   }
+
+  async deleteAllCampaigns(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.http.delete(`${this.apiUrl}/all`).subscribe({
+        next: () => {
+          this.loadCampaigns();
+          resolve();
+        },
+        error: (err) => reject(err)
+      });
+    });
+  }
 }

@@ -58,4 +58,11 @@ public class UserService {
     public void updateLastLogin(String uid) {
         firestore.collection(COLLECTION).document(uid).update("lastLogin", System.currentTimeMillis());
     }
+
+    public void deleteUserAccount(String uid) throws com.google.firebase.auth.FirebaseAuthException, ExecutionException, InterruptedException {
+        // Delete from Firestore
+        firestore.collection(COLLECTION).document(uid).delete().get();
+        // Delete from Firebase Auth
+        com.google.firebase.auth.FirebaseAuth.getInstance().deleteUser(uid);
+    }
 }

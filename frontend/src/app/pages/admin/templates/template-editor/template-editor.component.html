@@ -70,19 +70,178 @@
       </div>
 
       <div class="glass-card">
-        <div class="body-header">
-          <h3 class="section-label">Email Body *</h3>
-          <button class="insert-link-btn" (click)="insertTrackingLink()" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-            </svg>
-            Insert Tracking Link
-          </button>
+        <h3 class="section-label">Landing Page Appearance</h3>
+        <p class="section-hint">Customize how the fake login page looks when the target clicks the phishing link.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Brand Name *</label>
+            <input type="text" class="apple-input" [(ngModel)]="template.landingBrand"
+              placeholder="e.g. LinkedIn, Google, Dropbox">
+          </div>
+          <div class="form-group">
+            <label>Logo URL</label>
+            <input type="text" class="apple-input" [(ngModel)]="template.landingLogoUrl"
+              placeholder="https://example.com/logo.png">
+          </div>
         </div>
-        <div class="hint-text">Use <code>&#123;&#123;TRACKING_LINK&#125;&#125;</code> as the phishing URL placeholder.</div>
-        <textarea class="apple-input body-textarea" [(ngModel)]="template.bodyHtml"
-          placeholder="Enter email content here..."></textarea>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Button / Accent Color</label>
+            <div class="color-picker-row">
+              <input type="color" class="color-swatch" [(ngModel)]="template.landingPrimaryColor">
+              <input type="text" class="apple-input color-text" [(ngModel)]="template.landingPrimaryColor"
+                placeholder="#0a66c2">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Background Color</label>
+            <div class="color-picker-row">
+              <input type="color" class="color-swatch" [(ngModel)]="template.landingBgColor">
+              <input type="text" class="apple-input color-text" [(ngModel)]="template.landingBgColor"
+                placeholder="#f3f2ef">
+            </div>
+          </div>
+        </div>
+        <div class="landing-preview-mini" *ngIf="template.landingBrand"
+             [style.background]="template.landingBgColor || '#f3f2ef'">
+          <div class="mini-card">
+            <img *ngIf="template.landingLogoUrl" [src]="template.landingLogoUrl" class="mini-logo" alt="Logo">
+            <div *ngIf="!template.landingLogoUrl" class="mini-logo-placeholder"
+                 [style.background]="template.landingPrimaryColor || '#0a66c2'">
+              {{ template.landingBrand.charAt(0) || '?' }}
+            </div>
+            <div class="mini-brand">{{ template.landingBrand }}</div>
+            <div class="mini-input-fake"></div>
+            <div class="mini-btn-fake" [style.background]="template.landingPrimaryColor || '#0a66c2'">Sign in</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="body-header">
+          <h3 class="section-label">Email Body (HTML) *</h3>
+          <div class="editor-mode-toggle">
+            <button class="mode-btn" [class.active]="editorMode === 'visual'" (click)="editorMode = 'visual'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Visual
+            </button>
+            <button class="mode-btn" [class.active]="editorMode === 'code'" (click)="editorMode = 'code'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              HTML Code
+            </button>
+          </div>
+        </div>
+
+        <div class="hint-text">
+          Use <code ngNonBindable>{{TRACKING_LINK}}</code> as the phishing URL placeholder.
+          Use <code ngNonBindable>{{EMPLOYEE_NAME}}</code> for the recipient's name.
+        </div>
+
+        <!-- Visual Editor Toolbar -->
+        <div class="editor-toolbar" *ngIf="editorMode === 'visual'">
+          <div class="toolbar-group">
+            <button class="toolbar-btn" (click)="execCmd('bold')" title="Bold">
+              <strong>B</strong>
+            </button>
+            <button class="toolbar-btn" (click)="execCmd('italic')" title="Italic">
+              <em>I</em>
+            </button>
+            <button class="toolbar-btn" (click)="execCmd('underline')" title="Underline">
+              <span style="text-decoration: underline;">U</span>
+            </button>
+            <button class="toolbar-btn" (click)="execCmd('strikeThrough')" title="Strikethrough">
+              <span style="text-decoration: line-through;">S</span>
+            </button>
+          </div>
+          <div class="toolbar-divider"></div>
+          <div class="toolbar-group">
+            <button class="toolbar-btn" (click)="execCmd('justifyLeft')" title="Align Left">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/>
+                <line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/>
+              </svg>
+            </button>
+            <button class="toolbar-btn" (click)="execCmd('justifyCenter')" title="Align Center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/>
+                <line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/>
+              </svg>
+            </button>
+          </div>
+          <div class="toolbar-divider"></div>
+          <div class="toolbar-group">
+            <button class="toolbar-btn" (click)="execCmd('insertUnorderedList')" title="Bullet List">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+            </button>
+            <button class="toolbar-btn" (click)="execCmd('insertOrderedList')" title="Numbered List">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/>
+                <line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/>
+                <path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>
+              </svg>
+            </button>
+          </div>
+          <div class="toolbar-divider"></div>
+          <div class="toolbar-group">
+            <select class="toolbar-select" (change)="execCmdWithArg('fontSize', $event)" title="Font Size">
+              <option value="">Size</option>
+              <option value="1">Small</option>
+              <option value="3">Normal</option>
+              <option value="5">Large</option>
+              <option value="7">Huge</option>
+            </select>
+            <input type="color" class="toolbar-color" (input)="execCmdWithArg('foreColor', $event)" title="Text Color" value="#000000">
+            <input type="color" class="toolbar-color" (input)="execCmdWithArg('hiliteColor', $event)" title="Highlight Color" value="#ffffff">
+          </div>
+          <div class="toolbar-divider"></div>
+          <div class="toolbar-group">
+            <button class="toolbar-btn" (click)="insertLink()" title="Insert Link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+            </button>
+            <button class="toolbar-btn insert-tracking" (click)="insertTrackingLinkVisual()" title="Insert Tracking Link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+              Phishing Link
+            </button>
+            <button class="toolbar-btn" (click)="insertHr()" title="Horizontal Line">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <line x1="2" y1="12" x2="22" y2="12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="wysiwyg-editor"
+             *ngIf="editorMode === 'visual'"
+             #visualEditor
+             contenteditable="true"
+             (input)="onVisualInput($event)"
+             [innerHTML]="safeBodyHtml"
+             data-placeholder="Start designing your email here...">
+        </div>
+
+        <!-- HTML Code Editor -->
+        <textarea class="code-editor"
+                  *ngIf="editorMode === 'code'"
+                  [(ngModel)]="template.bodyHtml"
+                  placeholder="<html>\n  <body>\n    <h1>Your email content here...</h1>\n    <p>Click <a href='{{TRACKING_LINK}}'>here</a></p>\n  </body>\n</html>"
+                  spellcheck="false">
+        </textarea>
       </div>
     </div>
 
@@ -94,7 +253,7 @@
           <div><span class="meta-label">Subject:</span> {{ template.subject }}</div>
         </div>
       </div>
-      <div class="preview-body" [innerHTML]="template.bodyHtml"></div>
+      <iframe class="preview-iframe" [src]="previewSrcdoc" frameborder="0"></iframe>
     </div>
   </div>
 </div>

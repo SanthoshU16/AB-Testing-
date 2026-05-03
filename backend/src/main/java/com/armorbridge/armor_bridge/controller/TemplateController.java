@@ -44,6 +44,24 @@ public class TemplateController {
     public void deleteTemplate(@PathVariable String id) {
         templateService.deleteTemplate(id);
     }
+
+    @PostMapping("/reseed")
+    public String reseedDefaults() {
+        try {
+            // Delete all existing default templates
+            List<PhishingTemplate> all = templateService.getAllTemplates();
+            for (PhishingTemplate t : all) {
+                if (Boolean.TRUE.equals(t.getIsDefault()) && t.getId() != null) {
+                    templateService.deleteTemplate(t.getId());
+                }
+            }
+            // Re-run seeder forcefully
+            templateService.seedTemplates(true);
+            return "Reseeded successfully";
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to reseed: " + e.getMessage(), e);
+        }
+    }
 }
 
 @org.springframework.web.bind.annotation.RestControllerAdvice

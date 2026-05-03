@@ -1,10 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { EmployeeService } from '../../../../services/employee.service';
+import { TrackingService } from '../../../../services/tracking.service';
 import { Employee } from '../../../../models/employee.model';
+import { TrackingEvent } from '../../../../models/tracking-event.model';
 import { EmployeeAddComponent } from '../employee-add/employee-add.component';
+
+interface EmployeeWithRisk extends Employee {
+  dynamicRiskScore: number;
+}
 
 @Component({
   selector: 'app-employee-list',
@@ -14,8 +20,8 @@ import { EmployeeAddComponent } from '../employee-add/employee-add.component';
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit, OnDestroy {
-  employees: Employee[] = [];
-  filteredEmployees: Employee[] = [];
+  employees: EmployeeWithRisk[] = [];
+  filteredEmployees: EmployeeWithRisk[] = [];
   searchQuery = '';
   isAddModalOpen = false;
   isImporting = false;
@@ -23,18 +29,48 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   importError: string | null = null;
   showImportPreview = false;
   private sub?: Subscription;
+  private events: TrackingEvent[] = [];
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(
+    private employeeService: EmployeeService,
+    private trackingService: TrackingService
+  ) {}
 
-  ngOnInit(): void {
-    this.employeeService.loadEmployees();
-    this.sub = this.employeeService.employees$.subscribe(data => {
-      this.employees = data;
+  async ngOnInit(): Promise<void> {
+    await Promise.all([
+      this.employeeService.loadEmployees(),
+      this.trackingService.loadAllEvents()
+    ]);
+
+    this.sub = combineLatest([
+      this.employeeService.employees$,
+      this.trackingService.events$
+    ]).subscribe(([emps, evts]) => {
+      this.events = evts;
+      this.employees = emps.map(emp => ({
+        ...emp,
+        dynamicRiskScore: this.computeRiskScore(emp, evts)
+      }));
       this.applyFilter();
     });
   }
 
   ngOnDestroy(): void { this.sub?.unsubscribe(); }
+
+  /** Compute dynamic risk score from deduplicated tracking events */
+  private computeRiskScore(emp: Employee, events: TrackingEvent[]): number {
+    const empEvents = events.filter(ev =>
+      ev.employeeId === emp.id || (emp.email && ev.employeeEmail === emp.email)
+    );
+    const uniqueClicked = new Set(
+      empEvents.filter(e => e.eventType === 'link_clicked').map(e => e.campaignId)
+    );
+    const uniqueCreds = new Set(
+      empEvents.filter(e => e.eventType === 'credential_attempt').map(e => e.campaignId)
+    );
+    const score = (emp.riskScore || 0) + (uniqueClicked.size * 30) + (uniqueCreds.size * 50);
+    return Math.min(score, 100);
+  }
 
   applyFilter(): void {
     if (!this.searchQuery.trim()) {
@@ -60,7 +96,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   }
 
   getRiskLabel(score: number | undefined): string {
-    if (score === undefined || score === 0) return 'None';
+    if (score === undefined || score === 0) return 'Low';
     if (score < 30) return 'Low';
     if (score < 70) return 'Medium';
     return 'High';

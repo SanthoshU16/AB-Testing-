@@ -63,4 +63,16 @@ export class EmployeeService {
       throw err;
     }
   }
+
+  deleteAllEmployees(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.delete(`${this.apiUrl}/all`).subscribe({
+        next: () => {
+          this.loadEmployees();
+          resolve();
+        },
+        error: (err) => reject(err)
+      });
+    });
+  }
 }

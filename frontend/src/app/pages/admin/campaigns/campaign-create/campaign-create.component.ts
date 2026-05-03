@@ -32,6 +32,17 @@ export class CampaignCreateComponent implements OnInit {
   description = '';
   selectedTemplateId = '';
   selectedTemplateName = '';
+  activeTab: 'default' | 'my' = 'default';
+  searchQuery: string = '';
+
+  get filteredTemplates(): PhishingTemplate[] {
+    return this.templates.filter(tpl => {
+      const matchesTab = this.activeTab === 'default' ? tpl.isDefault : !tpl.isDefault;
+      const matchesSearch = (tpl.name || '').toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+                            (tpl.subject || '').toLowerCase().includes(this.searchQuery.toLowerCase());
+      return matchesTab && matchesSearch;
+    });
+  }
   targetMode: 'departments' | 'employees' = 'departments';
   selectedDepartments: string[] = [];
   selectedEmployeeIds: string[] = [];

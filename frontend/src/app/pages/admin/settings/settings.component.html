@@ -13,7 +13,7 @@
           <p>Receive email notifications for important alerts and system updates.</p>
         </div>
         <label class="toggle-switch">
-          <input type="checkbox" checked>
+          <input type="checkbox" [(ngModel)]="settings.emailAlerts" (change)="toggleSetting('Email Alerts', $event)">
           <span class="slider"></span>
         </label>
       </div>
@@ -23,7 +23,7 @@
           <p>Receive a weekly digest of your campaign performance.</p>
         </div>
         <label class="toggle-switch">
-          <input type="checkbox">
+          <input type="checkbox" [(ngModel)]="settings.weeklyReport" (change)="toggleSetting('Weekly Report', $event)">
           <span class="slider"></span>
         </label>
       </div>
@@ -38,14 +38,54 @@
           <h4>Two-Factor Authentication</h4>
           <p>Add an extra layer of security to your account.</p>
         </div>
-        <button class="btn-outline">Enable 2FA</button>
+        <button class="btn-outline" (click)="toggle2FA()" [class.active]="settings.twoFactorEnabled">
+          {{ settings.twoFactorEnabled ? 'Disable 2FA' : 'Enable 2FA' }}
+        </button>
       </div>
-      <div class="setting-item">
+    </div>
+
+    <hr class="divider">
+
+    <h3 class="section-title danger">Danger Zone</h3>
+    <div class="settings-list">
+      <div class="setting-item danger-item">
         <div class="setting-info">
-          <h4>Password</h4>
-          <p>Change your account password.</p>
+          <h4>Reset Analytics Data</h4>
+          <p>Permanently delete all tracking events and reset campaign metrics to zero. This action cannot be undone.</p>
         </div>
-        <button class="btn-outline">Update Password</button>
+        <button class="btn-danger" (click)="resetData()" [class.loading]="isResettingData" [disabled]="isResettingData">
+          {{ isResettingData ? 'Resetting...' : 'Reset Data' }}
+        </button>
+      </div>
+
+      <div class="setting-item danger-item">
+        <div class="setting-info">
+          <h4>Delete All Campaigns</h4>
+          <p>Permanently delete all created phishing campaigns. This action cannot be undone.</p>
+        </div>
+        <button class="btn-danger" (click)="deleteAllCampaigns()" [class.loading]="isDeletingCampaigns" [disabled]="isDeletingCampaigns">
+          {{ isDeletingCampaigns ? 'Deleting...' : 'Delete Campaigns' }}
+        </button>
+      </div>
+
+      <div class="setting-item danger-item">
+        <div class="setting-info">
+          <h4>Delete All Employees</h4>
+          <p>Permanently delete all employees from the directory. This action cannot be undone.</p>
+        </div>
+        <button class="btn-danger" (click)="deleteAllEmployees()" [class.loading]="isDeletingEmployees" [disabled]="isDeletingEmployees">
+          {{ isDeletingEmployees ? 'Deleting...' : 'Delete Employees' }}
+        </button>
+      </div>
+
+      <div class="setting-item danger-item">
+        <div class="setting-info">
+          <h4>Delete Account</h4>
+          <p>Permanently delete your entire Armor Bridge account and all associated data. This action is irreversible.</p>
+        </div>
+        <button class="btn-danger" (click)="deleteAccount()" [class.loading]="isDeletingAccount" [disabled]="isDeletingAccount">
+          {{ isDeletingAccount ? 'Deleting Account...' : 'Delete Account' }}
+        </button>
       </div>
     </div>
   </div>

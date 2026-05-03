@@ -19,6 +19,7 @@
         </li>
         <li><a routerLink="/" fragment="features" class="nav-link">Features</a></li>
         <li><a routerLink="/" fragment="how-it-works" class="nav-link">How It Works</a></li>
+        <li><a routerLink="/learning" class="nav-link" [class.active-link]="activePage === 'learning'">Learning</a></li>
         <li class="nav-item-dropdown">
           <a routerLink="/about" class="nav-link">Company</a>
           <div class="nav-dropdown">
@@ -138,6 +139,7 @@
       </div>
       <a routerLink="/" fragment="features" (click)="closeMobileMenu()" class="mobile-link">Features</a>
       <a routerLink="/" fragment="how-it-works" (click)="closeMobileMenu()" class="mobile-link">How It Works</a>
+      <a routerLink="/learning" (click)="closeMobileMenu()" class="mobile-link">Learning</a>
       <div class="mobile-accordion">
         <a class="mobile-link mobile-accordion-toggle"
           (click)="toggleMobileDropdown('company'); $event.stopPropagation()">

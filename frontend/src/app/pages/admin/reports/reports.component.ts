@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { CredCountPipe } from '../../../shared/pipes/cred-count.pipe';
 import { EmployeeService } from '../../../services/employee.service';
 import { CampaignService } from '../../../services/campaign.service';
 import { TrackingService } from '../../../services/tracking.service';
@@ -15,14 +14,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { StatCardComponent } from '../../../components/stat-card/stat-card.component';
 import { SafeHtml } from '@angular/platform-browser';
-
-interface ReportCard {
-  title: string;
-  description: string;
-  icon: string;
-  formats: string[];
-  action: () => void;
-}
 
 interface StatCardData {
   title: string;
@@ -42,14 +33,14 @@ export class ReportsComponent implements OnInit {
   employees: Employee[] = [];
   campaigns: Campaign[] = [];
   events: TrackingEvent[] = [];
+  /** Deduplicated events for display */
+  uniqueEvents: TrackingEvent[] = [];
   deptStats: DepartmentStat[] = [];
   isLoading = true;
   exportingCard: string | null = null;
   safePreviewUrl: SafeResourceUrl | null = null;
   isPreviewOpen: boolean = false;
   stats: StatCardData[] = [];
-
-  reportCards: ReportCard[] = [];
 
   constructor(
     private employeeService: EmployeeService,
@@ -75,10 +66,25 @@ export class ReportsComponent implements OnInit {
       this.employees = emps;
       this.campaigns = camps;
       this.events = evts;
+
+      // Deduplicate events by (campaignId, employeeId, eventType)
+      const seen = new Set<string>();
+      this.uniqueEvents = evts.filter(ev => {
+        const key = `${ev.campaignId}-${ev.employeeId}-${ev.eventType}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
       this.deptStats = this.analyticsService.getDepartmentStats(emps, evts);
-      
-      const credAttempts = evts.filter(e => e.eventType === 'credential_attempt').length;
-      
+
+      // Compute stats from deduplicated events
+      const delivered = this.uniqueEvents.filter(e => e.eventType === 'email_delivered').length;
+      const opened = this.uniqueEvents.filter(e => e.eventType === 'email_opened').length;
+      const clicked = this.uniqueEvents.filter(e => e.eventType === 'link_clicked').length;
+      const credAttempts = this.uniqueEvents.filter(e => e.eventType === 'credential_attempt').length;
+      const clickRate = delivered > 0 ? Math.round((clicked / delivered) * 100) : 0;
+
       this.stats = [
         {
           title: 'Total Campaigns',
@@ -93,8 +99,8 @@ export class ReportsComponent implements OnInit {
           iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`)
         },
         {
-          title: 'Tracking Events',
-          value: String(evts.length),
+          title: 'Click Rate',
+          value: `${clickRate}%`,
           gradient: 'linear-gradient(135deg, #34C759 0%, #28A745 100%)',
           iconSvg: this.sanitizer.bypassSecurityTrustHtml(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`)
         },
@@ -107,63 +113,41 @@ export class ReportsComponent implements OnInit {
       ];
 
       this.isLoading = false;
-      this.buildReportCards();
     });
   }
 
-  private buildReportCards(): void {
-    this.reportCards = [
-      {
-        title: 'Campaign Summary Report',
-        description: 'Overview of all campaigns including send counts, click rates, and credential attempts.',
-        icon: '📊',
-        formats: ['PDF', 'CSV'],
-        action: () => this.exportCampaignSummary
-      },
-      {
-        title: 'Employee Failure Report',
-        description: 'List of employees who clicked phishing links or submitted credentials.',
-        icon: '👤',
-        formats: ['PDF', 'CSV'],
-        action: () => this.exportEmployeeFailure
-      },
-      {
-        title: 'Department Risk Report',
-        description: 'Aggregated risk scores and click rates grouped by department.',
-        icon: '🏢',
-        formats: ['PDF', 'CSV'],
-        action: () => this.exportDepartmentRisk
-      }
-    ];
-  }
+  // ─── Export Methods ──────────────────────────────────────────────────
 
   async exportExecutiveSummary(format: 'pdf' | 'csv'): Promise<void> {
     this.exportingCard = `exec-${format}`;
     try {
-      const summary = {
-        campaigns: this.campaigns.length,
-        employees: this.employees.length,
-        events: this.events.length,
-        credAttempts: this.events.filter(e => e.eventType === 'credential_attempt').length
-      };
-      if (format === 'pdf') await this.reportService.exportExecutiveSummaryPDF(summary);
-      else this.reportService.exportExecutiveSummaryCSV(summary);
+      if (format === 'pdf') {
+        await this.reportService.exportExecutiveSummaryPDF(this.campaigns, this.employees, this.events);
+      } else {
+        this.reportService.exportExecutiveSummaryCSV(this.campaigns, this.employees, this.events);
+      }
     } finally { setTimeout(() => this.exportingCard = null, 1000); }
   }
 
   async exportCampaignSummary(format: 'pdf' | 'csv'): Promise<void> {
     this.exportingCard = `campaign-${format}`;
     try {
-      if (format === 'pdf') await this.reportService.exportCampaignSummaryPDF(this.campaigns);
-      else this.reportService.exportCampaignSummaryCSV(this.campaigns);
+      if (format === 'pdf') {
+        await this.reportService.exportCampaignSummaryPDF(this.campaigns, this.events);
+      } else {
+        this.reportService.exportCampaignSummaryCSV(this.campaigns, this.events);
+      }
     } finally { setTimeout(() => this.exportingCard = null, 1000); }
   }
 
   async exportEmployeeFailure(format: 'pdf' | 'csv'): Promise<void> {
     this.exportingCard = `employee-${format}`;
     try {
-      if (format === 'pdf') await this.reportService.exportEmployeeFailurePDF(this.employees, this.events);
-      else this.reportService.exportEmployeeFailureCSV(this.employees, this.events);
+      if (format === 'pdf') {
+        await this.reportService.exportEmployeeFailurePDF(this.employees, this.events, this.campaigns);
+      } else {
+        this.reportService.exportEmployeeFailureCSV(this.employees, this.events, this.campaigns);
+      }
     } finally { setTimeout(() => this.exportingCard = null, 1000); }
   }
 
@@ -175,20 +159,16 @@ export class ReportsComponent implements OnInit {
     } finally { setTimeout(() => this.exportingCard = null, 1000); }
   }
 
+  // ─── Preview ────────────────────────────────────────────────────────
+
   async previewReport(type: 'exec' | 'campaign' | 'employee' | 'department'): Promise<void> {
     let url: string | void = undefined;
     if (type === 'exec') {
-      const summary = {
-        campaigns: this.campaigns.length,
-        employees: this.employees.length,
-        events: this.events.length,
-        credAttempts: this.events.filter(e => e.eventType === 'credential_attempt').length
-      };
-      url = await this.reportService.exportExecutiveSummaryPDF(summary, true);
+      url = await this.reportService.exportExecutiveSummaryPDF(this.campaigns, this.employees, this.events, true);
     } else if (type === 'campaign') {
-      url = await this.reportService.exportCampaignSummaryPDF(this.campaigns, true);
+      url = await this.reportService.exportCampaignSummaryPDF(this.campaigns, this.events, true);
     } else if (type === 'employee') {
-      url = await this.reportService.exportEmployeeFailurePDF(this.employees, this.events, true);
+      url = await this.reportService.exportEmployeeFailurePDF(this.employees, this.events, this.campaigns, true);
     } else if (type === 'department') {
       url = await this.reportService.exportDepartmentRiskPDF(this.deptStats, true);
     }

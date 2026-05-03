@@ -35,9 +35,12 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/tracking/public/**").permitAll()
+                .requestMatchers("/api/tracking/pixel/**").permitAll()
                 .requestMatchers("/api/public/**").permitAll()
                 .requestMatchers("/track/**").permitAll()
                 .requestMatchers("/error").permitAll()
+                .requestMatchers("/api/campaigns/*/theme").permitAll()
+                .requestMatchers("/api/templates/reseed").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new FirebaseFilter(), UsernamePasswordAuthenticationFilter.class);

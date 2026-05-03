@@ -418,46 +418,46 @@
 .back-btn {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
-  padding: 10px 16px;
+  padding: 8px 14px;
   background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   border: none;
-  border-radius: 16px;
+  border-radius: 12px;
   color: #ffffff;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-top: 12px;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
   letter-spacing: -0.01em;
 }
 
 .back-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
   filter: saturate(1.1) brightness(1.05);
 }
 
 .back-btn:active {
   transform: translateY(0) scale(0.98);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
 }
 
 .back-btn i {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.9);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .back-btn:hover i {
-  transform: translateX(-3px);
+  transform: translateX(-2px);
   color: #ffffff;
 }
 
 .admin-sidebar.collapsed .back-btn {
-  padding: 12px;
+  padding: 10px;
   justify-content: center;
 }
 

@@ -17,6 +17,7 @@
 
 .btn-outline { padding: 8px 16px; background: transparent; border: 1px solid rgba(10, 37, 64, 0.2); border-radius: 8px; color: #0A2540; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; }
 .btn-outline:hover { background: rgba(10, 37, 64, 0.05); }
+.btn-outline.active { background: #0A2540; color: white; border-color: #0A2540; }
 
 /* Toggle Switch */
 .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
@@ -25,3 +26,13 @@
 .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 input:checked + .slider { background-color: #2563EB; }
 input:checked + .slider:before { transform: translateX(20px); }
+
+/* Danger Zone */
+.section-title.danger { color: #DC2626; margin-top: 8px; }
+.setting-item.danger-item { border: 1px solid rgba(220, 38, 38, 0.2); background: rgba(220, 38, 38, 0.02); border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+.setting-item.danger-item:last-child { margin-bottom: 0; padding-bottom: 20px; }
+.danger-item .setting-info h4 { color: #DC2626; }
+.btn-danger { padding: 8px 16px; background: transparent; border: 1px solid rgba(220, 38, 38, 0.3); border-radius: 8px; color: #DC2626; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.btn-danger:hover:not(:disabled) { background: rgba(220, 38, 38, 0.1); border-color: rgba(220, 38, 38, 0.5); }
+.btn-danger:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-danger.loading { opacity: 0.7; cursor: wait; }

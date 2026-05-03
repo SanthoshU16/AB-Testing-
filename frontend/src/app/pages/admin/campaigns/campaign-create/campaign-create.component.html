@@ -39,9 +39,24 @@
 
     <div class="glass-card">
       <h3 class="section-label">Select Phishing Template *</h3>
-      <div class="template-selector-grid">
+      
+      <div class="controls-section">
+        <div class="tabs-container">
+          <button class="tab-btn" [class.active]="activeTab === 'default'" (click)="activeTab = 'default'">Default Templates</button>
+          <button class="tab-btn" [class.active]="activeTab === 'my'" (click)="activeTab = 'my'">My Templates</button>
+        </div>
+        <div class="search-container">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" class="apple-input search-input" placeholder="Search templates..." [(ngModel)]="searchQuery">
+        </div>
+      </div>
+
+      <div class="template-selector-grid" *ngIf="filteredTemplates.length > 0">
         <div class="template-option"
-             *ngFor="let tpl of templates"
+             *ngFor="let tpl of filteredTemplates"
              [class.selected]="selectedTemplateId === tpl.id"
              (click)="selectTemplate(tpl)">
           <div class="template-option-header">
@@ -54,6 +69,12 @@
           </div>
           <p class="tpl-subject">{{ tpl.subject }}</p>
         </div>
+      </div>
+
+      <div class="empty-state" *ngIf="filteredTemplates.length === 0">
+        <div class="empty-icon">📁</div>
+        <h3>No templates found</h3>
+        <p>Try adjusting your search query or create a new template.</p>
       </div>
     </div>
   </div>
@@ -130,7 +151,7 @@
       </div>
       <div class="form-group" *ngIf="scheduleType === 'later'" style="margin-top: 20px;">
         <label>Launch Date & Time *</label>
-        <input type="datetime-local" class="apple-input" name="scheduledAt" [(ngModel)]="scheduledAt" (change)="scheduledAt = $any($event.target).value" (input)="scheduledAt = $any($event.target).value">
+        <input type="datetime-local" class="apple-input" name="scheduledAt" [(ngModel)]="scheduledAt">
       </div>
     </div>
   </div>

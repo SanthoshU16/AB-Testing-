@@ -1,57 +1,194 @@
-<!-- Loading Spinner -->
-<div class="loading-wrap" *ngIf="phase === 'loading'">
-  <div class="spinner"></div>
-  <p>Verifying link...</p>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     PHISHING SIMULATION LANDING PAGE — Fully Dynamic Brand
+     ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- ── Phase: Loading ───────────────────────────────────────────────── -->
+<div class="loading-wrap" *ngIf="phase === 'loading'" [style.background]="bgColor">
+  <div class="loader">
+    <div class="loader-dot" [style.background]="primaryColor"></div>
+    <div class="loader-dot" [style.background]="primaryColor"></div>
+    <div class="loader-dot" [style.background]="primaryColor"></div>
+    <div class="loader-dot" [style.background]="primaryColor"></div>
+    <div class="loader-dot" [style.background]="primaryColor"></div>
+  </div>
+  <p class="loading-text">Verifying your identity…</p>
 </div>
 
-<!-- Fake Login Page -->
-<div class="login-page" *ngIf="phase === 'landing'">
+<!-- ── Phase: Dynamic Login Page ────────────────────────────────────── -->
+<div class="login-page" *ngIf="phase === 'landing'" [style.background]="bgColor">
+  <div class="bg-shapes">
+    <div class="bg-shape bg-shape--1" [style.background]="primaryColor"></div>
+    <div class="bg-shape bg-shape--2" [style.background]="primaryColor"></div>
+  </div>
+
   <div class="login-card">
-    <div class="brand-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" style="color: #0078d4;">
-        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-        <path d="M3 9h18M9 21V9"/>
-      </svg>
-      <span>Microsoft</span>
+    <!-- Brand Logo / Name -->
+    <div class="brand-header" [style.justifyContent]="logoUrl ? 'center' : 'flex-start'" [style.marginBottom]="logoUrl ? '32px' : '24px'">
+      <img *ngIf="logoUrl" [src]="logoUrl" class="brand-logo" [alt]="brand" style="max-height: 36px; width: auto;">
+      <ng-container *ngIf="!logoUrl">
+        <div class="brand-logo-fallback" [style.background]="primaryColor" [style.color]="btnTextColor">
+          {{ brand.charAt(0) }}
+        </div>
+        <span class="brand-name">{{ brand }}</span>
+      </ng-container>
     </div>
 
-    <h2 class="login-title">Sign in</h2>
+    <!-- Step 1: Email -->
+    <div *ngIf="loginStep === 'email'" class="step-content">
+      <h1 class="login-title">Sign in</h1>
+      <p class="login-subtitle">Use your {{ brand }} account</p>
+      <form (ngSubmit)="goToPassword()" class="login-form">
+        <div class="input-group" [class.has-error]="emailError">
+          <input type="email" class="form-input" [(ngModel)]="fakeUsername" name="email"
+                 placeholder="Email or phone" required autocomplete="off" (focus)="emailError = ''"
+                 [style.borderColor]="emailError ? '#d93025' : ''">
+          <p class="error-text" *ngIf="emailError">{{ emailError }}</p>
+        </div>
+        <p class="help-link"><a href="javascript:void(0)" [style.color]="primaryColor">Forgot email?</a></p>
+        <div class="form-actions">
+          <a href="javascript:void(0)" [style.color]="primaryColor" class="create-link">Create account</a>
+          <button type="submit" class="primary-btn" [style.background]="primaryColor" [style.color]="btnTextColor">
+            Next
+          </button>
+        </div>
+      </form>
+    </div>
 
-    <form (ngSubmit)="onSubmit()" class="login-form">
-      <div class="form-group">
-        <input type="email" class="login-input" [(ngModel)]="fakeUsername"
-          name="email" placeholder="Email, phone, or Skype" required autocomplete="off">
-      </div>
-      <p class="no-account">No account? <a href="#">Create one!</a></p>
-      <div class="form-group">
-        <input type="password" class="login-input" [(ngModel)]="fakePassword"
-          name="password" placeholder="Password" autocomplete="off">
-      </div>
-      <button type="submit" class="sign-in-btn" [disabled]="isSubmitting">
-        <span *ngIf="!isSubmitting">Sign in</span>
-        <span *ngIf="isSubmitting" class="btn-spinner"></span>
+    <!-- Step 2: Password -->
+    <div *ngIf="loginStep === 'password'" class="step-content">
+      <button class="back-btn" (click)="loginStep = 'email'">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M11 4L6 9l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </button>
-    </form>
+      <div class="user-chip">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="6" r="3" stroke="#666" stroke-width="1.2"/>
+          <path d="M2 14c0-3.3 2.7-5 6-5s6 1.7 6 5" stroke="#666" stroke-width="1.2"/>
+        </svg>
+        <span>{{ fakeUsername }}</span>
+      </div>
+      <h1 class="login-title">Welcome</h1>
+      <form (ngSubmit)="onSubmit()" class="login-form">
+        <div class="input-group">
+          <input [type]="showPassword ? 'text' : 'password'" class="form-input" [(ngModel)]="fakePassword"
+                 name="password" placeholder="Enter your password" autocomplete="off">
+        </div>
+        <label class="show-pw">
+          <input type="checkbox" (change)="showPassword = !showPassword" [style.accentColor]="primaryColor">
+          <span>Show password</span>
+        </label>
+        <div class="form-actions">
+          <a href="javascript:void(0)" [style.color]="primaryColor" class="create-link">Forgot password?</a>
+          <button type="submit" class="primary-btn" [disabled]="isSubmitting"
+                  [style.background]="primaryColor" [style.color]="btnTextColor">
+            <span *ngIf="!isSubmitting">Sign in</span>
+            <div *ngIf="isSubmitting" class="btn-spinner"></div>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-footer">
+      <a href="javascript:void(0)">Help</a>
+      <a href="javascript:void(0)">Privacy</a>
+      <a href="javascript:void(0)">Terms</a>
+    </div>
   </div>
 </div>
 
-<!-- Awareness Message -->
-<div class="awareness-page" *ngIf="phase === 'submitted'">
-  <div class="awareness-card">
-    <div class="awareness-icon">⚠️</div>
-    <h2>This was a phishing simulation</h2>
-    <p>You clicked a simulated phishing link and entered credentials. In a real attack, your account could have been compromised.</p>
-    <div class="tips">
-      <h3>How to stay safe:</h3>
-      <ul>
-        <li>Always verify the sender's email address before clicking links</li>
-        <li>Check the URL bar — look for HTTPS and correct domain</li>
-        <li>Never enter credentials on unexpected login pages</li>
-        <li>When in doubt, contact IT Security directly</li>
-      </ul>
+<!-- ── Phase: Awareness Reveal ─────────────────────────────────────── -->
+<div class="reveal-page" *ngIf="phase === 'submitted'">
+
+  <nav class="reveal-nav">
+    <img src="/ABLM.png" alt="Armor Bridz" class="reveal-nav-logo">
+  </nav>
+
+  <div class="reveal-center">
+    <!-- Hero -->
+    <div class="reveal-hero">
+      <div class="reveal-icon-wrap">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+          <circle cx="28" cy="28" r="28" fill="#FEE2E2"/>
+          <path d="M28 19v8" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="28" cy="32" r="1.5" fill="#DC2626"/>
+          <path d="M16.27 38h23.46c1.8 0 2.93-1.95 2.03-3.5L30.03 15.5c-.9-1.56-3.15-1.56-4.06 0L14.24 34.5c-.9 1.55.23 3.5 2.03 3.5z" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1>This was a phishing simulation</h1>
+      <p>You entered credentials on a fake <strong>{{ brand }}</strong> login page. In a real attack, your account would be compromised.</p>
+
+      <!-- Reassurance badges -->
+      <div class="reveal-badges">
+        <span class="reveal-info-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          No data was collected
+        </span>
+        <span class="reveal-info-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Authorized training exercise
+        </span>
+        <span class="reveal-info-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01" stroke-linecap="round"/></svg>
+          Results are anonymous
+        </span>
+      </div>
     </div>
-    <div class="awareness-badge">
-      🛡️ You have been enrolled in security awareness training.
+
+    <!-- Separator -->
+    <div class="reveal-sep"></div>
+
+    <!-- Grid -->
+    <div class="reveal-grid">
+      <!-- Left -->
+      <div class="reveal-col">
+        <h2>Red flags you missed</h2>
+        <div class="reveal-item" *ngFor="let flag of redFlags; let i = index">
+          <span class="reveal-badge reveal-badge--red">{{ i + 1 }}</span>
+          <span class="reveal-item-text">{{ flag }}</span>
+        </div>
+      </div>
+      <!-- Right -->
+      <div class="reveal-col">
+        <h2>How to stay safe</h2>
+        <div class="reveal-item" *ngFor="let tip of safetyTips">
+          <span class="reveal-badge reveal-badge--icon">{{ tip.icon }}</span>
+          <span class="reveal-item-text">{{ tip.title }} — <span class="reveal-item-sub">{{ tip.description }}</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- What to do next -->
+    <div class="reveal-next">
+      <h2>What to do next</h2>
+      <div class="reveal-next-actions">
+        <div class="reveal-next-card">
+          <div class="reveal-next-icon">🔑</div>
+          <div>
+            <strong>Change your password</strong>
+            <p>If you used a real password, change it immediately on all accounts where it's used.</p>
+          </div>
+        </div>
+        <div class="reveal-next-card">
+          <div class="reveal-next-icon">📧</div>
+          <div>
+            <strong>Report real phishing</strong>
+            <p>If you receive a suspicious email, report it to your IT security team right away.</p>
+          </div>
+        </div>
+        <div class="reveal-next-card">
+          <div class="reveal-next-icon">📚</div>
+          <div>
+            <strong>Complete your training</strong>
+            <p>Review the security awareness materials provided by your organization.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <footer class="reveal-foot">
+    <span>This simulation was conducted by your organization's security team.</span>
+    <span>Powered by <strong>Armor Bridz</strong></span>
+  </footer>
 </div>

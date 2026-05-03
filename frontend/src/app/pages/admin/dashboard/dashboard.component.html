@@ -117,7 +117,9 @@
           <button class="view-all-link" routerLink="/admin/notifications">View all</button>
         </div>
         <div class="activity-feed">
-          <div class="activity-item" *ngFor="let activity of recentActivities">
+          <div class="activity-item" *ngFor="let activity of recentActivities" 
+               [routerLink]="activity.campaignId ? ['/admin/campaigns', activity.campaignId] : null"
+               [style.cursor]="activity.campaignId ? 'pointer' : 'default'">
             <div class="activity-dot" [ngClass]="activity.type"></div>
             <div class="activity-body">
               <div class="activity-title">{{ activity.title }}</div>

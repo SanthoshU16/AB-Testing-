@@ -49,6 +49,9 @@ public class EmailService {
     @Value("${armorbridge.platform.base-url}")
     private String platformBaseUrl;
 
+    @Value("${armorbridge.platform.backend-url:http://localhost:8080}")
+    private String backendUrl;
+
     // Track campaign send progress: campaignId -> { sent, total, failed, status }
     private final ConcurrentHashMap<String, Map<String, Object>> sendProgress = new ConcurrentHashMap<>();
 
@@ -178,8 +181,11 @@ public class EmailService {
         // Build the phishing link (points to the frontend's phishing landing page)
         String phishingLink = platformBaseUrl + "/phish/" + campaignId + "/" + employee.getId();
 
+        // Build the pixel tracking link
+        String pixelLink = backendUrl + "/api/tracking/pixel/" + campaignId + "/" + employee.getId();
+
         // Process the template body — replace placeholders
-        String body = processTemplate(template.getBodyHtml(), employee, phishingLink);
+        String body = processTemplate(template.getBodyHtml(), employee, phishingLink, pixelLink);
 
         helper.setText(body, true); // true = HTML content
 
@@ -201,8 +207,11 @@ public class EmailService {
      *   {{PHISHING_LINK}}    → The tracking/phishing URL
      *   {{COMPANY_NAME}}     → "Armor Bridz" 
      */
-    private String processTemplate(String templateHtml, Employee employee, String phishingLink) {
-        if (templateHtml == null) return "<p>Please click <a href=\"" + phishingLink + "\">here</a> to verify your account.</p>";
+    private String processTemplate(String templateHtml, Employee employee, String phishingLink, String pixelLink) {
+        // If the template body is null or essentially empty, use a realistic default
+        if (templateHtml == null || templateHtml.trim().isEmpty() || templateHtml.trim().length() < 30) {
+            return buildRealisticFallbackEmail(employee, phishingLink, pixelLink);
+        }
 
         String processed = templateHtml;
         processed = processed.replace("{{EMPLOYEE_NAME}}", employee.getFirstName() + " " + employee.getLastName());
@@ -213,14 +222,88 @@ public class EmailService {
         processed = processed.replace("{{TRACKING_LINK}}", phishingLink);
         processed = processed.replace("{{COMPANY_NAME}}", "Armor Bridz");
 
-        // If the template doesn't contain a phishing link placeholder, append one
-        if (!templateHtml.contains("{{PHISHING_LINK}}") && !templateHtml.contains(phishingLink)) {
-            processed += "<br><br><p style=\"text-align:center;\"><a href=\"" + phishingLink 
-                + "\" style=\"background:#1a73e8;color:#fff;padding:12px 32px;text-decoration:none;border-radius:6px;font-weight:600;\">"
-                + "Verify Now</a></p>";
-        }
+        // Append tracking pixel
+        processed += "<img src=\"" + pixelLink + "\" width=\"1\" height=\"1\" style=\"display:none;\" />";
 
         return processed;
+    }
+
+    /**
+     * Build a realistic Microsoft 365 styled phishing email when the template body is empty/null.
+     */
+    private String buildRealisticFallbackEmail(Employee employee, String phishingLink, String pixelLink) {
+        String firstName = employee.getFirstName();
+        String email = employee.getEmail();
+
+        return "<!DOCTYPE html><html><head><meta charset='UTF-8'></head>"
+            + "<body style='margin:0;padding:0;background:#f4f4f4;font-family:Segoe UI,Helvetica,Arial,sans-serif;'>"
+            + "<table width='100%' cellpadding='0' cellspacing='0' style='background:#f4f4f4;padding:40px 0;'>"
+            + "<tr><td align='center'>"
+            + "<table width='600' cellpadding='0' cellspacing='0' style='background:#ffffff;border-radius:4px;"
+            + "box-shadow:0 2px 8px rgba(0,0,0,0.08);overflow:hidden;'>"
+
+            // Header bar
+            + "<tr><td style='background:#0078d4;padding:20px 32px;'>"
+            + "<table width='100%'><tr>"
+            + "<td style='color:#ffffff;font-size:18px;font-weight:600;'>Microsoft 365</td>"
+            + "<td align='right' style='color:rgba(255,255,255,0.7);font-size:12px;'>Security Alert</td>"
+            + "</tr></table>"
+            + "</td></tr>"
+
+            // Body
+            + "<tr><td style='padding:32px 32px 24px;'>"
+            + "<p style='font-size:15px;color:#242424;line-height:1.6;margin:0 0 16px;'>"
+            + "Dear " + firstName + ",</p>"
+
+            + "<p style='font-size:15px;color:#242424;line-height:1.6;margin:0 0 16px;'>"
+            + "We detected unusual sign-in activity on your account <strong>" + email + "</strong>. "
+            + "As a security precaution, we've temporarily restricted access to some features.</p>"
+
+            + "<p style='font-size:15px;color:#242424;line-height:1.6;margin:0 0 8px;'>"
+            + "To restore full access, please verify your identity by clicking the button below:</p>"
+            + "</td></tr>"
+
+            // CTA Button
+            + "<tr><td align='center' style='padding:0 32px 28px;'>"
+            + "<table cellpadding='0' cellspacing='0'><tr><td>"
+            + "<a href=\"" + phishingLink + "\" style=\"display:inline-block;background:#0078d4;color:#ffffff;"
+            + "padding:14px 48px;text-decoration:none;border-radius:4px;font-weight:600;"
+            + "font-size:15px;font-family:'Segoe UI',sans-serif;\">Verify My Identity</a>"
+            + "</td></tr></table>"
+            + "</td></tr>"
+
+            // Details box
+            + "<tr><td style='padding:0 32px 28px;'>"
+            + "<table width='100%' style='background:#f8f8f8;border:1px solid #edebe9;border-radius:4px;'>"
+            + "<tr><td style='padding:16px;'>"
+            + "<p style='font-size:13px;color:#616161;margin:0 0 8px;font-weight:600;'>Sign-in Details:</p>"
+            + "<table style='font-size:13px;color:#616161;line-height:1.8;'>"
+            + "<tr><td style='padding-right:16px;'>Account:</td><td style='color:#242424;'>" + email + "</td></tr>"
+            + "<tr><td style='padding-right:16px;'>Date:</td><td style='color:#242424;'>" + java.time.LocalDate.now() + "</td></tr>"
+            + "<tr><td style='padding-right:16px;'>Location:</td><td style='color:#242424;'>Unfamiliar location</td></tr>"
+            + "<tr><td style='padding-right:16px;'>Status:</td><td style='color:#c4314b;font-weight:600;'>⚠ Action Required</td></tr>"
+            + "</table>"
+            + "</td></tr></table>"
+            + "</td></tr>"
+
+            // Disclaimer
+            + "<tr><td style='padding:0 32px 28px;'>"
+            + "<p style='font-size:12px;color:#8a8886;line-height:1.6;margin:0;'>"
+            + "If you did not initiate this request, please secure your account immediately by changing "
+            + "your password and enabling two-factor authentication.</p>"
+            + "</td></tr>"
+
+            // Footer
+            + "<tr><td style='background:#faf9f8;border-top:1px solid #edebe9;padding:20px 32px;'>"
+            + "<p style='font-size:11px;color:#a19f9d;margin:0;line-height:1.6;'>"
+            + "This is an automated message from Microsoft 365 Security. "
+            + "Please do not reply directly to this email.<br>"
+            + "© " + java.time.Year.now().getValue() + " Microsoft Corporation. One Microsoft Way, Redmond, WA 98052</p>"
+            + "</td></tr>"
+
+            + "</table></td></tr></table>"
+            + "<img src=\"" + pixelLink + "\" width=\"1\" height=\"1\" style=\"display:none;\" />"
+            + "</body></html>";
     }
 
     /**

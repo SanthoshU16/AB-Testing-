@@ -30,6 +30,16 @@ public class EmployeeService {
         return employees;
     }
 
+    public Employee getEmployeeById(String id) throws ExecutionException, InterruptedException {
+        DocumentSnapshot document = firestore.collection(COLLECTION).document(id).get().get();
+        if (document.exists()) {
+            Employee emp = document.toObject(Employee.class);
+            if (emp != null) emp.setId(document.getId());
+            return emp;
+        }
+        return null;
+    }
+
     public String createEmployee(Employee employee) throws ExecutionException, InterruptedException {
         long now = System.currentTimeMillis();
         employee.setCreatedAt(now);
@@ -50,6 +60,16 @@ public class EmployeeService {
             emp.setUpdatedAt(now);
             DocumentReference docRef = firestore.collection(COLLECTION).document();
             batch.set(docRef, emp);
+        }
+        batch.commit().get();
+    }
+
+    public void deleteAllEmployees() throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        WriteBatch batch = firestore.batch();
+        for (QueryDocumentSnapshot document : documents) {
+            batch.delete(document.getReference());
         }
         batch.commit().get();
     }

@@ -274,13 +274,20 @@
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  padding: 16px 0;
+  padding: 16px 12px;
+  margin: 0 -12px;
+  border-radius: 12px;
   border-bottom: 1px solid rgba(10, 37, 64, 0.04);
   transition: all 0.2s ease;
 }
 
 .activity-item:last-child {
   border-bottom: none;
+}
+
+.activity-item[style*="pointer"]:hover {
+  background-color: rgba(10, 37, 64, 0.03);
+  border-bottom-color: transparent;
 }
 
 .activity-dot {

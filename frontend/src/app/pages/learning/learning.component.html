@@ -1,0 +1,174 @@
+<app-navbar [activePage]="'learning'"></app-navbar>
+
+<!-- ═══════════════ HERO (matching About page) ═══════════════ -->
+<section class="learning-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+  </div>
+  <div class="hero-content container">
+    <p class="section-overline reveal">ABRIDZ LEARNING</p>
+    <h1 class="page-headline reveal">
+      Level up your <span class="headline-accent">cyber<br>defense skills.</span>
+    </h1>
+    <p class="page-description reveal">
+      Master cyber defense with expert-led courses from Google, Microsoft, and CrowdStrike.
+    </p>
+    <div class="hero-stats-pill reveal">
+      <div class="stats-pill-shine"></div>
+      <div class="stats-pill-inner">
+        <div class="stat-item">
+          <span class="stat-value">9</span>
+          <span class="stat-label">Expert Courses</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">60K+</span>
+          <span class="stat-label">Learners</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">4.8</span>
+          <span class="stat-label">Avg Rating</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ COURSE CATALOG ═══════════════ -->
+<section class="catalog-section" id="course-catalog">
+  <div class="container">
+
+    <!-- Category Filter Bar -->
+    <div class="category-bar reveal" *ngIf="showFullCatalog">
+      <button
+        *ngFor="let cat of categories"
+        class="category-pill"
+        [class.active]="activeCategory === cat.id"
+        (click)="filterCourses(cat.id)">
+        <i class="bi {{ cat.icon }}"></i>
+        <span>{{ cat.label }}</span>
+      </button>
+    </div>
+
+    <!-- Course Grid -->
+    <div class="course-grid">
+      <div
+        *ngFor="let course of displayedCourses; let i = index"
+        class="course-card reveal"
+        [style.--delay]="(i * 80) + 'ms'">
+
+        <!-- Card Header with Gradient -->
+        <div class="card-header" [style.background]="course.gradient">
+          <div class="card-header-pattern"></div>
+          <div class="card-badge">{{ course.badge }}</div>
+          <i class="bi {{ course.icon }} card-icon"></i>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-level" [class.beginner]="course.level === 'Beginner'"
+              [class.intermediate]="course.level === 'Intermediate'"
+              [class.advanced]="course.level === 'Advanced'">
+              {{ course.level }}
+            </span>
+            <span class="card-duration">
+              <i class="bi bi-clock"></i> {{ course.duration }}
+            </span>
+          </div>
+
+          <h3 class="card-title">{{ course.title }}</h3>
+          <p class="card-desc">{{ course.description }}</p>
+
+          <div class="card-footer">
+            <div class="card-stats">
+              <span class="card-modules"><i class="bi bi-collection"></i> {{ course.modules }} modules</span>
+              <span class="card-enrolled"><i class="bi bi-people"></i> {{ formatEnrolled(course.enrolled) }}</span>
+            </div>
+            <div class="card-rating">
+              <i class="bi bi-star-fill"></i>
+              <span>{{ course.rating }}</span>
+            </div>
+          </div>
+
+          <button class="enroll-btn" *ngIf="isLoggedIn">
+            Start Learning
+            <i class="bi bi-arrow-right"></i>
+          </button>
+          <a routerLink="/sign-up" class="enroll-btn" *ngIf="!isLoggedIn">
+            Sign Up to Enroll
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- View All Button -->
+    <div class="view-all-wrapper" *ngIf="!showFullCatalog">
+      <button class="view-all-btn" (click)="exploreCourses()">
+        View All Courses <i class="bi bi-arrow-down"></i>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════ WHY LEARN ═══════════════ -->
+<section class="why-section">
+  <div class="why-container">
+    <div class="why-header reveal">
+      <span class="section-label">Why Armor Bridge Academy</span>
+      <h2 class="section-title">Training that<br><span class="headline-accent">actually works.</span></h2>
+      <p class="section-subtitle">Our courses are built on real-world attack data from thousands of simulations, not just theory.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon-wrap">
+          <i class="bi bi-cpu"></i>
+        </div>
+        <h3>Simulation-Powered</h3>
+        <p>Courses are built from real phishing simulation data, teaching patterns that actually appear in the wild.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon-wrap">
+          <i class="bi bi-trophy"></i>
+        </div>
+        <h3>Earn Certifications</h3>
+        <p>Complete courses to earn verifiable digital badges and certificates you can share on LinkedIn.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon-wrap">
+          <i class="bi bi-graph-up-arrow"></i>
+        </div>
+        <h3>Track Progress</h3>
+        <p>Monitor your team's learning journey with detailed analytics and completion dashboards.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon-wrap">
+          <i class="bi bi-arrow-repeat"></i>
+        </div>
+        <h3>Always Current</h3>
+        <p>Content is updated monthly based on the latest threat intelligence and attack methodologies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA (matching About page) ═══════════════ -->
+<section class="cta-section reveal">
+  <div class="cta-container">
+    <h2>Ready to advance your<br><span class="gradient-text">cyber defense skills?</span></h2>
+    <p>Join thousands of learners and start mastering cybersecurity today.</p>
+    <div class="cta-actions">
+      <a [routerLink]="isLoggedIn ? '/admin/dashboard' : '/sign-up'" class="cta-btn-primary">
+        Start Learning
+        <i class="bi bi-arrow-right"></i>
+      </a>
+      <button (click)="exploreCourses()" class="cta-btn-outline">Explore Courses</button>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export interface SearchResult {
     '(document:click)': 'onDocumentClick($event)'
   }
 })
-export class AdminTopbarComponent implements OnInit {
+export class AdminTopbarComponent implements OnInit, OnDestroy {
   @Input() sidebarCollapsed = false;
   @Output() toggleSidebar = new EventEmitter<void>();
   unreadCount = 0;
@@ -53,12 +53,26 @@ export class AdminTopbarComponent implements OnInit {
     });
   }
 
+  private pollInterval: any;
+
   ngOnInit(): void {
     this.updatePageTitle(this.router.url);
     this.trackingService.loadAllEvents();
+    
+    // Poll for new events to keep notifications updated
+    this.pollInterval = setInterval(() => {
+      this.trackingService.loadAllEvents();
+    }, 5000);
+
     this.notificationService.unreadCount$.subscribe((count: number) => {
       this.unreadCount = count;
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.pollInterval) {
+      clearInterval(this.pollInterval);
+    }
   }
 
   updatePageTitle(url: string) {

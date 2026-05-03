@@ -1,0 +1,19 @@
+--- /Users/santhosh/Document/Armor Bridge/backend/src/main/java/com/armorbridge/armor_bridge/controller/TrackingController.java
++++ /Users/santhosh/Document/Armor Bridge/backend/src/main/java/com/armorbridge/armor_bridge/controller/TrackingController.java
+@@ -82,4 +82,10 @@
+     public List<TrackingEvent> getAllEvents() throws ExecutionException, InterruptedException {
+         return trackingService.getAllEvents();
+     }
++
++    // Admin endpoint to reset reporting data
++    @DeleteMapping("/reset")
++    public ResponseEntity<String> resetReportingData() {
++        try {
++            trackingService.deleteAllEvents();
++            return ResponseEntity.ok("All tracking events deleted successfully.");
++        } catch (Exception e) {
++            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
++                .body("Failed to delete tracking events: " + e.getMessage());
++        }
++    }
+ }

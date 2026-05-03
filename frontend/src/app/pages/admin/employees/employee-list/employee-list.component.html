@@ -126,17 +126,17 @@
           <td>
             <div class="risk-score-wrapper">
               <span class="risk-label-badge"
-                [style.background]="getRiskColor(emp.riskScore) + '22'"
-                [style.color]="getRiskColor(emp.riskScore)">
-                {{ getRiskLabel(emp.riskScore) }}
+                [style.background]="getRiskColor(emp.dynamicRiskScore) + '22'"
+                [style.color]="getRiskColor(emp.dynamicRiskScore)">
+                {{ getRiskLabel(emp.dynamicRiskScore) }}
               </span>
-              <span class="risk-number" [style.color]="getRiskColor(emp.riskScore)">
-                {{ emp.riskScore || 0 }}%
+              <span class="risk-number" [style.color]="getRiskColor(emp.dynamicRiskScore)">
+                {{ emp.dynamicRiskScore }}%
               </span>
               <div class="risk-bar-container">
                 <div class="risk-bar-fill"
-                     [style.width.%]="emp.riskScore || 0"
-                     [style.background-color]="getRiskColor(emp.riskScore)">
+                     [style.width.%]="emp.dynamicRiskScore"
+                     [style.background-color]="getRiskColor(emp.dynamicRiskScore)">
                 </div>
               </div>
             </div>

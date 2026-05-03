@@ -43,6 +43,19 @@ public class TrackingService {
     }
 
     public String logEvent(TrackingEvent event) throws ExecutionException, InterruptedException {
+        // Deduplicate: check if this user already triggered this exact event type for this campaign
+        ApiFuture<QuerySnapshot> existingFuture = firestore.collection(COLLECTION)
+                .whereEqualTo("campaignId", event.getCampaignId())
+                .whereEqualTo("employeeId", event.getEmployeeId())
+                .whereEqualTo("eventType", event.getEventType())
+                .get();
+        
+        List<QueryDocumentSnapshot> existingDocs = existingFuture.get().getDocuments();
+        if (!existingDocs.isEmpty()) {
+            // Already logged this event type for this user in this campaign
+            return existingDocs.get(0).getId();
+        }
+
         if (event.getTimestamp() == null) {
             event.setTimestamp(System.currentTimeMillis());
         }
@@ -63,5 +76,29 @@ public class TrackingService {
         else if (eventType.equals("email_delivered")) field = "stats.totalSent";
 
         campRef.update(field, FieldValue.increment(1));
+    }
+
+    public void deleteAllEvents() throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> future = firestore.collection(COLLECTION).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        
+        WriteBatch batch = firestore.batch();
+        for (QueryDocumentSnapshot document : documents) {
+            batch.delete(document.getReference());
+        }
+        batch.commit().get();
+        
+        // Also reset campaign stats to 0
+        ApiFuture<QuerySnapshot> campsFuture = firestore.collection("campaigns").get();
+        WriteBatch campsBatch = firestore.batch();
+        for (QueryDocumentSnapshot doc : campsFuture.get().getDocuments()) {
+            campsBatch.update(doc.getReference(), 
+                "stats.totalSent", 0,
+                "stats.opened", 0,
+                "stats.clicked", 0,
+                "stats.credentialAttempts", 0
+            );
+        }
+        campsBatch.commit().get();
     }
 }

@@ -16,18 +16,18 @@ Chart.register(...registerables);
 
 // ─── Power BI Color Palette ────────────────────────────────────────
 const PBI = {
-  blue:    '#2563EB',
-  teal:    '#0FBED8',
-  green:   '#34C759',
-  yellow:  '#2563EB',
-  orange:  '#FF9500',
-  red:     '#FF3B30',
-  purple:  '#AF52DE',
-  dark:    '#1B2631',
-  text:    '#333333',
-  muted:   '#666666',
-  grid:    'rgba(0,0,0,0.06)',
-  bg:      '#F0F2F5',
+  blue: '#2563EB',
+  teal: '#0FBED8',
+  green: '#34C759',
+  yellow: '#2563EB',
+  orange: '#FF9500',
+  red: '#FF3B30',
+  purple: '#AF52DE',
+  dark: '#1B2631',
+  text: '#333333',
+  muted: '#666666',
+  grid: 'rgba(0,0,0,0.06)',
+  bg: '#F0F2F5',
 };
 
 const TOOLTIP_CFG = {
@@ -96,7 +96,7 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
     private campaignService: CampaignService,
     private trackingService: TrackingService,
     private analyticsService: AnalyticsService
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await Promise.all([
@@ -110,9 +110,16 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
       this.campaignService.campaigns$,
       this.trackingService.events$
     ]).subscribe((results: any[]) => {
-      this.allEmployees = results[0] ?? [];
+      const emps = results[0] ?? [];
+      const empMap = new Map(emps.map((e: any) => [e.email, e.department]));
+      const empIdMap = new Map(emps.map((e: any) => [e.id, e.department]));
+
+      this.allEmployees = emps;
       this.allCampaigns = results[1] ?? [];
-      this.allEvents = results[2] ?? [];
+      this.allEvents = (results[2] ?? []).map((ev: any) => ({
+        ...ev,
+        department: ev.department || empIdMap.get(ev.employeeId) || empMap.get(ev.employeeEmail) || 'Unknown'
+      }));
 
       // Build filter options from raw data
       this.allDepartments = [...new Set(this.allEmployees.map(e => e.department).filter(Boolean))];
@@ -151,7 +158,17 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
   private applyFilters(): void {
     let emps = [...this.allEmployees];
     let camps = [...this.allCampaigns];
-    let evts = [...this.allEvents];
+
+    // Deduplicate events globally for analytics
+    const seen = new Set<string>();
+    const uniqueAllEvents = this.allEvents.filter(ev => {
+      const key = `${ev.campaignId}-${ev.employeeId}-${ev.eventType}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    let evts = [...uniqueAllEvents];
 
     // Department filter
     if (this.filters.department !== 'all') {
@@ -165,16 +182,29 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
       evts = evts.filter(e => e.campaignName === this.filters.campaign);
     }
 
-    // Risk level filter
+    // Risk level filter — compute dynamic risk scores from events
     if (this.filters.risk !== 'all') {
-      if (this.filters.risk === 'high') emps = emps.filter(e => (e.riskScore || 0) >= 70);
-      else if (this.filters.risk === 'medium') emps = emps.filter(e => (e.riskScore || 0) >= 30 && (e.riskScore || 0) < 70);
-      else emps = emps.filter(e => (e.riskScore || 0) < 30);
+      emps = emps.filter(e => {
+        const empEvts = evts.filter(ev => ev.employeeId === e.id || (e.email && ev.employeeEmail === e.email));
+        const clickedCamps = new Set(empEvts.filter(ev => ev.eventType === 'link_clicked').map(ev => ev.campaignId));
+        const credCamps = new Set(empEvts.filter(ev => ev.eventType === 'credential_attempt').map(ev => ev.campaignId));
+        const score = Math.min(100, (e.riskScore || 0) + (clickedCamps.size * 30) + (credCamps.size * 50));
+        if (this.filters.risk === 'high') return score >= 70;
+        if (this.filters.risk === 'medium') return score >= 30 && score < 70;
+        return score < 30;
+      });
     }
 
     // Event type filter
     if (this.filters.event !== 'all') {
       evts = evts.filter(e => e.eventType === this.filters.event);
+    }
+
+    // Filter events to only include events from filtered employees
+    if (this.filters.department !== 'all' || this.filters.risk !== 'all') {
+      const empIds = new Set(emps.map(e => e.id));
+      const empEmails = new Set(emps.map(e => e.email));
+      evts = evts.filter(ev => empIds.has(ev.employeeId) || empEmails.has(ev.employeeEmail));
     }
 
     // Count active filters
@@ -192,7 +222,23 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
     const clicked = this.events.filter(e => e.eventType === 'link_clicked').length;
     const creds = this.events.filter(e => e.eventType === 'credential_attempt').length;
     const totalEvents = this.events.length || 1;
-    const highRisk = emps.filter(e => (e.riskScore || 0) >= 70).length;
+
+    // Dynamic Risk Score Calculation
+    let highRisk = 0;
+    emps.forEach(e => {
+      const empEvents = evts.filter(ev => ev.employeeId === e.id || (e.email && ev.employeeEmail === e.email));
+
+      // Deduplicate risk events per campaign
+      const uniqueClicked = new Set(empEvents.filter(ev => ev.eventType === 'link_clicked').map(ev => ev.campaignId));
+      const uniqueCreds = new Set(empEvents.filter(ev => ev.eventType === 'credential_attempt').map(ev => ev.campaignId));
+
+      let score = e.riskScore || 0;
+      score += uniqueClicked.size * 30;
+      score += uniqueCreds.size * 50;
+
+      if (Math.min(score, 100) >= 70) highRisk++;
+    });
+
     const avgClickRate = this.deptStats.length > 0
       ? Math.round(this.deptStats.reduce((a, d) => a + d.clickRate, 0) / this.deptStats.length)
       : 0;
@@ -252,8 +298,8 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngAfterViewChecked(): void {
     if (this.chartsPending && !this.chartsRendered && !this.isLoading) {
       if (this.deptChartRef?.nativeElement && this.riskChartRef?.nativeElement
-          && this.trendChartRef?.nativeElement && this.funnelChartRef?.nativeElement
-          && this.radarChartRef?.nativeElement && this.stackedChartRef?.nativeElement) {
+        && this.trendChartRef?.nativeElement && this.funnelChartRef?.nativeElement
+        && this.radarChartRef?.nativeElement && this.stackedChartRef?.nativeElement) {
         this.destroyAll();
         this.buildAllCharts();
         this.chartsRendered = true;
@@ -297,28 +343,28 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
           barPercentage: 0.55,
         }]
       },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          animation: { duration: 600 },
-          onHover: (e: any, el: any) => { e.native.target.style.cursor = el[0] ? 'pointer' : 'default'; },
-          onClick: (e: any, activeEls: any, chart: any) => {
-            if (activeEls.length > 0) {
-              const label = chart.data.labels[activeEls[0].index];
-              this.onFilterChange('department', label);
-            }
-          },
-          plugins: { legend: { display: false }, tooltip: TOOLTIP_CFG },
-          scales: {
-            x: { grid: { display: false }, ticks: { color: PBI.muted, font: { size: 11 } }, border: { display: false } },
-            y: { grid: { color: PBI.grid }, ticks: { color: PBI.muted, font: { size: 10 }, callback: (v: any) => v + '%' }, max: 100, border: { display: false } }
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        animation: { duration: 600 },
+        onHover: (e: any, el: any) => { e.native.target.style.cursor = el[0] ? 'pointer' : 'default'; },
+        onClick: (e: any, activeEls: any, chart: any) => {
+          if (activeEls.length > 0) {
+            const label = chart.data.labels[activeEls[0].index];
+            this.onFilterChange('department', label);
           }
+        },
+        plugins: { legend: { display: false }, tooltip: TOOLTIP_CFG },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: PBI.muted, font: { size: 11 } }, border: { display: false } },
+          y: { grid: { color: PBI.grid }, ticks: { color: PBI.muted, font: { size: 10 }, callback: (v: any) => v + '%' }, max: 100, border: { display: false } }
         }
+      }
     }));
   }
 
   // ─── 2. Risk Doughnut ─────────────────────────────────────────────
   private buildRiskChart(): void {
-    const dist = this.analyticsService.getRiskDistribution(this.employees);
+    const dist = this.analyticsService.getRiskDistribution(this.employees, this.events);
     this.charts.push(new Chart(this.riskChartRef.nativeElement, {
       type: 'doughnut',
       data: {
@@ -331,25 +377,25 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
           hoverOffset: 6,
         }]
       },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          cutout: '65%',
-          animation: { duration: 800 },
-          onHover: (e: any, el: any) => { e.native.target.style.cursor = el[0] ? 'pointer' : 'default'; },
-          onClick: (e: any, activeEls: any, chart: any) => {
-            if (activeEls.length > 0) {
-              const label = chart.data.labels[activeEls[0].index];
-              this.onFilterChange('risk', label.toLowerCase());
-            }
-          },
-          plugins: {
-            legend: {
-              position: 'right',
-              labels: { color: PBI.text, font: { size: 11 }, usePointStyle: true, pointStyleWidth: 8, padding: 12 }
-            },
-            tooltip: TOOLTIP_CFG,
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '65%',
+        animation: { duration: 800 },
+        onHover: (e: any, el: any) => { e.native.target.style.cursor = el[0] ? 'pointer' : 'default'; },
+        onClick: (e: any, activeEls: any, chart: any) => {
+          if (activeEls.length > 0) {
+            const label = chart.data.labels[activeEls[0].index];
+            this.onFilterChange('risk', label.toLowerCase());
           }
+        },
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: { color: PBI.text, font: { size: 11 }, usePointStyle: true, pointStyleWidth: 8, padding: 12 }
+          },
+          tooltip: TOOLTIP_CFG,
         }
+      }
     }));
   }
 
@@ -357,7 +403,7 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
   private buildTrendChart(): void {
     const canvas = this.trendChartRef.nativeElement;
     const ctx = canvas.getContext('2d')!;
-    const trend = this.analyticsService.getCampaignTrend(this.campaigns);
+    const trend = this.analyticsService.getCampaignTrend(this.campaigns, this.events);
     const blueGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
     blueGrad.addColorStop(0, 'rgba(37, 99, 235, 0.25)');
     blueGrad.addColorStop(1, 'rgba(37, 99, 235, 0)');

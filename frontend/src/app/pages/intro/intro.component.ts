@@ -64,7 +64,7 @@ export class IntroComponent implements OnInit, AfterViewInit, OnDestroy {
       this.trackingService.events$
     ]).subscribe(async ([emps, camps, evts]) => {
       this.totalEmployees = emps.length;
-      const summary = await this.analyticsService.getPlatformSummary(emps, camps);
+      const summary = this.analyticsService.getPlatformSummary(emps, camps, evts);
       this.activeCampaignsCount = summary.activeCampaigns;
       this.phishPronePercentage = `${summary.avgClickRate}%`;
       // High risk count used for failed tests indicator

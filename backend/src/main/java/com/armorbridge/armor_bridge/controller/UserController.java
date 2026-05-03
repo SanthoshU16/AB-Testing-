@@ -32,4 +32,10 @@ public class UserController {
     public void recordLogin(Authentication auth) {
         userService.updateLastLogin((String) auth.getPrincipal());
     }
+
+    @DeleteMapping("/me")
+    public void deleteAccount(Authentication auth) throws com.google.firebase.auth.FirebaseAuthException, ExecutionException, InterruptedException {
+        String uid = (String) auth.getPrincipal();
+        userService.deleteUserAccount(uid);
+    }
 }
