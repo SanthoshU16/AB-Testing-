@@ -1,0 +1,326 @@
+<app-navbar [activePage]="'tutorial'"></app-navbar>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="tut-hero">
+  <div class="tut-hero-bg">
+    <div class="hero-orb orb-a"></div>
+    <div class="hero-orb orb-b"></div>
+    <div class="hero-orb orb-c"></div>
+  </div>
+  <div class="tut-hero-inner">
+    <p class="tut-eyebrow reveal">GET STARTED</p>
+    <h1 class="tut-headline reveal">
+      Everything you need to <span class="tut-gradient-text">defend your organization.</span>
+    </h1>
+    <p class="tut-sub reveal">
+      Armor Bridz is an all-in-one security awareness platform. This guide walks you through every feature — from
+      onboarding your team to generating compliance reports.
+    </p>
+    <div class="tut-hero-actions reveal">
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/sign-up" class="btn-hero-primary liquid-btn">
+          Get Started Free
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 8px;">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a routerLink="/demo" class="btn-hero-secondary liquid-btn">
+          Watch Demo
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 8px;">
+            <polygon points="6,4 12,8 6,12" fill="currentColor" />
+          </svg>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/learning-hub" class="btn-hero-primary liquid-btn">
+          Explore Learning Hub
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 8px;">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a routerLink="/demo" class="btn-hero-secondary liquid-btn">
+          Watch Demo
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 8px;">
+            <polygon points="6,4 12,8 6,12" fill="currentColor" />
+          </svg>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ QUICK FEATURE PILLS (MARQUEE) ══════════ -->
+<section class="tut-pills-section reveal">
+  <div class="marquee-wrapper">
+    <!-- Row 1 — scrolls left -->
+    <div class="marquee-track marquee-left">
+      <div class="marquee-content">
+        <div class="tut-pill" *ngFor="let f of features">
+          <div class="pill-icon" [style.background]="f.color + '18'" [style.color]="f.color">
+            <i class="bi {{ f.icon }}"></i>
+          </div>
+          <span>{{ f.label }}</span>
+        </div>
+        <!-- Duplicate for seamless loop -->
+        <div class="tut-pill" *ngFor="let f of features">
+          <div class="pill-icon" [style.background]="f.color + '18'" [style.color]="f.color">
+            <i class="bi {{ f.icon }}"></i>
+          </div>
+          <span>{{ f.label }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- Row 2 — scrolls right -->
+    <div class="marquee-track marquee-right">
+      <div class="marquee-content">
+        <div class="tut-pill" *ngFor="let f of features; let i = index">
+          <div class="pill-icon" [style.background]="f.color + '18'" [style.color]="f.color">
+            <i class="bi {{ f.icon }}"></i>
+          </div>
+          <span>{{ f.label }}</span>
+        </div>
+        <!-- Duplicate for seamless loop -->
+        <div class="tut-pill" *ngFor="let f of features; let i = index">
+          <div class="pill-icon" [style.background]="f.color + '18'" [style.color]="f.color">
+            <i class="bi {{ f.icon }}"></i>
+          </div>
+          <span>{{ f.label }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section class="tut-steps-section" id="walkthrough">
+  <div class="tut-container">
+    <div class="tut-section-header reveal">
+      <p class="tut-eyebrow">HOW IT WORKS</p>
+      <h2 class="tut-section-title">Five steps to a <span class="tut-gradient-text">safer team.</span></h2>
+    </div>
+
+    <div class="tut-steps-layout">
+      <!-- Step Nav -->
+      <div class="tut-steps-nav">
+        <button *ngFor="let step of steps; let i = index" class="tut-step-btn" [class.active]="activeStep === i"
+          (click)="setStep(i)">
+          <div class="step-num">{{ i + 1 }}</div>
+          <div class="step-btn-text">
+            <strong>{{ step.title }}</strong>
+            <span>{{ step.desc | slice:0:48 }}…</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Step Detail -->
+      <div class="tut-step-card" *ngFor="let step of steps; let i = index" [class.active]="activeStep === i">
+        <div class="step-card-icon" [style.background]="step.color + '18'" [style.color]="step.color">
+          <i class="bi {{ step.icon }}"></i>
+        </div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.desc }}</p>
+        <div class="step-progress">
+          <div class="step-progress-bar" [style.width]="((i + 1) / steps.length * 100) + '%'"
+            [style.background]="step.color"></div>
+        </div>
+        <div class="step-nav-btns">
+          <button (click)="setStep(i - 1)" [disabled]="i === 0">← Previous</button>
+          <button (click)="setStep(i + 1)" [disabled]="i === steps.length - 1">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FEATURE DEEP-DIVES ══════════ -->
+<section class="tut-features-section">
+  <div class="tut-container">
+
+    <!-- Feature 1: Dashboard -->
+    <div class="tut-feature-block reveal" id="feat-dashboard">
+      <div class="tut-feature-text">
+        <div class="feat-tag" style="color:#5E5CE6;background:#5E5CE620;">Dashboard</div>
+        <h2>Your mission control,<br>always live.</h2>
+        <p>The Admin Dashboard gives you a real-time bird's-eye view of your entire security posture. Track employee
+          count, active campaigns, average click-rate, and high-risk employees — all from a single screen.</p>
+        <ul class="feat-list">
+          <li><i class="bi bi-check-circle-fill" style="color:#5E5CE6"></i> Real-time KPI stat cards</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#5E5CE6"></i> Recent activity feed with event types</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#5E5CE6"></i> Quick-action shortcuts for every workflow
+          </li>
+        </ul>
+      </div>
+      <div class="tut-feature-visual" style="background:linear-gradient(135deg,#5E5CE620,#4F46E510);">
+        <div class="mock-dashboard">
+          <div class="mock-stat" style="--c:#5E5CE6"><span>Total Employees</span><strong>248</strong></div>
+          <div class="mock-stat" style="--c:#007AFF"><span>Active Campaigns</span><strong>7</strong></div>
+          <div class="mock-stat" style="--c:#34C759"><span>Avg Click Rate</span><strong>12%</strong></div>
+          <div class="mock-stat" style="--c:#FF375F"><span>High Risk</span><strong>19</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Campaigns -->
+    <div class="tut-feature-block reverse reveal" id="feat-campaigns">
+      <div class="tut-feature-text">
+        <div class="feat-tag" style="color:#007AFF;background:#007AFF20;">Campaigns</div>
+        <h2>Launch simulations<br>in minutes.</h2>
+        <p>Create targeted phishing simulations using realistic templates. Select employees individually or by group,
+          schedule send time, and monitor real-time results as they roll in.</p>
+        <ul class="feat-list">
+          <li><i class="bi bi-check-circle-fill" style="color:#007AFF"></i> Pre-built industry-specific templates</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#007AFF"></i> Scheduled or instant delivery</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#007AFF"></i> Per-employee click tracking & forensics</li>
+        </ul>
+      </div>
+      <div class="tut-feature-visual" style="background:linear-gradient(135deg,#007AFF20,#0066CC10);">
+        <div class="mock-campaign">
+          <div class="mock-campaign-row"><i class="bi bi-envelope-fill" style="color:#007AFF"></i><span>Q2 Phish
+              Simulation</span><span class="mock-badge active">Active</span></div>
+          <div class="mock-campaign-row"><i class="bi bi-envelope-fill" style="color:#34C759"></i><span>CEO Fraud
+              Test</span><span class="mock-badge done">Complete</span></div>
+          <div class="mock-campaign-row"><i class="bi bi-envelope-fill" style="color:#FF9F0A"></i><span>HR Policy
+              Lure</span><span class="mock-badge draft">Draft</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: Analytics -->
+    <div class="tut-feature-block reveal" id="feat-analytics">
+      <div class="tut-feature-text">
+        <div class="feat-tag" style="color:#34C759;background:#34C75920;">Analytics</div>
+        <h2>Turn data into<br>decisive action.</h2>
+        <p>The Analytics dashboard displays click-rate trends, risk score distributions, department comparisons, and
+          campaign effectiveness — all with interactive charts powered by Chart.js.</p>
+        <ul class="feat-list">
+          <li><i class="bi bi-check-circle-fill" style="color:#34C759"></i> Click-rate & credential-attempt trends</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#34C759"></i> Per-employee risk score breakdown</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#34C759"></i> Department-level vulnerability comparison
+          </li>
+        </ul>
+      </div>
+      <div class="tut-feature-visual" style="background:linear-gradient(135deg,#34C75920,#28A74510);">
+        <div class="mock-bars">
+          <div class="mock-bar" style="height:60%;background:#34C759"></div>
+          <div class="mock-bar" style="height:80%;background:#007AFF"></div>
+          <div class="mock-bar" style="height:45%;background:#FF9F0A"></div>
+          <div class="mock-bar" style="height:90%;background:#5E5CE6"></div>
+          <div class="mock-bar" style="height:55%;background:#FF375F"></div>
+          <div class="mock-bar" style="height:70%;background:#34C759"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 4: Learning Hub -->
+    <div class="tut-feature-block reverse reveal" id="feat-learning">
+      <div class="tut-feature-text">
+        <div class="feat-tag" style="color:#FF9F0A;background:#FF9F0A20;">Learning Hub</div>
+        <h2>11 expert courses.<br>Real certifications.</h2>
+        <p>From beginner cybersecurity essentials to advanced threat intelligence, the Learning Hub has structured
+          courses that guide employees through lessons, quizzes, and certificate milestones.</p>
+        <ul class="feat-list">
+          <li><i class="bi bi-check-circle-fill" style="color:#FF9F0A"></i> 3 skill tiers: Beginner, Intermediate,
+            Advanced</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#FF9F0A"></i> Auto-locked progression system</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#FF9F0A"></i> Certificate generated upon quiz passing</li>
+        </ul>
+      </div>
+      <div class="tut-feature-visual" style="background:linear-gradient(135deg,#FF9F0A20,#F5960010);">
+        <div class="mock-courses">
+          <div class="mock-course-card" style="--c:#2563EB"><i class="bi bi-shield-lock"></i><span>Cybersecurity
+              Essentials</span>
+            <div class="mock-progress" style="background:#2563EB;width:70%"></div>
+          </div>
+          <div class="mock-course-card" style="--c:#DC2626"><i class="bi bi-envelope-exclamation"></i><span>Phishing
+              Recognition</span>
+            <div class="mock-progress" style="background:#DC2626;width:45%"></div>
+          </div>
+          <div class="mock-course-card" style="--c:#7C3AED"><i class="bi bi-person-lock"></i><span>Social
+              Engineering</span>
+            <div class="mock-progress" style="background:#7C3AED;width:20%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 5: Reports -->
+    <div class="tut-feature-block reveal" id="feat-compliance">
+      <div class="tut-feature-text">
+        <div class="feat-tag" style="color:#FF375F;background:#FF375F20;">Compliance</div>
+        <h2>Reports that pass<br>any audit.</h2>
+        <p>Export professional security awareness reports in one click. Perfect for ISO 27001, SOC2, and GDPR compliance
+          audits. Show exactly how your team is improving over time.</p>
+        <ul class="feat-list">
+          <li><i class="bi bi-check-circle-fill" style="color:#FF375F"></i> Detailed PDF Executive Summaries</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#FF375F"></i> Per-department progress logs</li>
+          <li><i class="bi bi-check-circle-fill" style="color:#FF375F"></i> Full training audit trails</li>
+        </ul>
+      </div>
+      <div class="tut-feature-visual" style="background:linear-gradient(135deg,#FF375F20,#E11D4810);">
+        <div class="mock-reports">
+          <div class="mock-report-page">
+            <div class="report-header">
+              <div class="report-logo"></div>
+              <div class="report-title-lines"><span></span><span></span></div>
+            </div>
+            <div class="report-content">
+              <div class="report-chart-placeholder"></div>
+              <div class="report-table-lines"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ HELP & SUPPORT ══════════ -->
+<section class="tut-support-section reveal">
+  <div class="tut-container">
+    <div class="tut-support-grid">
+      <div class="support-card">
+        <i class="bi bi-book"></i>
+        <h3>Documentation</h3>
+        <p>Browse our detailed guides and API documentation for technical integrations.</p>
+        <a href="#">Explore Docs →</a>
+      </div>
+      <div class="support-card">
+        <i class="bi bi-chat-dots"></i>
+        <h3>24/7 Live Support</h3>
+        <p>Have a question? Our security experts are here to help you around the clock.</p>
+        <a href="#">Chat with us →</a>
+      </div>
+      <div class="support-card">
+        <i class="bi bi-play-circle"></i>
+        <h3>Video Training</h3>
+        <p>Watch step-by-step video tutorials on how to master the Armor Bridz platform.</p>
+        <a routerLink="/demo">Watch Videos →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="tut-cta-section reveal">
+  <div class="tut-cta-card">
+    <div class="cta-orb cta-orb-a"></div>
+    <div class="cta-orb cta-orb-b"></div>
+    <p class="tut-eyebrow" style="color:rgba(255,255,255,0.6)">READY TO START?</p>
+    <h2>{{ isLoggedIn ? 'Your security journey continues.' : 'Protect your team today.' }}</h2>
+    <p>{{ isLoggedIn ? 'Go back to your dashboard to manage your campaigns and employees.' : 'Join thousands of
+      organizations using Armor Bridz to build a human firewall against cyber threats.' }}</p>
+    <div class="cta-actions">
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/sign-up" class="cta-btn-primary liquid-btn">Create Free Account</a>
+        <a routerLink="/pricing" class="cta-btn-outline liquid-btn">View Pricing</a>
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/admin/dashboard" class="cta-btn-primary liquid-btn">Back to Dashboard</a>
+        <a routerLink="/admin/profile" class="cta-btn-outline liquid-btn">Manage Profile</a>
+      </ng-container>
+    </div>
+  </div>
+</section>

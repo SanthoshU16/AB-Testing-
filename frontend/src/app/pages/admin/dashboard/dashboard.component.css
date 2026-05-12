@@ -1,6 +1,6 @@
 /* =============================================
    DASHBOARD — Apple/Google Premium Design
-   Uses brand colors: #0A2540, #2563EB, #3B82F6
+   Uses brand colors: #0A2540, var(--accent-color, #2563EB), var(--accent-light, #3B82F6)
    ============================================= */
 
 /* ─── Welcome Hero ───────────────────────────────── */
@@ -23,9 +23,9 @@
   gap: 8px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #2563EB;
-  background: rgba(37, 99, 235, 0.06);
-  border: 1px solid rgba(37, 99, 235, 0.1);
+  color: var(--accent-color, #2563EB);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.06 * 100%), transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-color, #2563EB) calc(0.1 * 100%), transparent);
   padding: 5px 14px 5px 10px;
   border-radius: 100px;
   margin-bottom: 16px;
@@ -36,10 +36,10 @@
 .badge-dot {
   width: 6px;
   height: 6px;
-  background: #2563EB;
+  background: var(--accent-color, #2563EB);
   border-radius: 50%;
   animation: badgePulse 2s ease-in-out infinite;
-  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent);
 }
 
 .welcome-heading {
@@ -55,11 +55,11 @@
 .name-accent {
   background: linear-gradient(
     90deg, 
-    #2563EB 0%, 
-    #3B82F6 25%, 
-    #1D4ED8 50%, 
-    #3B82F6 75%, 
-    #2563EB 100%
+    var(--accent-color, #2563EB) 0%, 
+    var(--accent-light, #3B82F6) 25%, 
+    var(--accent-hover, #1D4ED8) 50%, 
+    var(--accent-light, #3B82F6) 75%, 
+    var(--accent-color, #2563EB) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -103,16 +103,16 @@
 }
 
 .action-btn-primary {
-  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  background: linear-gradient(135deg, var(--accent-color, #2563EB) 0%, var(--accent-hover, #1D4ED8) 100%);
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25),
-              0 1px 2px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.25 * 100%), transparent),
+              0 1px 2px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.15 * 100%), transparent);
 }
 
 .action-btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35),
-              0 2px 4px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent),
+              0 2px 4px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.2 * 100%), transparent);
 }
 
 .action-btn-secondary {
@@ -179,7 +179,7 @@
   border: none;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #2563EB;
+  color: var(--accent-color, #2563EB);
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 6px;
@@ -188,7 +188,7 @@
 }
 
 .view-all-link:hover {
-  background: rgba(37, 99, 235, 0.06);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.06 * 100%), transparent);
 }
 
 /* ─── Quick Actions (List Style) ─────────────────── */
@@ -309,8 +309,8 @@
 }
 
 .activity-dot.info {
-  background: #2563EB;
-  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+  background: var(--accent-color, #2563EB);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.3 * 100%), transparent);
 }
 
 .activity-body {
@@ -367,8 +367,8 @@
 }
 
 .activity-badge.info {
-  background: rgba(37, 99, 235, 0.08);
-  color: #2563EB;
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
+  color: var(--accent-color, #2563EB);
 }
 
 /* ─── Animations ─────────────────────────────────── */
@@ -449,4 +449,75 @@
   .welcome-heading {
     font-size: 1.5rem;
   }
+}
+
+
+/* =============================================
+   DARK MODE OVERRIDES
+   ============================================= */
+:host-context(.theme-dark) .welcome-heading {
+  color: var(--text-primary);
+}
+
+:host-context(.theme-dark) .welcome-sub {
+  color: var(--text-tertiary);
+}
+
+:host-context(.theme-dark) .dashboard-panel {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+:host-context(.theme-dark) .panel-title {
+  color: var(--text-primary);
+}
+
+:host-context(.theme-dark) .qa-title {
+  color: var(--text-primary);
+}
+
+:host-context(.theme-dark) .qa-desc {
+  color: var(--text-tertiary);
+}
+
+:host-context(.theme-dark) .qa-arrow {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+:host-context(.theme-dark) .quick-action-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+:host-context(.theme-dark) .quick-action-item:hover .qa-arrow {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+:host-context(.theme-dark) .activity-title {
+  color: var(--text-primary);
+}
+
+:host-context(.theme-dark) .activity-meta {
+  color: var(--text-tertiary);
+}
+
+:host-context(.theme-dark) .time-text {
+  color: var(--text-tertiary);
+}
+
+:host-context(.theme-dark) .activity-item {
+  border-bottom-color: rgba(255, 255, 255, 0.04);
+}
+
+:host-context(.theme-dark) .activity-item[style*="pointer"]:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+:host-context(.theme-dark) .action-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:host-context(.theme-dark) .action-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
 }

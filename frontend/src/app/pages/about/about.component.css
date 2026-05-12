@@ -56,7 +56,7 @@
 .section-overline {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #2563EB;
+  color: var(--accent-color, #2563EB);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 16px;
@@ -73,7 +73,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #0A2540 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #0A2540 0%, var(--accent-color, #2563EB) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -119,7 +119,7 @@
 .orb-1 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.12 * 100%), transparent) 0%, transparent 70%);
   top: -15%;
   right: -8%;
 }
@@ -161,7 +161,7 @@
 }
 
 .headline-accent {
-  background: linear-gradient(135deg, #2563EB, #1E40AF);
+  background: linear-gradient(135deg, var(--accent-color, #2563EB), var(--accent-dark, #1E40AF));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -214,8 +214,8 @@
   width: 56px;
   height: 56px;
   border-radius: 16px;
-  background: rgba(37, 99, 235, 0.08);
-  color: #2563EB;
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
+  color: var(--accent-color, #2563EB);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -276,8 +276,8 @@
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: rgba(37, 99, 235, 0.08);
-  color: #2563EB;
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
+  color: var(--accent-color, #2563EB);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -328,18 +328,11 @@
   max-width: 960px;
   margin: 0 auto;
   border-radius: 28px;
-  background: linear-gradient(160deg,
-      #5b8def 0%,
-      #4472e0 15%,
-      #3a63d8 30%,
-      #3058d0 50%,
-      #2a4fc8 70%,
-      #2445bf 85%,
-      #1e3bb6 100%);
+  background: linear-gradient(160deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   padding: 4px;
   box-shadow:
-    0 24px 64px rgba(37, 99, 235, 0.35),
-    0 8px 24px rgba(37, 99, 235, 0.2),
+    0 24px 64px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent),
+    0 8px 24px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.2 * 100%), transparent),
     0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
@@ -349,8 +342,8 @@
 .stats-glass-pill:hover {
   transform: translateY(-4px);
   box-shadow:
-    0 32px 80px rgba(37, 99, 235, 0.4),
-    0 12px 32px rgba(37, 99, 235, 0.25),
+    0 32px 80px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent),
+    0 12px 32px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.25 * 100%), transparent),
     0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
@@ -469,7 +462,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1f57d6, #0e2b70);
+  background: linear-gradient(135deg, var(--accent-color, #2563EB), var(--accent-dark, #0e2b70));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -496,7 +489,7 @@
 .team-role {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #2563EB;
+  color: var(--accent-color, #2563EB);
   margin-bottom: 12px;
 }
 
@@ -564,21 +557,21 @@
 }
 
 .btn-primary {
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  background: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow:
-    0 12px 28px rgba(37, 99, 235, 0.45),
+    0 12px 28px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.45 * 100%), transparent),
     inset 0 2px 3px rgba(255, 255, 255, 0.35),
-    inset 0 -10px 14px rgba(29, 78, 216, 0.5);
+    inset 0 -10px 14px color-mix(in srgb, var(--accent-hover, #1D4ED8) calc(0.5 * 100%), transparent);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 18px 40px rgba(37, 99, 235, 0.55),
+    0 18px 40px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.55 * 100%), transparent),
     inset 0 2px 3px rgba(255, 255, 255, 0.4),
-    inset 0 -10px 16px rgba(29, 78, 216, 0.6);
+    inset 0 -10px 16px color-mix(in srgb, var(--accent-hover, #1D4ED8) calc(0.6 * 100%), transparent);
 }
 
 .btn-secondary {

@@ -44,9 +44,10 @@ export class IntroComponent implements OnInit, AfterViewInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     const profile = this.authService.currentProfile;
     if (profile) {
-      this.userName = profile.firstName || 'User';
+      this.userName = (profile.firstName || 'User') + (profile.lastName ? ' ' + profile.lastName : '');
       this.userEmail = profile.email || '';
       this.userInitials = profile.firstName ? profile.firstName.charAt(0).toUpperCase() : 'U';
+      if (profile.lastName) this.userInitials += profile.lastName.charAt(0).toUpperCase();
       this.userRole = profile.role || 'viewer';
     }
     this.updateGreeting();
@@ -69,9 +70,8 @@ export class IntroComponent implements OnInit, AfterViewInit, OnDestroy {
       this.phishPronePercentage = `${summary.avgClickRate}%`;
       // High risk count used for failed tests indicator
       this.failedTestCount = summary.highRiskCount;
-      // Security Score can be inversely proportional to risk (just an example calculation)
-      const avgRisk = emps.reduce((acc, emp) => acc + (emp.riskScore || 0), 0) / (emps.length || 1);
-      this.securityScore = `${Math.round(100 - avgRisk)}%`;
+      // Security Score should be inversely proportional to the phish-prone percentage
+      this.securityScore = `${Math.round(100 - summary.avgClickRate)}%`;
     });
   }
 

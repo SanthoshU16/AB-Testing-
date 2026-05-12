@@ -10,7 +10,7 @@
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
   gap: 32px;
   margin-bottom: 24px;
 }
@@ -25,7 +25,7 @@
   font-size: 0.875rem;
   color: var(--text-tertiary);
   line-height: 1.6;
-  max-width: 260px;
+  max-width: 240px;
   margin-bottom: 16px;
 }
 
@@ -106,8 +106,8 @@
 /* Responsive */
 @media (max-width: 1024px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 24px;
   }
 }
 

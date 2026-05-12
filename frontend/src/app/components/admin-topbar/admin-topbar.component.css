@@ -1,5 +1,6 @@
 /* =============================================
    ADMIN TOPBAR — Minimal Apple-inspired
+   Dark-mode aware via CSS variables
    ============================================= */
 
 .admin-topbar {
@@ -8,14 +9,15 @@
   justify-content: space-between;
   height: 80px;
   padding: 0 32px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--topbar-bg, rgba(255, 255, 255, 0.72));
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(10, 37, 64, 0.08);
+  border-bottom: 1px solid var(--border, rgba(10, 37, 64, 0.08));
   position: sticky;
   top: 0;
   z-index: 500;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 
 /* ─── Left Section ───────────────────────────────── */
@@ -35,14 +37,15 @@
 .breadcrumb-root {
   font-size: 1.05rem;
   font-weight: 500;
-  color: rgba(10, 37, 64, 0.45);
+  color: var(--text-tertiary, rgba(10, 37, 64, 0.45));
   letter-spacing: -0.01em;
 }
 
 .breadcrumb-sep {
-  color: rgba(10, 37, 64, 0.25);
+  color: var(--text-tertiary, rgba(10, 37, 64, 0.25));
   display: flex;
   align-items: center;
+  opacity: 0.7;
 }
 
 .breadcrumb-current {
@@ -64,10 +67,10 @@
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  background: rgba(10, 37, 64, 0.04);
-  border: 1px solid rgba(10, 37, 64, 0.06);
+  background: var(--search-bg, rgba(10, 37, 64, 0.04));
+  border: 1px solid var(--border, rgba(10, 37, 64, 0.06));
   border-radius: 12px;
-  color: rgba(10, 37, 64, 0.35);
+  color: var(--text-tertiary, rgba(10, 37, 64, 0.35));
   cursor: text;
   transition: all 0.2s ease;
   width: 280px;
@@ -75,9 +78,9 @@
 }
 
 .topbar-search:focus-within {
-  background: rgba(10, 37, 64, 0.06);
-  border-color: rgba(37, 99, 235, 0.3);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+  background: var(--search-focus-bg, rgba(10, 37, 64, 0.06));
+  border-color: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.3 * 100%), transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
 }
 
 .search-input {
@@ -85,13 +88,13 @@
   border: none;
   outline: none;
   font-size: 0.9375rem;
-  color: #0A2540;
+  color: var(--text-primary, #0A2540);
   width: 100%;
   font-family: inherit;
 }
 
 .search-input::placeholder {
-  color: rgba(10, 37, 64, 0.35);
+  color: var(--text-tertiary, rgba(10, 37, 64, 0.35));
 }
 
 /* ─── Search Dropdown ────────────────────────────── */
@@ -100,13 +103,12 @@
   top: calc(100% + 8px);
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--dropdown-bg, rgba(255, 255, 255, 0.85));
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(10, 37, 64, 0.08);
+  border: 1px solid var(--border, rgba(10, 37, 64, 0.08));
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(10, 37, 64, 0.12),
-              0 4px 12px rgba(10, 37, 64, 0.05);
+  box-shadow: var(--shadow-md, 0 8px 32px rgba(10, 37, 64, 0.12));
   padding: 6px;
   z-index: 1000;
   animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -123,7 +125,7 @@
 }
 
 .search-item:hover {
-  background: rgba(37, 99, 235, 0.06);
+  background: var(--dropdown-hover-bg, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.06 * 100%), transparent));
 }
 
 .search-item-icon-wrap {
@@ -132,22 +134,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 37, 64, 0.04);
+  background: var(--icon-wrap-bg, rgba(10, 37, 64, 0.04));
   border-radius: 6px;
-  color: rgba(10, 37, 64, 0.5);
+  color: var(--text-tertiary, rgba(10, 37, 64, 0.5));
   font-size: 0.9rem;
   transition: all 0.2s ease;
 }
 
 .search-item:hover .search-item-icon-wrap {
-  background: rgba(37, 99, 235, 0.1);
-  color: #2563EB;
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.1 * 100%), transparent);
+  color: var(--blue, var(--accent-color, #2563EB));
 }
 
 .search-item-label {
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #0A2540;
+  color: var(--text-primary, #0A2540);
 }
 
 @keyframes dropdownFadeIn {
@@ -165,13 +167,13 @@
   background: transparent;
   border: none;
   border-radius: 12px;
-  color: rgba(10, 37, 64, 0.45);
+  color: var(--text-tertiary, rgba(10, 37, 64, 0.45));
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .topbar-icon-btn:hover {
-  background: rgba(10, 37, 64, 0.05);
+  background: var(--icon-hover-bg, rgba(10, 37, 64, 0.05));
   color: var(--text-primary, #0A2540);
 }
 
@@ -182,7 +184,7 @@
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
-  background: #2563EB;
+  background: var(--blue, var(--accent-color, #2563EB));
   color: white;
   border-radius: 10px;
   font-size: 10px;
@@ -190,8 +192,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #ffffff;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  border: 2px solid var(--topbar-bg, #ffffff);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.3 * 100%), transparent);
   line-height: 1;
   pointer-events: none;
 }
@@ -202,10 +204,10 @@
   right: 10px;
   width: 8px;
   height: 8px;
-  background: #2563EB;
+  background: var(--blue, var(--accent-color, #2563EB));
   border-radius: 50%;
-  border: 1.5px solid #ffffff;
-  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+  border: 1.5px solid var(--topbar-bg, #ffffff);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent);
 }
 
 /* ─── Responsive ─────────────────────────────────── */
@@ -218,4 +220,17 @@
   .topbar-search {
     display: none;
   }
+}
+
+/* =============================================
+   DARK MODE OVERRIDES
+   ============================================= */
+:host-context(.theme-dark) .admin-topbar {
+  --topbar-bg: rgba(15, 20, 25, 0.75);
+  --search-bg: rgba(255, 255, 255, 0.04);
+  --search-focus-bg: rgba(255, 255, 255, 0.08);
+  --dropdown-bg: rgba(20, 25, 32, 0.92);
+  --dropdown-hover-bg: rgba(255, 255, 255, 0.06);
+  --icon-wrap-bg: rgba(255, 255, 255, 0.04);
+  --icon-hover-bg: rgba(255, 255, 255, 0.06);
 }

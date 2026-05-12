@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -31,6 +32,18 @@ public class UserController {
     @PostMapping("/login-event")
     public void recordLogin(Authentication auth) {
         userService.updateLastLogin((String) auth.getPrincipal());
+    }
+
+    @GetMapping("/me/preferences")
+    public Map<String, Object> getPreferences(Authentication auth) throws ExecutionException, InterruptedException {
+        String uid = (String) auth.getPrincipal();
+        return userService.getPreferences(uid);
+    }
+
+    @PutMapping("/me/preferences")
+    public void updatePreferences(@RequestBody Map<String, Object> preferences, Authentication auth) {
+        String uid = (String) auth.getPrincipal();
+        userService.updatePreferences(uid, preferences);
     }
 
     @DeleteMapping("/me")

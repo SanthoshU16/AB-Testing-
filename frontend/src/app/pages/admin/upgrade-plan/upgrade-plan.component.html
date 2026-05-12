@@ -1,43 +1,295 @@
-<div class="page-container">
-  <div class="page-header text-center">
-    <h2 class="page-title">Upgrade Your Plan</h2>
-    <p class="page-subtitle">Get advanced features and higher limits for your security team.</p>
-  </div>
+<div class="upgrade-page">
 
-  <div class="pricing-grid">
-    <!-- Current Plan -->
-    <div class="pricing-card current">
-      <div class="plan-header">
-        <span class="plan-badge">Current Plan</span>
-        <h3 class="plan-name">Starter</h3>
-        <div class="plan-price">$0<span>/mo</span></div>
-        <p class="plan-desc">Basic phishing simulation and reporting for small teams.</p>
-      </div>
-      <ul class="plan-features">
-        <li><i class="bi bi-check-circle-fill"></i> Up to 50 employees</li>
-        <li><i class="bi bi-check-circle-fill"></i> 2 campaigns per month</li>
-        <li><i class="bi bi-check-circle-fill"></i> Basic email templates</li>
-        <li><i class="bi bi-check-circle-fill"></i> Standard reporting</li>
-      </ul>
-      <button class="btn-outline w-100" disabled>Active Plan</button>
+  <!-- ========== HERO SECTION ========== -->
+  <section class="pricing-hero">
+    <div class="hero-bg-effects">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
     </div>
 
-    <!-- Pro Plan -->
-    <div class="pricing-card highlighted">
-      <div class="plan-header">
-        <span class="plan-badge popular">Most Popular</span>
-        <h3 class="plan-name">Professional</h3>
-        <div class="plan-price">$99<span>/mo</span></div>
-        <p class="plan-desc">Advanced features and integrations for growing companies.</p>
+    <div class="hero-content reveal">
+      <p class="section-overline">PRICING</p>
+      <h1 class="hero-headline">
+        Simple, transparent<br>
+        <span class="hero-accent">pricing that scales.</span>
+      </h1>
+      <p class="hero-description">
+        Start free and grow with confidence. No hidden fees, no surprise bills —
+        just the security training your team deserves.
+      </p>
+
+      <!-- Current Plan Indicator -->
+      <div class="current-plan-pill">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5L13 3.5V8C13 11.5 10.5 13.5 8 14.5C5.5 13.5 3 11.5 3 8V3.5L8 1.5Z" fill="none"
+            stroke="var(--accent-color, #2563EB)" stroke-width="1.5" />
+          <path d="M5.5 8L7 9.5L10.5 6" stroke="var(--accent-color, #2563EB)" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <span>Your current plan: <strong>{{ currentPlan }}</strong></span>
       </div>
-      <ul class="plan-features">
-        <li><i class="bi bi-check-circle-fill"></i> Up to 500 employees</li>
-        <li><i class="bi bi-check-circle-fill"></i> Unlimited campaigns</li>
-        <li><i class="bi bi-check-circle-fill"></i> Advanced template builder</li>
-        <li><i class="bi bi-check-circle-fill"></i> Advanced analytics & exports</li>
-        <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
-      </ul>
-      <button class="btn-primary w-100">Upgrade to Pro</button>
+
+      <!-- Billing Toggle -->
+      <div class="billing-toggle">
+        <span class="toggle-label" [class.active]="!isAnnual">Monthly</span>
+        <button class="toggle-switch" [class.annual]="isAnnual" (click)="toggleBilling()" id="billing-toggle-btn"
+          aria-label="Toggle billing period">
+          <span class="toggle-knob"></span>
+        </button>
+        <span class="toggle-label" [class.active]="isAnnual">
+          Annual
+          <span class="save-badge">Save 25%</span>
+        </span>
+      </div>
     </div>
-  </div>
+  </section>
+
+
+  <!-- ========== PRICING CARDS ========== -->
+  <section class="plans-section">
+    <div class="plans-grid">
+      <div *ngFor="let plan of plans; let i = index" class="plan-card reveal"
+        [class.plan-highlighted]="plan.highlighted"
+        [class.plan-current]="isCurrentPlan(plan.name)"
+        [style.transition-delay]="(i * 0.1) + 's'"
+        [id]="'plan-' + plan.name.toLowerCase()">
+
+        <!-- Popular badge -->
+        <div class="plan-badge" *ngIf="plan.badge">{{ plan.badge }}</div>
+
+        <!-- Current Plan badge -->
+        <div class="current-badge" *ngIf="isCurrentPlan(plan.name) && !plan.badge">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+          Your Plan
+        </div>
+
+        <!-- Glow ring for highlighted card -->
+        <div class="plan-glow" *ngIf="plan.highlighted"></div>
+
+        <div class="plan-header">
+          <h2 class="plan-name">{{ plan.name }}</h2>
+          <p class="plan-description">{{ plan.description }}</p>
+        </div>
+
+        <div class="plan-price-wrap">
+          <div class="plan-price">
+            <span class="plan-currency" *ngIf="plan.monthlyPrice > 0">$</span>
+            <span class="plan-amount">
+              {{ plan.monthlyPrice === 0
+              ? (plan.name === 'Starter' ? 'Free' : 'Custom')
+              : (isAnnual ? plan.annualPrice : plan.monthlyPrice) }}
+            </span>
+            <span class="plan-period" *ngIf="plan.monthlyPrice > 0">/mo</span>
+          </div>
+          <p class="plan-billing-note" *ngIf="plan.monthlyPrice > 0 && isAnnual">
+            Billed annually · <strong>Save {{ getSavings(plan) }}%</strong>
+          </p>
+          <p class="plan-billing-note" *ngIf="plan.monthlyPrice > 0 && !isAnnual">
+            Billed monthly
+          </p>
+          <p class="plan-billing-note" *ngIf="plan.name === 'Enterprise'">
+            Talk to us about volume pricing
+          </p>
+        </div>
+
+        <button class="liquid-btn plan-cta"
+          [class.plan-cta-primary]="plan.highlighted"
+          [class.plan-cta-dark]="!plan.highlighted && plan.name === 'Enterprise'"
+          [class.plan-cta-current]="isCurrentPlan(plan.name)"
+          [disabled]="isCurrentPlan(plan.name)"
+          [id]="'plan-cta-' + plan.name.toLowerCase()">
+          {{ getCtaText(plan) }}
+          <svg *ngIf="!isCurrentPlan(plan.name)" width="15" height="15" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <div class="plan-divider"></div>
+
+        <ul class="plan-features">
+          <li *ngFor="let f of plan.features" class="plan-feature-item">
+            <span class="feature-check" [style.color]="plan.highlighted ? '#fff' : plan.color">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span>{{ f }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Trust row -->
+    <div class="trust-row reveal" style="transition-delay:0.3s">
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M8 1L10.163 5.382L15 6.18L11.5 9.618L12.326 14.764L8 12.382L3.674 14.764L4.5 9.618L1 6.18L5.837 5.382L8 1Z"
+            fill="#EAB308" />
+        </svg>
+        No credit card required
+      </div>
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5L13 3.5V8C13 11.5 10.5 13.5 8 14.5C5.5 13.5 3 11.5 3 8V3.5L8 1.5Z" fill="none"
+            stroke="var(--accent-color, #2563EB)" stroke-width="1.5" />
+          <path d="M5.5 8L7 9.5L10.5 6" stroke="var(--accent-color, #2563EB)" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Cancel anytime
+      </div>
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="6.5" stroke="#16A34A" stroke-width="1.5" />
+          <path d="M5.5 8L7 9.5L10.5 6" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        14-day free trial on Pro
+      </div>
+      <div class="trust-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <rect x="2" y="5" width="12" height="9" rx="2" stroke="#0A2540" stroke-width="1.5" />
+          <path d="M5 5V4C5 2.343 6.343 1 8 1C9.657 1 11 2.343 11 4V5" stroke="#0A2540" stroke-width="1.5"
+            stroke-linecap="round" />
+        </svg>
+        Enterprise-grade security
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== FEATURE COMPARISON ========== -->
+  <section class="comparison-section">
+    <div class="comparison-header">
+      <p class="section-overline reveal">Compare Plans</p>
+      <h2 class="section-headline reveal" style="transition-delay:0.1s">
+        Everything you need,<br>
+        <span class="gradient-text">nothing you don't.</span>
+      </h2>
+    </div>
+
+    <div class="comparison-table reveal" style="transition-delay:0.2s">
+      <!-- Header row -->
+      <div class="comp-row comp-header-row">
+        <div class="comp-feature-col">Feature</div>
+        <div class="comp-plan-col" [class.comp-current]="isCurrentPlan('Starter')">
+          Starter
+          <span class="comp-current-dot" *ngIf="isCurrentPlan('Starter')"></span>
+        </div>
+        <div class="comp-plan-col comp-plan-highlighted" [class.comp-current]="isCurrentPlan('Professional')">
+          Professional
+          <span class="comp-current-dot" *ngIf="isCurrentPlan('Professional')"></span>
+        </div>
+        <div class="comp-plan-col" [class.comp-current]="isCurrentPlan('Enterprise')">
+          Enterprise
+          <span class="comp-current-dot" *ngIf="isCurrentPlan('Enterprise')"></span>
+        </div>
+      </div>
+
+      <!-- Data rows -->
+      <div *ngFor="let row of featureComparison; let i = index" class="comp-row" [class.comp-row-alt]="i % 2 === 1">
+        <div class="comp-feature-col">{{ row.feature }}</div>
+
+        <!-- Starter -->
+        <div class="comp-plan-col" [class.comp-current]="isCurrentPlan('Starter')">
+          <ng-container *ngIf="row.starter === true">
+            <span class="comp-check comp-check-yes">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.starter === false">
+            <span class="comp-check comp-check-no">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.starter !== true && row.starter !== false">
+            <span class="comp-text">{{ row.starter }}</span>
+          </ng-container>
+        </div>
+
+        <!-- Pro (highlighted) -->
+        <div class="comp-plan-col comp-plan-highlighted" [class.comp-current]="isCurrentPlan('Professional')">
+          <ng-container *ngIf="row.pro === true">
+            <span class="comp-check comp-check-yes comp-check-white">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.pro === false">
+            <span class="comp-check comp-check-no comp-check-white-no">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.pro !== true && row.pro !== false">
+            <span class="comp-text comp-text-white">{{ row.pro }}</span>
+          </ng-container>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="comp-plan-col" [class.comp-current]="isCurrentPlan('Enterprise')">
+          <ng-container *ngIf="row.enterprise === true">
+            <span class="comp-check comp-check-yes">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.enterprise === false">
+            <span class="comp-check comp-check-no">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="row.enterprise !== true && row.enterprise !== false">
+            <span class="comp-text">{{ row.enterprise }}</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========== FAQ ========== -->
+  <section class="faq-section">
+    <div class="faq-header">
+      <p class="section-overline reveal">FAQ</p>
+      <h2 class="section-headline reveal" style="transition-delay:0.1s">
+        Questions? We've got<br>
+        <span class="gradient-text">answers.</span>
+      </h2>
+    </div>
+
+    <div class="faq-list">
+      <div *ngFor="let item of faqs; let i = index" class="faq-item reveal" [class.faq-open]="item.open"
+        [style.transition-delay]="(i * 0.07) + 's'" [id]="'faq-' + i">
+        <button class="faq-question" (click)="toggleFaq(i)" [id]="'faq-btn-' + i">
+          <span>{{ item.question }}</span>
+          <span class="faq-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <p>{{ item.answer }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>

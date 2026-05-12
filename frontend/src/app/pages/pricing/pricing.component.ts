@@ -51,7 +51,7 @@ export class PricingComponent implements OnInit, AfterViewInit, OnDestroy {
       ctaRoute: '/sign-up',
       highlighted: false,
       color: '#2563EB',
-      glowColor: 'rgba(37, 99, 235, 0.15)',
+      glowColor: 'color-mix(in srgb, var(--accent-color, #2563EB) calc(0.15 * 100%), transparent)',
       features: [
         'Up to 25 employees',
         '5 phishing campaigns/month',
@@ -70,8 +70,8 @@ export class PricingComponent implements OnInit, AfterViewInit, OnDestroy {
       cta: 'Start Free Trial',
       ctaRoute: '/sign-up',
       highlighted: true,
-      color: '#1f57d6',
-      glowColor: 'rgba(37, 99, 235, 0.35)',
+      color: 'var(--accent-color, #2563EB)',
+      glowColor: 'color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent)',
       features: [
         'Up to 500 employees',
         'Unlimited campaigns',

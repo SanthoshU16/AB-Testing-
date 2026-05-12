@@ -6,7 +6,8 @@
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background: #F7F8FA;
+  background: var(--bg-subtle, #F7F8FA);
+  transition: background 0.4s ease;
 }
 
 .main-content-wrapper {
@@ -35,6 +36,7 @@
   .main-content-wrapper {
     margin-left: 0;
   }
+
   .admin-wrapper.sidebar-collapsed .main-content-wrapper {
     margin-left: 0;
   }

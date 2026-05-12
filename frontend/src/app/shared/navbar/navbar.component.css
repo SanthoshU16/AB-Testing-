@@ -29,7 +29,7 @@
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 45px rgba(37, 99, 235, 0.35),
+  box-shadow: 0 0 45px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent),
     0 16px 32px rgba(10, 37, 64, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 1),
     inset 0 -2px 5px rgba(255, 255, 255, 0.4);
@@ -81,9 +81,9 @@
 
 .nav-link:hover,
 .nav-item-dropdown:hover .nav-link {
-  color: #1f57d6;
-  background: rgba(31, 87, 214, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(31, 87, 214, 0.4);
+  color: var(--accent-color, #1f57d6);
+  background: color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.08 * 100%), transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.4 * 100%), transparent);
 }
 
 /* ── Dropdowns ── */
@@ -115,7 +115,7 @@
   background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(240,244,248,0.95) 100%);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(31, 87, 214, 0.4);
+  border: 1px solid color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.4 * 100%), transparent);
   border-radius: 16px;
   padding: 8px;
   box-shadow: 0 12px 32px rgba(10,37,64,0.12),
@@ -139,14 +139,14 @@
 }
 
 .dropdown-item:hover {
-  background: rgba(31, 87, 214, 0.08);
-  color: #1f57d6;
-  box-shadow: inset 0 0 0 1px rgba(31, 87, 214, 0.3), 0 2px 8px rgba(31, 87, 214, 0.1);
+  background: color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.08 * 100%), transparent);
+  color: var(--accent-color, #1f57d6);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.3 * 100%), transparent), 0 2px 8px color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.1 * 100%), transparent);
 }
 
 .active-item {
-  background: rgba(31, 87, 214, 0.08);
-  color: #1f57d6;
+  background: color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.08 * 100%), transparent);
+  color: var(--accent-color, #1f57d6);
 }
 
 /* ── Nav Actions ── */
@@ -185,12 +185,12 @@
 }
 
 .nav-btn-text {
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  background: linear-gradient(180deg, var(--accent-color, #1f57d6) 0%, var(--accent-dark, #1541a7) 50%, color-mix(in srgb, var(--accent-dark, #0e2b70) 50%, black) 100%);
   color: #ffffff;
   border: 1px solid rgba(255,255,255,0.5);
-  box-shadow: 0 12px 28px rgba(37,99,235,0.45),
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.45 * 100%), transparent),
     inset 0 2px 3px rgba(255,255,255,0.35),
-    inset 0 -10px 14px rgba(29,78,216,0.5);
+    inset 0 -10px 14px color-mix(in srgb, var(--accent-color, #1d4ed8) calc(0.5 * 100%), transparent);
 }
 
 .nav-btn-primary {
@@ -262,11 +262,11 @@
   background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(245,248,252,0.97) 100%);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(31, 87, 214, 0.15);
+  border: 1px solid color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.15 * 100%), transparent);
   border-radius: 18px;
   padding: 8px;
   box-shadow: 0 20px 50px rgba(10,37,64,0.16),
-    0 8px 24px rgba(31, 87, 214, 0.08),
+    0 8px 24px color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.08 * 100%), transparent),
     inset 0 1px 1px rgba(255,255,255,1);
   opacity: 0;
   visibility: hidden;
@@ -329,8 +329,8 @@
 }
 
 .user-dropdown-item:hover {
-  background: rgba(31, 87, 214, 0.06);
-  color: #1f57d6;
+  background: color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.06 * 100%), transparent);
+  color: var(--accent-color, #1f57d6);
 }
 
 .user-dropdown-item svg {
@@ -367,9 +367,9 @@
   gap: 12px;
   padding: 16px;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, rgba(31, 87, 214, 0.06) 0%, rgba(31, 87, 214, 0.02) 100%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.06 * 100%), transparent) 0%, color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.02 * 100%), transparent) 100%);
   border-radius: 14px;
-  border: 1px solid rgba(31, 87, 214, 0.08);
+  border: 1px solid color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.08 * 100%), transparent);
 }
 
 .mobile-user-avatar {
@@ -572,8 +572,8 @@
 }
 
 .mobile-dropdown-item:hover {
-  background: rgba(31, 87, 214, 0.08);
-  color: #1f57d6;
+  background: color-mix(in srgb, var(--accent-color, #1f57d6) calc(0.08 * 100%), transparent);
+  color: var(--accent-color, #1f57d6);
 }
 
 .mobile-actions {
@@ -597,10 +597,10 @@
 }
 
 .mobile-btn-outline {
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  background: linear-gradient(180deg, var(--accent-color, #1f57d6) 0%, var(--accent-dark, #1541a7) 50%, color-mix(in srgb, var(--accent-dark, #0e2b70) 50%, black) 100%);
   color: #fff;
   border: 1px solid rgba(255,255,255,0.5);
-  box-shadow: 0 8px 20px rgba(37,99,235,0.35);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent);
   border-radius: var(--radius-full, 100px);
 }
 

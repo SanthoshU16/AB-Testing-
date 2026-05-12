@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit, AfterViewInit, ElementRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
 
 @Component({
@@ -15,9 +15,46 @@ export class TermsComponent implements OnInit, AfterViewInit {
   activeSection = 't1';
   private revealObserver: IntersectionObserver | null = null;
 
-  constructor(private el: ElementRef, private ngZone: NgZone) {}
+  constructor(
+    private el: ElementRef, 
+    private ngZone: NgZone,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.fragment.subscribe(frag => {
+      if (frag) {
+        this.scrollToElement(frag);
+      }
+    });
+  }
+
+  navigateToFragment(event: Event, fragment: string): void {
+    event.preventDefault();
+    this.router.navigate([], { 
+      relativeTo: this.route, 
+      fragment: fragment,
+      replaceUrl: true
+    });
+    this.scrollToElement(fragment);
+  }
+
+  private scrollToElement(id: string): void {
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        const headerOffset = 140;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 50);
+  }
 
   ngAfterViewInit(): void {
     this.ngZone.runOutsideAngular(() => {
@@ -26,19 +63,22 @@ export class TermsComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('window:scroll', [])
-  onScroll() {
+  onScroll(): void {
     const sections = ['t1', 't2', 't3', 't4', 't5', 't6', 't7', 't8', 't9'];
-
-    for (let id of sections) {
-      const el = document.getElementById(id);
-      if (el) {
-        const top = el.getBoundingClientRect().top;
-
-        if (top <= 140 && top >= -200) {
-          this.activeSection = id;
+    const threshold = window.innerHeight * 0.4;
+    
+    let currentActive = sections[0];
+    for (const id of sections) {
+      const element = document.getElementById(id);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= threshold) {
+          currentActive = id;
         }
       }
     }
+    
+    this.activeSection = currentActive;
   }
 
   private initRevealObserver(): void {

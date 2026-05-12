@@ -6,6 +6,8 @@ import com.google.cloud.firestore.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -33,6 +35,11 @@ public class UserService {
             profile.setCreatedAt(safeGetLong(document, "createdAt"));
             profile.setUpdatedAt(safeGetLong(document, "updatedAt"));
             profile.setLastLogin(safeGetLong(document, "lastLogin"));
+
+            // Load preferences
+            @SuppressWarnings("unchecked")
+            Map<String, Object> prefs = (Map<String, Object>) document.get("preferences");
+            profile.setPreferences(prefs != null ? prefs : new HashMap<>());
             
             return profile;
         }
@@ -57,6 +64,28 @@ public class UserService {
 
     public void updateLastLogin(String uid) {
         firestore.collection(COLLECTION).document(uid).update("lastLogin", System.currentTimeMillis());
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getPreferences(String uid) throws ExecutionException, InterruptedException {
+        DocumentSnapshot doc = firestore.collection(COLLECTION).document(uid).get().get();
+        if (doc.exists()) {
+            Map<String, Object> prefs = (Map<String, Object>) doc.get("preferences");
+            if (prefs != null) return prefs;
+        }
+        // Return defaults
+        Map<String, Object> defaults = new HashMap<>();
+        defaults.put("emailAlerts", true);
+        defaults.put("weeklyReport", false);
+        defaults.put("twoFactorEnabled", false);
+        return defaults;
+    }
+
+    public void updatePreferences(String uid, Map<String, Object> preferences) {
+        firestore.collection(COLLECTION).document(uid).set(
+            Map.of("preferences", preferences, "updatedAt", System.currentTimeMillis()),
+            SetOptions.merge()
+        );
     }
 
     public void deleteUserAccount(String uid) throws com.google.firebase.auth.FirebaseAuthException, ExecutionException, InterruptedException {

@@ -1,0 +1,227 @@
+<app-navbar [activePage]="'learning'"></app-navbar>
+
+<!-- ═══════════════ HERO — Welcome Back ═══════════════ -->
+<section class="hub-hero">
+  <div class="hero-ambient">
+    <div class="ambient-orb orb-a"></div>
+    <div class="ambient-orb orb-b"></div>
+    <div class="ambient-orb orb-c"></div>
+  </div>
+  <div class="hero-inner container">
+    <p class="hub-overline reveal">ARMOR BRIDGE ACADEMY</p>
+    <h1 class="hub-headline reveal">
+      Welcome back, <span class="hub-accent">{{ userName || 'Learner' }}.</span>
+    </h1>
+    <p class="hub-subhead reveal">
+      Continue your cybersecurity learning journey. Pick up where you left off or explore new paths.
+    </p>
+
+    <!-- Quick Stats -->
+    <div class="hub-stats reveal">
+      <div class="hub-stat">
+        <span class="hub-stat-value">{{ courses.length }}</span>
+        <span class="hub-stat-label">Courses</span>
+      </div>
+      <div class="hub-stat-divider"></div>
+      <div class="hub-stat">
+        <span class="hub-stat-value">{{ totalModules }}</span>
+        <span class="hub-stat-label">Modules</span>
+      </div>
+      <div class="hub-stat-divider"></div>
+      <div class="hub-stat">
+        <span class="hub-stat-value">{{ totalHours }}h</span>
+        <span class="hub-stat-label">Content</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ LEVEL PATH OVERVIEW ═══════════════ -->
+<section class="path-section">
+  <div class="container">
+    <div class="path-header reveal">
+      <span class="section-label">Learning Paths</span>
+      <h2 class="section-title">Choose your <span class="text-gradient">skill level.</span></h2>
+      <p class="section-desc">Our courses are structured into three progressive tiers — start from scratch or jump into
+        advanced threat defense.</p>
+    </div>
+
+    <div class="path-grid">
+      <!-- Beginner -->
+      <div class="path-card path-beginner reveal" (click)="setTab('beginner')">
+        <div class="path-card-glow"></div>
+        <div class="path-icon-wrap beginner-icon">
+          <i class="bi bi-rocket-takeoff"></i>
+        </div>
+        <h3 class="path-card-title">Beginner</h3>
+        <p class="path-card-desc">Build foundational cybersecurity knowledge. Perfect for newcomers starting their
+          security journey.</p>
+        <div class="path-card-meta">
+          <span>{{ beginnerCourses.length }} courses</span>
+          <span class="path-dot"></span>
+          <span>{{ beginnerCourses.length * 3 }}+ hours</span>
+        </div>
+        <div class="path-card-arrow">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+
+      <!-- Intermediate -->
+      <div class="path-card path-intermediate reveal" (click)="setTab('intermediate')">
+        <div class="path-card-glow"></div>
+        <div class="path-icon-wrap intermediate-icon">
+          <i class="bi bi-graph-up-arrow"></i>
+        </div>
+        <h3 class="path-card-title">Intermediate</h3>
+        <p class="path-card-desc">Deepen your skills with hands-on incident response, compliance, and social engineering
+          defense.</p>
+        <div class="path-card-meta">
+          <span>{{ intermediateCourses.length }} courses</span>
+          <span class="path-dot"></span>
+          <span>{{ intermediateCourses.length * 5 }}+ hours</span>
+        </div>
+        <div class="path-card-arrow">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+
+      <!-- Advanced -->
+      <div class="path-card path-advanced reveal" (click)="setTab('advanced')">
+        <div class="path-card-glow"></div>
+        <div class="path-icon-wrap advanced-icon">
+          <i class="bi bi-shield-shaded"></i>
+        </div>
+        <h3 class="path-card-title">Advanced</h3>
+        <p class="path-card-desc">Master expert-level threat intelligence, architecture design, and security program
+          leadership.</p>
+        <div class="path-card-meta">
+          <span>{{ advancedCourses.length }} courses</span>
+          <span class="path-dot"></span>
+          <span>{{ advancedCourses.length * 7 }}+ hours</span>
+        </div>
+        <div class="path-card-arrow">
+          <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ COURSE CATALOG ═══════════════ -->
+<section class="catalog-section" id="course-catalog">
+  <div class="container">
+    <div class="catalog-toolbar reveal">
+      <!-- Level Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="filter-tab" [class.active]="activeTab === 'all'" (click)="setTab('all')">
+          <i class="bi bi-grid-3x3-gap"></i> All Courses
+        </button>
+        <button class="filter-tab tab-beginner" [class.active]="activeTab === 'beginner'" (click)="setTab('beginner')">
+          <i class="bi bi-rocket-takeoff"></i> Beginner
+        </button>
+        <button class="filter-tab tab-intermediate" [class.active]="activeTab === 'intermediate'"
+          (click)="setTab('intermediate')">
+          <i class="bi bi-graph-up-arrow"></i> Intermediate
+        </button>
+        <button class="filter-tab tab-advanced" [class.active]="activeTab === 'advanced'" (click)="setTab('advanced')">
+          <i class="bi bi-shield-shaded"></i> Advanced
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="search-wrap">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" class="search-input" placeholder="Search courses..." (input)="onSearch($event)"
+          [value]="searchQuery" />
+      </div>
+    </div>
+
+    <!-- Level Banner (shown when a specific level is active) -->
+    <div class="level-banner reveal" *ngIf="activeTab !== 'all'" [ngClass]="'banner-' + activeTab">
+      <div class="banner-content">
+        <div class="banner-icon">
+          <i class="bi" [ngClass]="{
+            'bi-rocket-takeoff': activeTab === 'beginner',
+            'bi-graph-up-arrow': activeTab === 'intermediate',
+            'bi-shield-shaded': activeTab === 'advanced'
+          }"></i>
+        </div>
+        <div class="banner-text">
+          <h3>{{ activeTab | titlecase }} Track</h3>
+          <p *ngIf="activeTab === 'beginner'">Start your cybersecurity career with foundational courses designed for
+            newcomers.</p>
+          <p *ngIf="activeTab === 'intermediate'">Build on your knowledge with real-world scenarios and hands-on defense
+            strategies.</p>
+          <p *ngIf="activeTab === 'advanced'">Master expert-level techniques in threat hunting, architecture, and
+            program design.</p>
+        </div>
+      </div>
+      <div class="banner-count">{{ filteredCourses.length }} course{{ filteredCourses.length !== 1 ? 's' : '' }}</div>
+    </div>
+
+    <!-- Course Grid -->
+    <div class="course-grid" *ngIf="filteredCourses.length > 0">
+      <div *ngFor="let course of filteredCourses; let i = index" class="course-card reveal"
+        [class.expanded]="expandedCourseId === course.id" [class.locked]="isCourseLocked(course.id)"
+        [style.--delay]="(i * 60) + 'ms'">
+
+        <!-- Card Image Header -->
+        <div class="card-visual-wrap">
+          <div class="card-visual">
+            <img [src]="course.image" alt="" class="card-cover-img" loading="lazy" />
+            <div class="card-img-overlay" [style.background]="getOverlayGradient(course.gradient)"></div>
+            <div class="card-badge-wrap">
+              <span class="card-badge">{{ course.badge }}</span>
+            </div>
+            <div class="card-lock-overlay" *ngIf="isCourseLocked(course.id)">
+              <i class="bi bi-lock-fill"></i>
+            </div>
+          </div>
+          <div class="card-icon-float" [style.background]="course.gradient">
+            <i class="bi {{ course.icon }}"></i>
+          </div>
+        </div>
+
+        <!-- Card Content -->
+        <div class="card-content">
+          <div class="card-meta-row">
+            <span class="card-level-tag" [style.background]="getLevelColor(course.level) + '14'"
+              [style.color]="getLevelColor(course.level)">
+              {{ course.level }}
+            </span>
+            <span class="card-duration-tag">
+              <i class="bi bi-clock"></i> {{ course.duration }}
+            </span>
+          </div>
+
+          <h3 class="card-title">{{ course.title }}</h3>
+          <p class="card-desc">{{ course.description }}</p>
+
+          <div class="card-stats-row">
+            <span class="card-stat"><i class="bi bi-collection"></i> {{ course.modules }} modules</span>
+            <span class="card-stat"><i class="bi bi-people"></i> {{ formatEnrolled(course.enrolled) }}</span>
+            <span class="card-rating"><i class="bi bi-star-fill"></i> {{ course.rating }}</span>
+          </div>
+
+
+          <button class="card-cta" [routerLink]="isCourseLocked(course.id) ? null : ['/learning-hub/course', course.id]"
+            [disabled]="isCourseLocked(course.id)" [class.completed]="isCourseCompleted(course.id)">
+            {{ getCTA(course.id) }}
+            <i class="bi"
+              [ngClass]="isCourseLocked(course.id) ? 'bi-lock' : (isCourseCompleted(course.id) ? 'bi-check2-all' : 'bi-arrow-right')"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredCourses.length === 0">
+      <i class="bi bi-search"></i>
+      <h3>No courses found</h3>
+      <p>Try adjusting your search or filter to find what you're looking for.</p>
+      <button class="reset-btn" (click)="setTab('all'); searchQuery = ''">View All Courses</button>
+    </div>
+  </div>
+</section>

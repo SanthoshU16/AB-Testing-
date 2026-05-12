@@ -30,9 +30,40 @@ export const routes: Routes = [
 
   { path: 'privacy', component: PrivacyComponent },
 
+  { path: 'cookies', loadComponent: () => import('./pages/cookies/cookies.component').then(m => m.CookiesComponent) },
+
   { path: 'pricing', component: PricingComponent },
 
   { path: 'learning', component: LearningComponent },
+
+  { path: 'tutorial', loadComponent: () => import('./pages/tutorial/tutorial.component').then(m => m.TutorialComponent) },
+
+  { path: 'demo', loadComponent: () => import('./pages/watch-demo/watch-demo.component').then(m => m.WatchDemoComponent) },
+
+  {
+    path: 'learning-hub',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./pages/learning-hub/learning-hub.component').then(
+        (m) => m.LearningHubComponent
+      )
+  },
+  {
+    path: 'learning-hub/course/:id',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./pages/learning-hub/course-detail/course-detail.component').then(
+        (m) => m.CourseDetailComponent
+      )
+  },
+  {
+    path: 'learning-hub/course/:id/learn',
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import('./pages/learning-hub/course-learn/course-learn.component').then(
+        (m) => m.CourseLearnComponent
+      )
+  },
 
   // ── Public phishing tracking routes (no auth required) ─────────────────
   {

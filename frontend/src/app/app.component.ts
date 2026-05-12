@@ -16,8 +16,8 @@ export class AppComponent implements OnInit {
   showDown = true;
   isPublic = false;
 
-  // Pages that should show the footer and floating scroll buttons
-  private publicPages = ['/', '/about', '/blog', '/career', '/contact', '/pricing', '/terms', '/privacy'];
+  // Pages that should show the footer
+  private publicPages = ['/', '/about', '/blog', '/career', '/contact', '/pricing', '/terms', '/privacy', '/cookies', '/tutorial', '/demo', '/learning'];
   showFooter = false;
   showFloatingActions = false;
 
@@ -25,19 +25,47 @@ export class AppComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const path = event.urlAfterRedirects.split('?')[0].split('#')[0] || '/';
-        this.isPublic = this.publicPages.includes(path) || path === '';
+        const isPublicPath = this.publicPages.includes(path) || 
+                            path === '' || 
+                            path.startsWith('/phish/') || 
+                            path.startsWith('/track/');
         
-        // Show footer and floating actions only on public landing pages (excluding legal and auth pages)
+        const isHubPath = path === '/learning-hub' || path.startsWith('/learning-hub/course/');
+        
+        // Show footer only on public landing pages (excluding legal, auth, and hub)
         const isLegalPage = path === '/terms' || path === '/privacy';
         const isAuthPage = path === '/sign-in' || path === '/sign-up';
-        this.showFooter = this.isPublic && !isLegalPage && !isAuthPage;
-        this.showFloatingActions = this.isPublic && !isLegalPage && !isAuthPage;
+        
+        this.showFooter = isPublicPath && !isLegalPage && !isAuthPage;
+        
+        // Show floating actions on all content pages + hub, but not auth
+        this.showFloatingActions = (isPublicPath || isHubPath) && !isAuthPage;
+        
+        this.isPublic = isPublicPath || isHubPath; // Update isPublic state for scroll listener
       }
     });
   }
 
   ngOnInit() {
+    this.initTheme();
     this.onWindowScroll();
+  }
+
+  private initTheme(): void {
+    const savedTheme = localStorage.getItem('ab-theme') || 'light';
+    const savedAccent = localStorage.getItem('ab-accent') || '#2563EB';
+
+    const root = document.documentElement;
+    root.classList.remove('theme-light', 'theme-dark');
+
+    if (savedTheme === 'auto') {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.add(prefersDark ? 'theme-dark' : 'theme-light');
+    } else {
+      root.classList.add(`theme-${savedTheme}`);
+    }
+
+    root.style.setProperty('--accent-color', savedAccent);
   }
 
   @HostListener('window:scroll')

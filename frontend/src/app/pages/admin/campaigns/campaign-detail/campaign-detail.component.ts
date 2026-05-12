@@ -20,6 +20,7 @@ export class CampaignDetailComponent implements OnInit {
   events: TrackingEvent[] = [];
   employees: Employee[] = [];
   isLoading = true;
+  origin = window.location.origin;
 
   constructor(
     private route: ActivatedRoute,

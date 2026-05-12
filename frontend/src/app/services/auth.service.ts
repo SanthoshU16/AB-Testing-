@@ -37,7 +37,17 @@ export class AuthService {
       this.currentUserSubject.next(user);
       if (user) {
         try {
-          const profile = await this.fetchUserProfile();
+          let profile = await this.fetchUserProfile();
+          // Apply any locally-saved overrides (e.g. when backend PATCH isn't available)
+          const stored = localStorage.getItem('ab_profile_overrides');
+          if (stored && profile) {
+            try {
+              const overrides = JSON.parse(stored) as Partial<UserProfile>;
+              if (overrides.uid === profile.uid) {
+                profile = { ...profile, ...overrides };
+              }
+            } catch { /* ignore malformed data */ }
+          }
           this.userProfileSubject.next(profile);
         } catch (e) {
           console.error('Error fetching profile from backend:', e);
@@ -51,7 +61,7 @@ export class AuthService {
 
   // ─── Email / Password Sign Up ────────────────────────────────────────
 
-  async signUp(email: string, password: string, firstName: string, lastName: string): Promise<void> {
+  async signUp(email: string, password: string, firstName: string, lastName: string, companyName = '', departmentName = ''): Promise<void> {
     const credential = await createUserWithEmailAndPassword(this.firebase.auth, email, password);
 
     const userProfile: UserProfile = {
@@ -59,7 +69,9 @@ export class AuthService {
       email,
       firstName,
       lastName,
-      role: 'admin'
+      role: 'admin',
+      companyName: companyName || undefined,
+      departmentName: departmentName || undefined
     };
 
     // Sync to backend
@@ -126,6 +138,24 @@ export class AuthService {
     this.userProfileSubject.next(null);
     this.currentUserSubject.next(null);
     this.ngZone.run(() => this.router.navigate(['/sign-up']));
+  }
+
+  async updateProfile(updates: Partial<UserProfile>): Promise<UserProfile> {
+    const current = this.userProfileSubject.value;
+    try {
+      const updatedProfile = await firstValueFrom(
+        this.http.patch<UserProfile>(`${this.apiUrl}/me`, updates)
+      );
+      this.userProfileSubject.next(updatedProfile);
+      localStorage.setItem('ab_profile_overrides', JSON.stringify(updatedProfile));
+      return updatedProfile;
+    } catch {
+      // Backend unavailable – merge locally and persist
+      const merged: UserProfile = { ...current!, ...updates };
+      this.userProfileSubject.next(merged);
+      localStorage.setItem('ab_profile_overrides', JSON.stringify(merged));
+      return merged;
+    }
   }
 
   // ─── Helpers ─────────────────────────────────────────────────────────

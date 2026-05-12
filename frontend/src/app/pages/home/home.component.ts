@@ -34,42 +34,48 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       title: 'Smart Campaigns',
       description: 'Create and schedule targeted phishing simulations with precision. Select departments, set timing, and watch results flow in.',
       color: '#2563EB',
-      image: 'feature-smart-campaigns.png'
+      image: 'feature-smart-campaigns.png',
+      fragment: 'feat-campaigns'
     },
     {
       icon: 'bi-envelope-paper',
       title: 'Realistic Templates',
       description: 'Choose from 100+ industry-tested phishing templates or build custom scenarios that mirror real-world threats.',
-      color: '#1E40AF',
-      image: 'feature-realistic-templates.png'
+      color: 'var(--accent-dark, #1E40AF)',
+      image: 'feature-realistic-templates.png',
+      fragment: 'feat-campaigns'
     },
     {
       icon: 'bi-graph-up-arrow',
       title: 'Live Analytics',
       description: 'Real-time dashboards showing opens, clicks, and credential attempts. Identify trends before they become problems.',
       color: '#0A2540',
-      image: 'feature-live-analytics.png'
+      image: 'feature-live-analytics.png',
+      fragment: 'feat-analytics'
     },
     {
       icon: 'bi-person-badge',
       title: 'Risk Scoring',
       description: 'AI-powered risk classification categorizes employees into risk tiers, enabling focused remediation.',
       color: '#EAB308',
-      image: 'feature-risk-scoring.png'
+      image: 'feature-risk-scoring.png',
+      fragment: 'feat-dashboard'
     },
     {
       icon: 'bi-file-earmark-bar-graph',
       title: 'Compliance Reports',
       description: 'One-click audit reports for ISO 27001, SOC 2, and internal security reviews. Always be audit-ready.',
       color: '#DC2626',
-      image: 'compliance-hero.png'
+      image: 'compliance-hero.png',
+      fragment: 'feat-compliance'
     },
     {
-      icon: 'bi-shield-lock',
-      title: 'Zero Data Risk',
-      description: 'No real credentials stored. Fully encrypted, GDPR-aligned infrastructure with enterprise-grade security.',
+      icon: 'bi-mortarboard',
+      title: 'Learning Hub',
+      description: 'Structured cybersecurity courses with auto-locked progression, quizzes, and certificates to build a security-first culture.',
       color: '#16A34A',
-      image: 'zero-data-hero.png'
+      image: 'learning-hub-hero.png',
+      fragment: 'feat-learning'
     }
   ];
 
@@ -81,11 +87,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   chartData = [
-    { label: 'Oct', height: '85%', color: 'rgba(37, 99, 235, 0.15)' },
-    { label: 'Nov', height: '70%', color: 'rgba(37, 99, 235, 0.20)' },
-    { label: 'Dec', height: '55%', color: 'rgba(37, 99, 235, 0.30)' },
-    { label: 'Jan', height: '40%', color: 'rgba(37, 99, 235, 0.45)' },
-    { label: 'Feb', height: '25%', color: 'rgba(37, 99, 235, 0.65)' },
+    { label: 'Oct', height: '85%', color: 'color-mix(in srgb, var(--accent-color, #2563EB) calc(0.15 * 100%), transparent)' },
+    { label: 'Nov', height: '70%', color: 'color-mix(in srgb, var(--accent-color, #2563EB) calc(0.20 * 100%), transparent)' },
+    { label: 'Dec', height: '55%', color: 'color-mix(in srgb, var(--accent-color, #2563EB) calc(0.30 * 100%), transparent)' },
+    { label: 'Jan', height: '40%', color: 'color-mix(in srgb, var(--accent-color, #2563EB) calc(0.45 * 100%), transparent)' },
+    { label: 'Feb', height: '25%', color: 'color-mix(in srgb, var(--accent-color, #2563EB) calc(0.65 * 100%), transparent)' },
     { label: 'Mar', height: '15%', color: '#2563EB' }
   ];
 

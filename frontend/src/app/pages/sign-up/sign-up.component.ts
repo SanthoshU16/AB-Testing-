@@ -16,6 +16,8 @@ export class SignUpComponent implements AfterViewInit {
   lastName = '';
   email = '';
   password = '';
+  companyName = '';
+  departmentName = '';
   errorMessage = '';
   isSubmitting = false;
   showPassword = false;
@@ -36,7 +38,7 @@ export class SignUpComponent implements AfterViewInit {
     this.isSubmitting = true;
 
     try {
-      await this.authService.signUp(this.email, this.password, this.firstName, this.lastName);
+      await this.authService.signUp(this.email, this.password, this.firstName, this.lastName, this.companyName, this.departmentName);
     } catch (error: any) {
       this.isSubmitting = false;
       switch (error.code) {

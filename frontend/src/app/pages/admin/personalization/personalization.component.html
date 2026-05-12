@@ -4,36 +4,125 @@
     <p class="page-subtitle">Customize the look and feel of your Armor Bridge dashboard.</p>
   </div>
 
+  <!-- Theme Preferences -->
   <div class="card">
-    <h3 class="section-title">Theme Preferences</h3>
-    <p class="section-desc">Choose your preferred visual theme for the admin portal.</p>
-    
-    <div class="theme-options">
-      <div class="theme-card active">
-        <div class="theme-preview light">
-          <div class="tp-header"></div>
-          <div class="tp-sidebar"></div>
-        </div>
-        <span class="theme-name">Light Mode</span>
-      </div>
-      <div class="theme-card">
-        <div class="theme-preview dark">
-          <div class="tp-header"></div>
-          <div class="tp-sidebar"></div>
-        </div>
-        <span class="theme-name">Dark Mode</span>
-      </div>
-      <div class="theme-card">
-        <div class="theme-preview auto">
-          <div class="tp-header"></div>
-          <div class="tp-sidebar"></div>
-        </div>
-        <span class="theme-name">System Auto</span>
+    <div class="card-header-row">
+      <div>
+        <h3 class="section-title">Theme Preferences</h3>
+        <p class="section-desc">Choose your preferred visual theme for the admin portal.</p>
       </div>
     </div>
 
-    <div class="form-actions mt-4">
-      <button class="btn-primary">Save Preferences</button>
+    <div class="theme-options">
+      <div class="theme-card" [class.active]="selectedTheme === 'light'" (click)="selectTheme('light')">
+        <div class="theme-preview light">
+          <div class="tp-header"></div>
+          <div class="tp-sidebar"></div>
+          <div class="tp-content">
+            <div class="tp-line"></div>
+            <div class="tp-line short"></div>
+          </div>
+        </div>
+        <span class="theme-name">Light Mode</span>
+        <span class="theme-check" *ngIf="selectedTheme === 'light'">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </span>
+      </div>
+
+      <div class="theme-card" [class.active]="selectedTheme === 'dark'" (click)="selectTheme('dark')">
+        <div class="theme-preview dark">
+          <div class="tp-header"></div>
+          <div class="tp-sidebar"></div>
+          <div class="tp-content">
+            <div class="tp-line"></div>
+            <div class="tp-line short"></div>
+          </div>
+        </div>
+        <span class="theme-name">Dark Mode</span>
+        <span class="theme-check" *ngIf="selectedTheme === 'dark'">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </span>
+      </div>
+
+      <div class="theme-card" [class.active]="selectedTheme === 'auto'" (click)="selectTheme('auto')">
+        <div class="theme-preview auto">
+          <div class="tp-header-split">
+            <div class="tp-h-light"></div>
+            <div class="tp-h-dark"></div>
+          </div>
+          <div class="tp-content-split">
+            <div class="tp-c-light">
+              <div class="tp-line"></div>
+            </div>
+            <div class="tp-c-dark">
+              <div class="tp-line dark-line"></div>
+            </div>
+          </div>
+        </div>
+        <span class="theme-name">System Auto</span>
+        <span class="theme-check" *ngIf="selectedTheme === 'auto'">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M2.5 8L6.5 12L13.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </span>
+      </div>
     </div>
   </div>
+
+
+  <!-- Accent Color -->
+  <div class="card">
+    <h3 class="section-title">Accent Color</h3>
+    <p class="section-desc">Choose a primary accent color used across buttons and highlights.</p>
+
+    <div class="color-options">
+      <button *ngFor="let c of accentColors" class="color-swatch"
+        [style.background]="c.value"
+        [class.active]="selectedAccent === c.value"
+        (click)="selectAccent(c.value)"
+        [attr.aria-label]="c.name">
+        <svg *ngIf="selectedAccent === c.value" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M2.5 8L6.5 12L13.5 4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="color-preview-row">
+      <div class="color-preview-chip" [style.background]="selectedAccent"></div>
+      <span class="color-preview-label">{{ selectedAccent }}</span>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- Actions -->
+  <div class="actions-bar">
+    <button class="btn-outline" (click)="resetToDefaults()">Reset to Defaults</button>
+    <button class="btn-primary" [class.saving]="isSaving" [disabled]="!hasChanges && !isSaving"
+      (click)="savePreferences()">
+      <span *ngIf="!isSaving">Save Preferences</span>
+      <span *ngIf="isSaving" class="spinner"></span>
+      <span *ngIf="isSaving">Saving...</span>
+    </button>
+  </div>
+</div>
+
+
+<!-- Toast Notification -->
+<div class="toast" [class.show]="showToast">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+    <circle cx="8" cy="8" r="7" stroke="#16A34A" stroke-width="1.5" />
+    <path d="M5 8L7 10L11 6" stroke="#16A34A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+  <span>{{ toastMessage }}</span>
 </div>

@@ -1,0 +1,154 @@
+<app-navbar [activePage]="'learning'"></app-navbar>
+<div class="cl-page" *ngIf="course">
+
+  <!-- Sidebar -->
+  <aside class="cl-sidebar" [class.closed]="!sidebarOpen">
+    <div class="cl-sidebar-head">
+      <button class="cl-back" (click)="goBack()"><i class="bi bi-arrow-left"></i></button>
+      <span class="cl-sidebar-title">{{ course.title }}</span>
+      <button class="cl-toggle-sb" (click)="toggleSidebar()"><i class="bi" [ngClass]="sidebarOpen?'bi-x':'bi-list'"></i></button>
+    </div>
+
+    <div class="cl-progress-bar">
+      <div class="cl-progress-fill" [style.width.%]="progressPercent"></div>
+    </div>
+    <span class="cl-progress-text">{{ progressPercent }}% complete</span>
+
+    <div class="cl-nav-list">
+      <div *ngFor="let lesson of course.lessons; let i = index"
+        class="cl-nav-item" [class.active]="currentLessonIndex === i && !isQuizPage && !isCertificatePage"
+        [class.done]="lesson.completed" [class.locked]="isLessonLocked(i)" (click)="goToLesson(i)">
+        <i class="bi" [ngClass]="isLessonLocked(i) ? 'bi-lock-fill' : (lesson.completed ? 'bi-check-circle-fill' : 'bi-circle')"></i>
+        <span>{{ lesson.title }}</span>
+      </div>
+      <div class="cl-nav-divider"></div>
+      <div class="cl-nav-item cl-nav-quiz" [class.active]="isQuizPage" [class.locked]="isQuizLocked()" (click)="goToQuiz()"
+        [class.done]="quizSubmitted && quizScore >= 70">
+        <i class="bi" [ngClass]="isQuizLocked() ? 'bi-lock-fill' : (quizSubmitted && quizScore >= 70 ? 'bi-check-circle-fill' : 'bi-patch-question')"></i>
+        <span>Final Quiz</span>
+      </div>
+      <div *ngIf="courseCompleted" class="cl-nav-item cl-nav-cert" [class.active]="isCertificatePage" (click)="goToCertificate()">
+        <i class="bi bi-award"></i>
+        <span>Certificate</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile toggle -->
+  <button class="cl-mob-toggle" *ngIf="!sidebarOpen" (click)="toggleSidebar()"><i class="bi bi-list"></i></button>
+
+  <!-- Main Content -->
+  <main class="cl-main" [class.full]="!sidebarOpen">
+
+    <!-- LESSON VIEW -->
+    <div class="cl-lesson" *ngIf="!isQuizPage && !isCertificatePage && currentLesson">
+      <div class="cl-lesson-header">
+        <span class="cl-lesson-badge">{{ course.badge }} · Lesson {{ currentLessonIndex + 1 }} of {{ course.lessons.length }}</span>
+        <h1 class="cl-lesson-title">{{ currentLesson.title }}</h1>
+      </div>
+
+      <div class="cl-lesson-body">
+        <p *ngFor="let para of currentLesson.content" class="cl-para">{{ para }}</p>
+
+        <div class="cl-takeaways">
+          <h3><i class="bi bi-lightbulb"></i> Key Takeaways</h3>
+          <ul>
+            <li *ngFor="let t of currentLesson.keyTakeaways"><i class="bi bi-check2"></i> {{ t }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cl-lesson-footer">
+        <button class="cl-btn-secondary" (click)="prevLesson()" *ngIf="currentLessonIndex > 0">
+          <i class="bi bi-arrow-left"></i> Previous
+        </button>
+        <div class="cl-spacer"></div>
+        <button class="cl-btn-primary" *ngIf="!currentLesson.completed" (click)="markLessonComplete()">
+          Mark Complete & Continue <i class="bi bi-check2"></i>
+        </button>
+        <button class="cl-btn-primary" *ngIf="currentLesson.completed" (click)="nextLesson()">
+          Next Lesson <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- QUIZ VIEW -->
+    <div class="cl-quiz" *ngIf="isQuizPage">
+      <div class="cl-lesson-header">
+        <span class="cl-lesson-badge">{{ course.badge }} · Final Assessment</span>
+        <h1 class="cl-lesson-title">Course Quiz</h1>
+        <p class="cl-quiz-intro">Answer all questions to earn your certificate. You need 70% or higher to pass.</p>
+      </div>
+
+      <div class="cl-quiz-body">
+        <div *ngFor="let q of quizQuestions; let qi = index" class="cl-question">
+          <h3 class="cl-q-title">{{ qi + 1 }}. {{ q.question }}</h3>
+          <div class="cl-options">
+            <label *ngFor="let opt of q.options; let oi = index"
+              class="cl-option"
+              [class.selected]="quizAnswers[qi] === oi"
+              [class.correct]="isCorrectAnswer(qi, oi)"
+              [class.wrong]="isWrongAnswer(qi, oi)">
+              <input type="radio" [name]="'q'+qi" [value]="oi" [checked]="quizAnswers[qi] === oi"
+                (change)="selectAnswer(qi, oi)" [disabled]="quizSubmitted">
+              <span class="cl-radio"></span>
+              <span class="cl-opt-text">{{ opt }}</span>
+              <i *ngIf="isCorrectAnswer(qi, oi)" class="bi bi-check-circle-fill cl-icon-correct"></i>
+              <i *ngIf="isWrongAnswer(qi, oi)" class="bi bi-x-circle-fill cl-icon-wrong"></i>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-quiz-footer">
+        <div *ngIf="quizSubmitted" class="cl-score-card" [class.pass]="quizScore >= 70" [class.fail]="quizScore < 70">
+          <div class="cl-score-num">{{ quizScore }}%</div>
+          <div class="cl-score-msg" *ngIf="quizScore >= 70">🎉 Congratulations! You passed!</div>
+          <div class="cl-score-msg" *ngIf="quizScore < 70">You need 70% to pass. Try again!</div>
+        </div>
+        <div class="cl-quiz-actions">
+          <button class="cl-btn-primary" *ngIf="!quizSubmitted" [disabled]="!allQuestionsAnswered" (click)="submitQuiz()">
+            Submit Quiz <i class="bi bi-send"></i>
+          </button>
+          <button class="cl-btn-secondary" *ngIf="quizSubmitted && quizScore < 70" (click)="retakeQuiz()">
+            <i class="bi bi-arrow-counterclockwise"></i> Retake Quiz
+          </button>
+          <button class="cl-btn-primary" *ngIf="courseCompleted" (click)="goToCertificate()">
+            View Certificate <i class="bi bi-award"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CERTIFICATE VIEW -->
+    <div class="cl-certificate-wrap" *ngIf="isCertificatePage">
+      <div class="cl-cert">
+        <div class="cl-cert-border">
+          <div class="cl-cert-inner">
+            <div class="cl-cert-logo"><img src="/ABLM.png" alt="Armor Bridz" class="cl-cert-logo-img" crossOrigin="anonymous" /></div>
+            <p class="cl-cert-pre">Certificate of Completion</p>
+            <h1 class="cl-cert-name">{{ userName || 'Learner' }}</h1>
+            <p class="cl-cert-text">has successfully completed the course</p>
+            <h2 class="cl-cert-course">{{ course.title }}</h2>
+            <div class="cl-cert-meta">
+              <span>{{ course.badge }} · {{ course.level }}</span>
+              <span>Score: {{ quizScore }}%</span>
+              <span>{{ certificateDate }}</span>
+            </div>
+            <div class="cl-cert-footer">
+              <div class="cl-cert-sign">
+                <div class="cl-cert-line"></div>
+                <span>Armor Bridz Academy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cl-cert-actions">
+        <button class="cl-btn-secondary" (click)="goBack()"><i class="bi bi-arrow-left"></i> Back to Course</button>
+        <button class="cl-btn-primary" (click)="downloadCertificate()"><i class="bi bi-download"></i> Download PDF</button>
+      </div>
+    </div>
+
+  </main>
+</div>

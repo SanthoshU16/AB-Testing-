@@ -3,7 +3,7 @@
     <section class="welcome-hero">
       <div class="welcome-content">
 
-        <h1 class="welcome-heading">{{ greeting }}, <span class="name-accent">{{ userProfile?.firstName || 'there' }}</span></h1>
+        <h1 class="welcome-heading">{{ greeting }}, <span class="name-accent">{{ (userProfile?.firstName + (userProfile?.lastName ? ' ' + userProfile?.lastName : '')) || 'there' }}</span></h1>
 
       </div>
       <div class="welcome-actions">

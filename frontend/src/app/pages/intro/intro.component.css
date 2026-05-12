@@ -37,7 +37,7 @@
 .orb-1 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.15 * 100%), transparent) 0%, transparent 70%);
   top: -20%;
   right: -10%;
   animation-delay: 0s;
@@ -136,19 +136,19 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0071e3 0%, #308cf2 100%);
+  background: linear-gradient(135deg, var(--accent-color, #0071e3) 0%, var(--accent-light, #308cf2) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0; 
-  box-shadow: 0 4px 8px rgba(0, 113, 227, 0.2);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--accent-color, #0071e3) calc(0.2 * 100%), transparent);
 }
 .avatar-circle.small-circle {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   background: #ffffff;
-  color: #0071e3;
+  color: var(--accent-color, #0071e3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,8 +168,8 @@
 }
 .role-badge { 
   font-size: 0.75rem; 
-  background: rgba(37, 99, 235, 0.1); 
-  color: #2563eb; 
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.1 * 100%), transparent); 
+  color: var(--accent-color, #2563EB); 
   padding: 4px 8px; 
   border-radius: 100px; 
   font-weight: 700;
@@ -194,11 +194,13 @@
 .info-row {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 14px;
   font-size: 0.95rem;
 }
-.info-row span { color: #515154; font-weight: 500; }
-.info-row strong { color: #1d1d1f; font-weight: 700; }
+.info-row span { color: #515154; font-weight: 500; flex-shrink: 0; }
+.info-row strong { color: #1d1d1f; font-weight: 700; text-align: right; }
 
 .alert-item {
   display: flex;
@@ -237,10 +239,10 @@
   height: 46px;
   border-radius: 12px;
   font-size: 0.95rem;
-  --liquid-bg: linear-gradient(180deg, #0071e3 0%, #005bb5 100%);
+  --liquid-bg: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   --liquid-text: #ffffff;
-  --liquid-border: rgba(0, 113, 227, 0.4);
-  --liquid-shadow: 0 4px 10px rgba(0, 113, 227, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  --liquid-border: color-mix(in srgb, var(--accent-color, #0071e3) calc(0.4 * 100%), transparent);
+  --liquid-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color, #0071e3) calc(0.25 * 100%), transparent), inset 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 .sidebar-home-btn:hover {
   filter: brightness(0.98);
@@ -319,11 +321,11 @@
 .hero-headline-accent {
   background: linear-gradient(
     90deg, 
-    #2563EB 0%, 
-    #3B82F6 25%, 
-    #1D4ED8 50%, 
-    #3B82F6 75%, 
-    #2563EB 100%
+    var(--accent-color, #2563EB) 0%, 
+    var(--accent-light, #3B82F6) 25%, 
+    var(--accent-hover, #1D4ED8) 50%, 
+    var(--accent-light, #3B82F6) 75%, 
+    var(--accent-color, #2563EB) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -390,6 +392,7 @@
 .bg-green { background: linear-gradient(135deg, #34c759 0%, #30d158 100%); }
 .bg-red { background: linear-gradient(135deg, #ff5e62 0%, #ff9966 100%); }
 .bg-orange { background: linear-gradient(135deg, #ffcc00 0%, #ff9500 100%); }
+.bg-indigo { background: linear-gradient(135deg, #5e5ce6 0%, #4f46e5 100%); }
 
 .app-name {
   font-size: 1.15rem;
@@ -444,7 +447,7 @@
 .widget-action {
   font-size: 1.05rem;
   font-weight: 600;
-  color: #0071e3;
+  color: var(--accent-color, #0071e3);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -472,7 +475,7 @@
 }
 
 .w-val.highlight {
-  background: linear-gradient(135deg, #0071e3 0%, #308cf2 100%);
+  background: linear-gradient(135deg, var(--accent-color, #0071e3) 0%, var(--accent-light, #308cf2) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

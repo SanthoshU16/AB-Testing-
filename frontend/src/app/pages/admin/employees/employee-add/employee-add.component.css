@@ -119,8 +119,8 @@
 }
 
 .apple-input:focus {
-  border-color: #0071e3;
-  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15);
+  border-color: var(--accent-color, #0071e3);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-color, #0071e3) calc(0.15 * 100%), transparent);
 }
 
 select.apple-input {
@@ -165,12 +165,12 @@ select.apple-input {
 }
 
 .apple-btn-primary {
-  background: #0071e3;
+  background: var(--accent-color, #0071e3);
   color: white;
 }
 
 .apple-btn-primary:hover {
-  background: #0077ED;
+  background: var(--accent-hover, #0077ED);
 }
 
 .apple-btn-primary:active {
@@ -196,3 +196,28 @@ select.apple-input {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+
+/* =============================================
+   DARK MODE OVERRIDES
+   ============================================= */
+:host-context(.theme-dark) .modal-content {
+  background: #1A1F2E;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+:host-context(.theme-dark) .modal-title { color: var(--text-primary); }
+:host-context(.theme-dark) .close-btn { color: var(--text-tertiary); }
+:host-context(.theme-dark) .close-btn:hover { background: rgba(255, 255, 255, 0.06); color: var(--text-primary); }
+:host-context(.theme-dark) .form-group label { color: var(--text-tertiary); }
+:host-context(.theme-dark) .apple-input {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+:host-context(.theme-dark) .apple-input:focus { border-color: var(--accent-light, #3B82F6); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-light, #3B82F6) calc(0.15 * 100%), transparent); }
+:host-context(.theme-dark) .apple-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+}
+:host-context(.theme-dark) .apple-btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }

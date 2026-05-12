@@ -1,15 +1,14 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, NgZone, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
-import { FooterComponent } from '../../shared/footer/footer.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-learning',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, RouterModule, NavbarComponent],
   templateUrl: './learning.component.html',
   styleUrls: ['./learning.component.css']
 })
@@ -126,7 +125,7 @@ export class LearningComponent implements OnInit, AfterViewInit, OnDestroy {
       enrolled: 3450,
       rating: 4.9,
       badge: 'Expert',
-      gradient: 'linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%)',
+      gradient: 'linear-gradient(135deg, #1D4ED8 0%, var(--accent-light, #3B82F6) 100%)',
       icon: 'bi-envelope-check'
     },
     {
@@ -156,6 +155,34 @@ export class LearningComponent implements OnInit, AfterViewInit, OnDestroy {
       badge: 'Professional',
       gradient: 'linear-gradient(135deg, #EA580C 0%, #F59E0B 100%)',
       icon: 'bi-lock'
+    },
+    {
+      id: 10,
+      title: 'Mobile Device Security',
+      description: 'Securing corporate data on mobile platforms. Learn to manage MDM policies and recognize mobile-specific threats like SMiShing.',
+      category: 'fundamentals',
+      level: 'Intermediate',
+      duration: '4 hours',
+      modules: 10,
+      enrolled: 4800,
+      rating: 4.8,
+      badge: 'Mobile',
+      gradient: 'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)',
+      icon: 'bi-phone'
+    },
+    {
+      id: 11,
+      title: 'Zero Trust Architecture',
+      description: 'Introduction to the Zero Trust security model. Never trust, always verify, and implement least-privilege access across your network.',
+      category: 'fundamentals',
+      level: 'Advanced',
+      duration: '6 hours',
+      modules: 12,
+      enrolled: 3100,
+      rating: 4.9,
+      badge: 'Zero Trust',
+      gradient: 'linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)',
+      icon: 'bi-node-plus'
     }
   ];
 
@@ -170,12 +197,16 @@ export class LearningComponent implements OnInit, AfterViewInit, OnDestroy {
     private el: ElementRef,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.authSub = this.authService.currentUser$.subscribe(user => {
       this.isLoggedIn = !!user;
+      if (this.isLoggedIn) {
+        this.router.navigate(['/learning-hub']);
+      }
     });
   }
 
@@ -191,6 +222,10 @@ export class LearningComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   exploreCourses(): void {
+    if (!this.isLoggedIn) {
+      this.router.navigate(['/sign-up']);
+      return;
+    }
     this.showFullCatalog = true;
     this.cdr.detectChanges();
     setTimeout(() => {

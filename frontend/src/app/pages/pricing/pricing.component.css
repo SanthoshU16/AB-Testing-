@@ -72,9 +72,9 @@
   --lift: -2px;
   --scale: 1.01;
   filter: brightness(1.02) saturate(1.04);
-  box-shadow: 0 16px 36px rgba(37, 99, 235, 0.35),
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent),
     inset 0 3px 4px rgba(255, 255, 255, 0.95),
-    inset 0 -8px 12px rgba(37, 99, 235, 0.18);
+    inset 0 -8px 12px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.18 * 100%), transparent);
 }
 
 .liquid-btn:active {
@@ -97,12 +97,12 @@
 .nav-btn-text,
 .mobile-btn-outline,
 .btn-primary {
-  --liquid-bg: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  --liquid-bg: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   --liquid-text: #ffffff;
   --liquid-border: rgba(255, 255, 255, 0.5);
-  --liquid-shadow: 0 14px 30px rgba(37, 99, 235, 0.4),
+  --liquid-shadow: 0 14px 30px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent),
     inset 0 3px 4px rgba(255, 255, 255, 0.75),
-    inset 0 -10px 14px rgba(29, 78, 216, 0.5);
+    inset 0 -10px 14px color-mix(in srgb, var(--accent-hover, #1D4ED8) calc(0.5 * 100%), transparent);
 }
 
 .nav-btn-primary:hover,
@@ -148,7 +148,7 @@
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 45px rgba(37, 99, 235, 0.35),
+  box-shadow: 0 0 45px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent),
     0 16px 32px rgba(10, 37, 64, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 1),
     inset 0 -2px 5px rgba(255, 255, 255, 0.4);
@@ -199,7 +199,7 @@
 
 .nav-link:hover,
 .nav-item-dropdown:hover .nav-link {
-  color: #1f57d6;
+  color: var(--accent-color, #2563EB);
   background: rgba(31, 87, 214, 0.08);
   box-shadow: inset 0 0 0 1px rgba(31, 87, 214, 0.4);
 }
@@ -258,7 +258,7 @@
 .dropdown-item:hover,
 .active-item {
   background: rgba(31, 87, 214, 0.08);
-  color: #1f57d6;
+  color: var(--accent-color, #2563EB);
   box-shadow: inset 0 0 0 1px rgba(31, 87, 214, 0.3);
 }
 
@@ -433,7 +433,7 @@
 
 .mobile-dropdown-item:hover {
   background: rgba(31, 87, 214, 0.08);
-  color: #1f57d6;
+  color: var(--accent-color, #2563EB);
 }
 
 .mobile-actions {
@@ -476,7 +476,7 @@
 .section-overline {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--blue, #2563EB);
+  color: var(--blue, var(--accent-color, #2563EB));
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 16px;
@@ -493,7 +493,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #0A2540 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #0A2540 0%, var(--accent-color, #2563EB) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -572,7 +572,7 @@
 .orb-1 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.12 * 100%), transparent) 0%, transparent 70%);
   top: -20%;
   right: -10%;
   animation-delay: 0s;
@@ -615,7 +615,7 @@
 }
 
 .hero-headline-accent {
-  background: linear-gradient(135deg, #0A2540 0%, #2563EB 100%);
+  background: linear-gradient(135deg, #0A2540 0%, var(--accent-color, #2563EB) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -646,7 +646,7 @@
   border-radius: 100px;
   padding: 10px 22px;
   box-shadow:
-    0 0 30px rgba(37, 99, 235, 0.15),
+    0 0 30px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.15 * 100%), transparent),
     0 8px 20px rgba(10, 37, 64, 0.06),
     inset 0 2px 4px rgba(255, 255, 255, 0.95),
     inset 0 -4px 8px rgba(15, 23, 42, 0.04);
@@ -681,14 +681,14 @@
   width: 52px;
   height: 28px;
   border-radius: 100px;
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  background: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   border: none;
   cursor: pointer;
   transition: all 0.35s ease;
   box-shadow:
-    0 4px 12px rgba(37, 99, 235, 0.4),
+    0 4px 12px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent),
     inset 0 2px 3px rgba(255, 255, 255, 0.35),
-    inset 0 -4px 8px rgba(29, 78, 216, 0.5);
+    inset 0 -4px 8px color-mix(in srgb, var(--accent-hover, #1D4ED8) calc(0.5 * 100%), transparent);
 }
 
 .toggle-knob {
@@ -721,7 +721,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(37, 99, 235, 0.06) 0%, transparent 60%);
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.06 * 100%), transparent) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -760,22 +760,22 @@
 
 /* Highlighted (Pro) card */
 .plan-card.plan-highlighted {
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  background: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   border-color: rgba(255, 255, 255, 0.2);
   color: #fff;
   box-shadow:
-    0 20px 60px rgba(37, 99, 235, 0.45),
+    0 20px 60px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.45 * 100%), transparent),
     inset 0 3px 5px rgba(255, 255, 255, 0.4),
-    inset 0 -16px 28px rgba(14, 43, 112, 0.7);
+    inset 0 -16px 28px color-mix(in srgb, var(--accent-dark, #0e2b70) calc(0.7 * 100%), transparent);
   transform: translateY(-12px) scale(1.02);
 }
 
 .plan-card.plan-highlighted:hover {
   transform: translateY(-18px) scale(1.03);
   box-shadow:
-    0 32px 80px rgba(37, 99, 235, 0.55),
+    0 32px 80px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.55 * 100%), transparent),
     inset 0 3px 5px rgba(255, 255, 255, 0.45),
-    inset 0 -16px 28px rgba(14, 43, 112, 0.8);
+    inset 0 -16px 28px color-mix(in srgb, var(--accent-dark, #0e2b70) calc(0.8 * 100%), transparent);
 }
 
 /* Glow ring behind highlighted card */
@@ -783,7 +783,7 @@
   position: absolute;
   inset: -3px;
   border-radius: 27px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.5), rgba(30, 64, 175, 0.3));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.5 * 100%), transparent), rgba(30, 64, 175, 0.3));
   z-index: -1;
   filter: blur(12px);
   opacity: 0.6;
@@ -892,35 +892,35 @@
 
 /* Starter / Enterprise — blue with white text */
 .plan-card:not(.plan-highlighted) .plan-cta {
-  --liquid-bg: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  --liquid-bg: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   --liquid-text: #ffffff;
   --liquid-border: rgba(255, 255, 255, 0.3);
-  --liquid-shadow: 0 10px 28px rgba(37, 99, 235, 0.4),
+  --liquid-shadow: 0 10px 28px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent),
     inset 0 2px 4px rgba(255, 255, 255, 0.25),
-    inset 0 -8px 14px rgba(14, 43, 112, 0.5);
+    inset 0 -8px 14px color-mix(in srgb, var(--accent-dark, #0e2b70) calc(0.5 * 100%), transparent);
 }
 
 .plan-card:not(.plan-highlighted) .plan-cta:hover {
-  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.55),
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.55 * 100%), transparent),
     inset 0 2px 4px rgba(255, 255, 255, 0.3),
-    inset 0 -8px 16px rgba(14, 43, 112, 0.6);
+    inset 0 -8px 16px color-mix(in srgb, var(--accent-dark, #0e2b70) calc(0.6 * 100%), transparent);
 }
 
 /* Pro gets a white pill */
 .plan-cta.plan-cta-primary {
   --liquid-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(220, 230, 255, 0.9) 100%);
-  --liquid-text: #1541a7;
+  --liquid-text: var(--accent-dark, #1541a7);
   --liquid-border: rgba(255, 255, 255, 0.6);
   --liquid-shadow: 0 8px 22px rgba(10, 37, 64, 0.25),
     inset 0 3px 4px rgba(255, 255, 255, 1),
-    inset 0 -6px 10px rgba(14, 43, 112, 0.15);
+    inset 0 -6px 10px color-mix(in srgb, var(--accent-dark, #0e2b70) calc(0.15 * 100%), transparent);
   font-weight: 700;
 }
 
 .plan-cta.plan-cta-primary:hover {
   box-shadow: 0 14px 34px rgba(10, 37, 64, 0.35),
     inset 0 3px 4px rgba(255, 255, 255, 1),
-    inset 0 -6px 12px rgba(14, 43, 112, 0.2);
+    inset 0 -6px 12px color-mix(in srgb, var(--accent-dark, #0e2b70) calc(0.2 * 100%), transparent);
 }
 
 /* Enterprise dark */
@@ -974,7 +974,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: rgba(37, 99, 235, 0.08);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
   flex-shrink: 0;
   margin-top: 1px;
 }
@@ -1033,7 +1033,7 @@
 }
 
 .comp-header-row {
-  background: linear-gradient(180deg, #0a2540 0%, #1541a7 100%);
+  background: linear-gradient(180deg, #0a2540 0%, var(--accent-dark, #1541a7) 100%);
   color: #fff;
   padding: 0;
 }
@@ -1085,9 +1085,9 @@
 }
 
 .comp-plan-highlighted {
-  background: rgba(37, 99, 235, 0.04);
-  border-left: 1px solid rgba(37, 99, 235, 0.08);
-  border-right: 1px solid rgba(37, 99, 235, 0.08);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.04 * 100%), transparent);
+  border-left: 1px solid color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
+  border-right: 1px solid color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
 }
 
 .comp-row-alt {
@@ -1095,7 +1095,7 @@
 }
 
 .comp-row-alt .comp-plan-highlighted {
-  background: rgba(37, 99, 235, 0.06);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.06 * 100%), transparent);
 }
 
 .comp-check {
@@ -1118,8 +1118,8 @@
 }
 
 .comp-check-white {
-  background: rgba(37, 99, 235, 0.12);
-  color: #2563EB;
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.12 * 100%), transparent);
+  color: var(--accent-color, #2563EB);
 }
 
 .comp-check-white-no {
@@ -1134,7 +1134,7 @@
 }
 
 .comp-text-white {
-  color: #2563EB;
+  color: var(--accent-color, #2563EB);
 }
 
 
@@ -1199,7 +1199,7 @@
 }
 
 .faq-question:hover {
-  color: #2563EB;
+  color: var(--accent-color, #2563EB);
 }
 
 .faq-icon {
@@ -1216,8 +1216,8 @@
 }
 
 .faq-open .faq-icon {
-  background: rgba(37, 99, 235, 0.1);
-  color: #2563EB;
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.1 * 100%), transparent);
+  color: var(--accent-color, #2563EB);
   transform: rotate(180deg);
 }
 

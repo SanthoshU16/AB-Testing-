@@ -1,38 +1,39 @@
 /* App-level global styles */
 
-/* ---- Floating Scroll Capsule (Global) ---- */
+/* ---- Floating Scroll Capsule (Global Premium 3D) ---- */
 .floating-actions {
   position: fixed;
-  bottom: 40px;
-  right: 40px;
-  z-index: 999;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   padding: 6px;
-  border-radius: 40px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(237, 241, 246, 0.5) 100%);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 45px rgba(37, 99, 235, 0.25),
-    0 12px 24px rgba(10, 37, 64, 0.08),
-    inset 0 3px 6px rgba(255, 255, 255, 0.95),
-    inset 0 -8px 12px rgba(15, 23, 42, 0.05);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.12),
+    0 4px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translateY(0);
 }
 
 .floating-actions:hover {
   transform: translateY(-4px) scale(1.02);
-  background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
-  box-shadow: 0 16px 36px rgba(10, 37, 64, 0.12),
-    inset 0 3px 6px rgba(255, 255, 255, 1),
-    inset 0 -8px 12px rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
 .floating-icons {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .float-icon-btn {
@@ -41,43 +42,41 @@
   padding: 0;
   cursor: pointer;
   outline: none;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
   display: flex;
 }
 
 .float-icon-btn.hidden {
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.8);
+  transform: scale(0.6) rotate(-20deg);
   width: 0;
   margin: 0;
   pointer-events: none;
 }
 
 .float-icon {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 1.25rem;
-  transition: transform 0.3s ease;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
 }
 
-/* Up Button (Blue) */
+/* Up Button (Accent Premium 3D) */
 .up-btn .float-icon {
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.3),
+  background: linear-gradient(180deg, var(--accent-light, #5B9BFF) 0%, var(--accent-color, #2563EB) 50%, var(--accent-dark, #1A4BD3) 100%);
+  box-shadow: 
+    0 6px 12px color-mix(in srgb, var(--accent-color, #2563EB) 30%, transparent),
     inset 0 2px 3px rgba(255, 255, 255, 0.6),
-    inset 0 -7px 10px rgba(15, 23, 100, 0.4);
+    inset 0 -6px 10px color-mix(in srgb, var(--accent-dark, #1A4BD3) 40%, transparent);
 }
 
 .up-btn .float-icon::after {
@@ -88,16 +87,16 @@
   right: 0;
   height: 45%;
   border-radius: 50% 50% 100% 100% / 20% 20% 40% 40%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 100%);
-  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.05) 100%);
 }
 
-/* Down Button (Black/Navy) */
+/* Down Button (Dark Premium 3D) */
 .down-btn .float-icon {
   background: linear-gradient(180deg, #1e3a5f 0%, #0a2540 50%, #051626 100%);
-  box-shadow: 0 12px 24px rgba(10, 37, 64, 0.35),
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.35),
     inset 0 2px 3px rgba(255, 255, 255, 0.15),
-    inset 0 -7px 10px rgba(5, 22, 38, 0.9);
+    inset 0 -6px 10px rgba(0, 0, 0, 0.6);
 }
 
 .down-btn .float-icon::after {
@@ -109,9 +108,26 @@
   height: 45%;
   border-radius: 50% 50% 100% 100% / 20% 20% 40% 40%;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
-  pointer-events: none;
 }
 
 .float-icon-btn:hover .float-icon {
   transform: translateY(-2px) scale(1.08);
+  filter: brightness(1.1);
+}
+
+.float-icon-btn:active .float-icon {
+  transform: translateY(1px) scale(0.96);
+}
+
+/* Responsive adjust */
+@media (max-width: 768px) {
+  .floating-actions {
+    bottom: 24px;
+    right: 20px;
+    padding: 5px;
+  }
+  .float-icon {
+    width: 38px;
+    height: 38px;
+  }
 }

@@ -28,6 +28,7 @@ export class AdminSidebarComponent implements OnInit {
     { label: 'Templates', icon: 'bi-file-earmark-richtext-fill', route: '/admin/templates', exact: false },
     { label: 'Analytics', icon: 'bi-graph-up', route: '/admin/analytics', exact: false },
     { label: 'Reports', icon: 'bi-clipboard2-data-fill', route: '/admin/reports', exact: false },
+    { label: 'Learning', icon: 'bi-mortarboard-fill', route: '/learning-hub', exact: false },
   ];
 
   constructor(

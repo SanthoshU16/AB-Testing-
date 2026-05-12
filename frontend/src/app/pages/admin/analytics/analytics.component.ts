@@ -141,7 +141,8 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
   onFilterChange(type: string, value: string): void {
     (this.filters as any)[type] = value;
     this.applyFilters();
-    // Re-render charts
+    
+    // Trigger chart re-render
     this.chartsPending = true;
     this.chartsRendered = false;
   }
@@ -149,8 +150,10 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
   clearFilters(): void {
     this.filters = { department: 'all', campaign: 'all', risk: 'all', event: 'all' };
     this.applyFilters();
+    
     this.chartsPending = true;
     this.chartsRendered = false;
+    
     // Reset selects in the DOM
     document.querySelectorAll<HTMLSelectElement>('.pbi-slicer-select').forEach(s => s.selectedIndex = 0);
   }
@@ -296,14 +299,28 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   ngAfterViewChecked(): void {
-    if (this.chartsPending && !this.chartsRendered && !this.isLoading) {
-      if (this.deptChartRef?.nativeElement && this.riskChartRef?.nativeElement
-        && this.trendChartRef?.nativeElement && this.funnelChartRef?.nativeElement
-        && this.radarChartRef?.nativeElement && this.stackedChartRef?.nativeElement) {
-        this.destroyAll();
-        this.buildAllCharts();
-        this.chartsRendered = true;
+    if (this.chartsPending && !this.isLoading) {
+      const allReady = this.deptChartRef?.nativeElement && 
+                       this.riskChartRef?.nativeElement && 
+                       this.trendChartRef?.nativeElement && 
+                       this.funnelChartRef?.nativeElement && 
+                       this.radarChartRef?.nativeElement && 
+                       this.stackedChartRef?.nativeElement;
+
+      if (allReady) {
         this.chartsPending = false;
+        // Small delay to ensure browser has finished layout and canvas dimensions are set
+        setTimeout(() => {
+          try {
+            this.destroyAll();
+            this.buildAllCharts();
+            this.chartsRendered = true;
+          } catch (err) {
+            console.error('Error rendering analytics charts:', err);
+            // If it fails, we might want to try again once
+            this.chartsPending = true;
+          }
+        }, 150);
       }
     }
   }
@@ -314,12 +331,22 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   private destroyAll(): void {
-    this.charts.forEach(c => c.destroy());
-    this.charts = [];
+    if (this.charts && this.charts.length > 0) {
+      this.charts.forEach(c => {
+        try {
+          c.destroy();
+        } catch (e) {}
+      });
+      this.charts = [];
+    }
   }
 
-  // ─── 1. Department Click Rate Bar ─────────────────────────────────
   private buildAllCharts(): void {
+    // Final safety check for canvas existence
+    if (!this.deptChartRef?.nativeElement || !this.riskChartRef?.nativeElement) {
+      return;
+    }
+    
     this.buildDeptChart();
     this.buildRiskChart();
     this.buildTrendChart();
@@ -405,7 +432,7 @@ export class AnalyticsComponent implements OnInit, AfterViewChecked, OnDestroy {
     const ctx = canvas.getContext('2d')!;
     const trend = this.analyticsService.getCampaignTrend(this.campaigns, this.events);
     const blueGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    blueGrad.addColorStop(0, 'rgba(37, 99, 235, 0.25)');
+    blueGrad.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
     blueGrad.addColorStop(1, 'rgba(37, 99, 235, 0)');
     const redGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
     redGrad.addColorStop(0, 'rgba(255, 59, 48, 0.2)');

@@ -1,0 +1,109 @@
+<app-navbar [activePage]="'demo'"></app-navbar>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="demo-hero">
+  <div class="demo-hero-bg">
+    <div class="d-orb d-orb-a"></div>
+    <div class="d-orb d-orb-b"></div>
+  </div>
+  <div class="demo-hero-inner">
+    <p class="demo-eyebrow">WATCH DEMO</p>
+    <h1 class="demo-headline">
+      See Armor Bridz<br>
+      <span class="demo-gradient-text">in action.</span>
+    </h1>
+    <p class="demo-sub">
+      Explore guided video walkthroughs of every major feature. Pick a topic below and watch how it works.
+    </p>
+    <div class="demo-hero-actions"
+      style="display: flex; gap: 16px; justify-content: center; margin-top: 40px; flex-wrap: wrap;">
+      <a routerLink="/sign-up" class="btn-hero-primary liquid-btn">
+        Get Started Free
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 8px;">
+          <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </a>
+      <a routerLink="/tutorial" class="btn-hero-secondary liquid-btn">
+        View Tutorial
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left: 8px;">
+          <polygon points="6,4 12,8 6,12" fill="currentColor" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ VIDEO PLAYER + SELECTOR ══════════ -->
+<section class="demo-main">
+  <div class="demo-container">
+
+    <!-- Featured Video Player -->
+    <div class="demo-player-wrap" id="demo-player">
+      <div class="demo-player-card">
+        <div class="demo-video-wrapper">
+          <video controls autoplay muted playsinline preload="auto" class="demo-video" id="demo-video-el">
+            <source [src]="demos[activeDemo].video" type="video/quicktime">
+            <source [src]="demos[activeDemo].video" type="video/mp4">
+            Your browser does not support .mov video files. Please use Safari or convert to MP4.
+          </video>
+        </div>
+        <div class="demo-player-info">
+          <div class="demo-player-meta">
+            <span class="demo-duration">
+              <i class="bi bi-clock"></i> {{ demos[activeDemo].duration }}
+            </span>
+            <span class="demo-chapter">{{ activeDemo + 1 }} of {{ demos.length }}</span>
+          </div>
+          <h2>{{ demos[activeDemo].title }}</h2>
+          <p>{{ demos[activeDemo].desc }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo Chapter Selector -->
+    <div class="demo-chapters">
+      <h3 class="chapters-title">All Demos</h3>
+      <div class="chapters-grid">
+        <button *ngFor="let demo of demos; let i = index" class="chapter-card" [class.active]="activeDemo === i"
+          (click)="selectDemo(i)">
+          <div class="chapter-icon" [class]="'chapter-icon-' + demo.id">
+            <i class="bi {{ demo.icon }}"></i>
+          </div>
+          <div class="chapter-text">
+            <strong>{{ demo.title }}</strong>
+            <span>{{ demo.subtitle }}</span>
+          </div>
+          <div class="chapter-duration">{{ demo.duration }}</div>
+          <div class="chapter-play-indicator">
+            <i class="bi" [ngClass]="activeDemo === i ? 'bi-pause-circle-fill' : 'bi-play-circle'"></i>
+          </div>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="demo-cta-section">
+  <div class="demo-cta-card">
+    <div class="cta-orb cta-orb-a"></div>
+    <div class="cta-orb cta-orb-b"></div>
+    <p class="demo-eyebrow" style="color:rgba(255,255,255,0.6)">READY TO TRY?</p>
+    <h2 *ngIf="!isLoggedIn">Start your free trial today.</h2>
+    <h2 *ngIf="isLoggedIn">Take it for a spin.</h2>
+    <p *ngIf="!isLoggedIn">No credit card required. Get started in under 2 minutes.</p>
+    <p *ngIf="isLoggedIn">Head to your dashboard and put what you've learned into practice.</p>
+    <div class="cta-actions">
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/sign-up" class="cta-btn-primary liquid-btn">Get Started Free</a>
+        <a routerLink="/pricing" class="cta-btn-outline liquid-btn">View Plans</a>
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/admin/dashboard" class="cta-btn-primary liquid-btn">Go to Dashboard</a>
+        <a routerLink="/tutorial" class="cta-btn-outline liquid-btn">View Tutorial</a>
+      </ng-container>
+    </div>
+  </div>
+</section>

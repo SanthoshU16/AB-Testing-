@@ -1,0 +1,206 @@
+<app-navbar activePage=""></app-navbar>
+
+<!-- ========== HERO ========== -->
+<section class="page-hero" id="cookies-hero">
+  <div class="hero-bg-effects">
+    <div class="hero-orb orb-1"></div>
+    <div class="hero-orb orb-2"></div>
+    <div class="hero-orb orb-3"></div>
+  </div>
+  <div class="container">
+    <div class="hero-content">
+      <p class="section-overline reveal">Legal</p>
+      <h1 class="page-headline reveal" style="transition-delay:0.1s">
+        Cookie <span class="headline-accent">Policy</span>
+      </h1>
+      <p class="page-description reveal" style="transition-delay:0.2s">
+        How Armor Bridz uses cookies and tracking technologies to provide a secure simulation experience.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TAB BAR ========== -->
+<nav class="page-tabs">
+  <div class="page-tabs-inner">
+    <a routerLink="/privacy" class="page-tab">Privacy Policy</a>
+    <a routerLink="/terms" class="page-tab">Terms of Service</a>
+    <a routerLink="/cookies" class="page-tab active">Cookie Policy</a>
+  </div>
+</nav>
+
+<!-- ========== CONTENT ========== -->
+<div class="legal-body">
+  <div class="legal-container">
+
+    <!-- Google-style Sticky Sidebar -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a (click)="navigateToFragment($event, 't1')" [class.active]="activeSection==='t1'">About Cookies</a></li>
+          <li><a (click)="navigateToFragment($event, 't2')" [class.active]="activeSection==='t2'">Usage</a></li>
+          <li><a (click)="navigateToFragment($event, 't3')" [class.active]="activeSection==='t3'">Necessary</a></li>
+          <li><a (click)="navigateToFragment($event, 't4')" [class.active]="activeSection==='t4'">Simulation Tracking</a></li>
+          <li><a (click)="navigateToFragment($event, 't5')" [class.active]="activeSection==='t5'">Controls</a></li>
+          <li><a (click)="navigateToFragment($event, 't6')" [class.active]="activeSection==='t6'">Policy Changes</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Content Area -->
+    <main class="content">
+
+      <!-- Intro block -->
+      <div class="content-intro reveal">
+        <p class="overline-label">ARMOR BRIDZ COOKIE POLICY</p>
+        <h2 class="intro-headline">
+          To provide a functional and secure phishing simulation platform, 
+          we use a minimal set of cookies and similar tracking technologies.
+        </h2>
+        <p class="intro-body">
+          This policy describes what cookies we use, why we use them, and how you can 
+          control your preferences. We are committed to transparency and privacy in every 
+          interaction.
+        </p>
+      </div>
+
+      <hr class="section-divider">
+
+      <section id="t1" class="legal-section">
+        <div class="reveal">
+          <h3>1. About Cookies</h3>
+          <p>
+            Cookies are small text files that are stored on your device when you visit a 
+            website. They help the website recognize your device and remember certain 
+            information about your visit or preferences.
+          </p>
+          <p>
+            On the Armor Bridz platform, we use cookies primarily for security, 
+            authentication, and to accurately track the results of authorized 
+            phishing simulations.
+          </p>
+        </div>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t2" class="legal-section">
+        <div class="reveal">
+          <h3>2. How We Use Cookies</h3>
+          <p>We use cookies and tracking technologies for the following purposes:</p>
+          <ul>
+            <li><strong>Authentication:</strong> To keep you signed in to the admin dashboard and ensure your session remains secure.</li>
+            <li><strong>Security:</strong> To protect our infrastructure and prevent unauthorized access or malicious activity.</li>
+            <li><strong>Simulation Performance:</strong> To detect when an employee opens a simulation email or clicks a link, which is essential for risk assessment.</li>
+            <li><strong>Preferences:</strong> To remember your interface settings, such as your theme or language choices.</li>
+          </ul>
+        </div>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t3" class="legal-section">
+        <div class="reveal">
+          <h3>3. Strictly Necessary Cookies</h3>
+          <p>
+            These cookies are essential for the platform to function. You cannot opt out of 
+            these cookies as they are required for security and session management:
+          </p>
+          <ul>
+            <li><strong>Firebase Authentication:</strong> We use Google Firebase to manage admin login sessions. These tokens are stored securely in your browser's local storage or cookies.</li>
+            <li><strong>Session Management:</strong> Temporary cookies used to maintain your interaction with the admin panel during a single visit.</li>
+            <li><strong>CSRF Protection:</strong> Security cookies used to prevent cross-site request forgery attacks.</li>
+          </ul>
+        </div>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t4" class="legal-section">
+        <div class="reveal">
+          <h3>4. Simulation Tracking Technologies</h3>
+          <p>
+            Because Armor Bridz is a phishing simulation platform, we use specific tracking 
+            mechanisms within simulation campaigns:
+          </p>
+          <ul>
+            <li><strong>Tracking Pixels:</strong> Transparent 1x1 images included in simulation emails to detect when the email is opened.</li>
+            <li><strong>Unique Link Identifiers:</strong> Parameters added to links within simulation emails to identify which employee clicked the link and at what time.</li>
+            <li><strong>Fingerprinting (Minimal):</strong> We may collect browser version and device type to help organizations identify vulnerable software versions within their workforce.</li>
+          </ul>
+          <p>
+            <strong>Note:</strong> These tracking technologies are only active for 
+            employees enrolled in an authorized simulation by their organization. 
+            No tracking is performed on public-facing pages for marketing purposes.
+          </p>
+        </div>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t5" class="legal-section">
+        <div class="reveal">
+          <h3>5. Your Choices & Controls</h3>
+          <p>
+            Most web browsers allow you to control cookies through their settings. You can:
+          </p>
+          <ul>
+            <li>Clear cookies from your browser at any time</li>
+            <li>Block all cookies (note: this will prevent the Armor Bridz admin panel from functioning)</li>
+            <li>Set your browser to notify you when you receive a cookie</li>
+          </ul>
+          <p>
+            For more information on how to manage cookies, visit 
+            <a href="https://www.aboutcookies.org" target="_blank" class="inline-link">aboutcookies.org</a>.
+          </p>
+        </div>
+      </section>
+
+      <hr class="section-divider">
+
+      <section id="t6" class="legal-section">
+        <div class="reveal">
+          <h3>6. Changes to This Policy</h3>
+          <p>
+            We may update this Cookie Policy as we add new features or as security 
+            standards evolve. Any material changes will be reflected on this page 
+            with an updated "Last Updated" date.
+          </p>
+        </div>
+      </section>
+
+      <div class="legal-footer reveal">
+        <p>
+          Our use of cookies is focused entirely on security and platform functionality. 
+          We do not use advertising cookies or share your browsing data with third parties.
+        </p>
+        <p>
+          If you have questions about our use of tracking technologies, please contact 
+          your organization's security administrator or our support team.
+        </p>
+        <p class="last-updated">Last updated: April 2026</p>
+      </div>
+
+    </main>
+
+  </div>
+</div>
+
+<!-- Google-style Bottom Bar -->
+<footer class="legal-bottom-bar">
+  <div class="bottom-bar-inner">
+    <div class="bottom-bar-links">
+      <a routerLink="/">Armor Bridz</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/about">About</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/privacy">Privacy</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/terms">Terms</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/cookies" class="current-page">Cookies</a>
+      <span class="dot-separator">·</span>
+      <a routerLink="/contact">Contact</a>
+    </div>
+  </div>
+</footer>

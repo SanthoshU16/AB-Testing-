@@ -41,7 +41,19 @@
         </div>
       </div>
 
-      <!-- Extended info -->
+      <!-- Company & Department -->
+      <div class="apple-input-group">
+        <div class="apple-input-row">
+          <input type="text" class="apple-input" placeholder="Company Name"
+                 [(ngModel)]="companyName" name="companyName" id="sign-up-company">
+        </div>
+        <div class="apple-input-divider"></div>
+        <div class="apple-input-row">
+          <input type="text" class="apple-input" placeholder="Department Name"
+                 [(ngModel)]="departmentName" name="departmentName" id="sign-up-department">
+        </div>
+      </div>
+
       <div class="apple-input-group">
         <div class="apple-input-row">
           <input type="email" class="apple-input" placeholder="Work Email" required

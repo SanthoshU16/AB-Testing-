@@ -88,7 +88,7 @@
 }
 
 .stat-item:hover .stat-value {
-  text-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+  text-shadow: 0 4px 12px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.2 * 100%), transparent);
 }
 
 /* Section depth layering */
@@ -200,11 +200,11 @@
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.15 * 100%), transparent);
   }
 
   50% {
-    box-shadow: 0 0 40px rgba(37, 99, 235, 0.3), 0 0 60px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 40px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.3 * 100%), transparent), 0 0 60px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.1 * 100%), transparent);
   }
 }
 
@@ -237,7 +237,7 @@
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.8);
   /* Increased glow */
-  box-shadow: 0 0 45px rgba(37, 99, 235, 0.35),
+  box-shadow: 0 0 45px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent),
     0 16px 32px rgba(10, 37, 64, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 1),
     inset 0 -2px 5px rgba(255, 255, 255, 0.4);
@@ -288,7 +288,7 @@
 
 .nav-link:hover,
 .nav-item-dropdown:hover .nav-link {
-  color: #1f57d6;
+  color: var(--accent-color, #2563EB);
   background: rgba(31, 87, 214, 0.08);
   /* soft blue background */
   box-shadow: inset 0 0 0 1px rgba(31, 87, 214, 0.4);
@@ -368,7 +368,7 @@
 .dropdown-item:hover {
   background: rgba(31, 87, 214, 0.08);
   /* soft blue background */
-  color: #1f57d6;
+  color: var(--accent-color, #2563EB);
   /* primary blue text */
   box-shadow: inset 0 0 0 1px rgba(31, 87, 214, 0.3), 0 2px 8px rgba(31, 87, 214, 0.1);
 }
@@ -557,7 +557,7 @@
 .mobile-dropdown-item:hover,
 .mobile-dropdown-item:active {
   background: rgba(31, 87, 214, 0.08);
-  color: #1f57d6;
+  color: var(--accent-color, #2563EB);
 }
 
 .mobile-actions {
@@ -614,7 +614,7 @@
 .orb-1 {
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.12 * 100%), transparent) 0%, transparent 70%);
   top: -20%;
   right: -10%;
   animation-delay: 0s;
@@ -653,8 +653,8 @@
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--blue);
-  background: rgba(37, 99, 235, 0.06);
-  border: 1px solid rgba(37, 99, 235, 0.12);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.06 * 100%), transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-color, #2563EB) calc(0.12 * 100%), transparent);
   padding: 7px 18px 7px 12px;
   border-radius: var(--radius-full);
   margin-bottom: 32px;
@@ -761,9 +761,9 @@
   --scale: 1.01;
   filter: brightness(1.02) saturate(1.04);
   /* Glow in blue colour */
-  box-shadow: 0 16px 36px rgba(37, 99, 235, 0.35),
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.35 * 100%), transparent),
     inset 0 3px 4px rgba(255, 255, 255, 0.95),
-    inset 0 -8px 12px rgba(37, 99, 235, 0.18);
+    inset 0 -8px 12px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.18 * 100%), transparent);
 }
 
 .nav-btn-primary:hover,
@@ -794,7 +794,7 @@
 }
 
 .liquid-btn:focus-visible {
-  outline: 2px solid rgba(37, 99, 235, 0.45);
+  outline: 2px solid color-mix(in srgb, var(--accent-color, #2563EB) calc(0.45 * 100%), transparent);
   outline-offset: 3px;
 }
 
@@ -814,14 +814,14 @@
 .nav-btn-text,
 .mobile-btn-outline,
 .btn-primary {
-  --liquid-bg: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  --liquid-bg: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   --liquid-text: #ffffff;
   --liquid-border: rgba(255, 255, 255, 0.5);
-  --liquid-shadow: 0 14px 30px rgba(37, 99, 235, 0.4),
+  --liquid-shadow: 0 14px 30px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent),
     inset 0 3px 4px rgba(255, 255, 255, 0.75),
-    inset 0 -10px 14px rgba(29, 78, 216, 0.5);
+    inset 0 -10px 14px color-mix(in srgb, var(--accent-hover, #1D4ED8) calc(0.5 * 100%), transparent);
   --liquid-highlight: rgba(255, 255, 255, 0.85);
-  --liquid-shade: rgba(29, 78, 216, 0.55);
+  --liquid-shade: color-mix(in srgb, var(--accent-hover, #1D4ED8) calc(0.55 * 100%), transparent);
 }
 
 .btn-primary svg,
@@ -1049,7 +1049,7 @@
   left: 50%;
   width: 800px;
   height: 600px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(10, 37, 64, 0.03) 40%, transparent 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent) 0%, rgba(10, 37, 64, 0.03) 40%, transparent 70%);
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 0;
@@ -1068,11 +1068,11 @@
   position: relative;
   z-index: 2;
   /* Match the vibrant blue liquid button background */
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
+  background: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: var(--radius-xl);
   /* Use the exact strong inset shadows from liquid-btn for 3D feeling */
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.4),
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent),
     inset 0 3px 5px rgba(255, 255, 255, 0.8),
     inset 0 -12px 18px rgba(30, 64, 175, 0.7);
   overflow: hidden;
@@ -1242,7 +1242,7 @@
 
 .feature-card:hover .feature-icon {
   transform: scale(1.08);
-  background: rgba(37, 99, 235, 0.08);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.08 * 100%), transparent);
 }
 
 .feature-title {
@@ -1337,7 +1337,7 @@
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   /* strong glow */
-  box-shadow: 0 0 35px rgba(37, 99, 235, 0.3),
+  box-shadow: 0 0 35px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.3 * 100%), transparent),
     0 8px 20px rgba(10, 37, 64, 0.1),
     inset 0 3px 6px rgba(255, 255, 255, 0.95),
     inset 0 -4px 10px rgba(15, 23, 42, 0.05);
@@ -1375,7 +1375,7 @@
   width: 44px;
   height: 44px;
   border-radius: var(--radius-md);
-  background: rgba(37, 99, 235, 0.06);
+  background: color-mix(in srgb, var(--accent-color, #2563EB) calc(0.06 * 100%), transparent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1669,7 +1669,7 @@
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 45px rgba(37, 99, 235, 0.25),
+  box-shadow: 0 0 45px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.25 * 100%), transparent),
     0 12px 24px rgba(10, 37, 64, 0.08),
     inset 0 3px 6px rgba(255, 255, 255, 0.95),
     inset 0 -8px 12px rgba(15, 23, 42, 0.05);
@@ -1718,8 +1718,8 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: linear-gradient(180deg, #1f57d6 0%, #1541a7 50%, #0e2b70 100%);
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.4),
+  background: linear-gradient(180deg, var(--accent-light, #3B82F6) 0%, var(--accent-color, #2563EB) 50%, var(--accent-hover, #1D4ED8) 100%);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.4 * 100%), transparent),
     inset 0 2px 3px rgba(255, 255, 255, 0.8),
     inset 0 -4px 8px rgba(30, 64, 175, 0.7);
   display: flex;
@@ -1768,7 +1768,7 @@
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 20px rgba(37, 99, 235, 0.2),
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent-color, #2563EB) calc(0.2 * 100%), transparent),
     0 4px 10px rgba(10, 37, 64, 0.05),
     inset 0 1px 2px rgba(255, 255, 255, 1),
     inset 0 -2px 4px rgba(15, 23, 42, 0.05);

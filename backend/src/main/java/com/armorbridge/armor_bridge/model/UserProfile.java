@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.Date;
+import java.util.Map;
+import java.util.HashMap;
 
 @Data
 @NoArgsConstructor
@@ -18,4 +20,5 @@ public class UserProfile {
     private Long updatedAt;
     private Long lastLogin;
     private String status; // active, suspended
+    private Map<String, Object> preferences;
 }
