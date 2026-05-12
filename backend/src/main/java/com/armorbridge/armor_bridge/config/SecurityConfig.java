@@ -34,6 +34,7 @@ public class SecurityConfig {
             .httpBasic(basic -> basic.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/").permitAll()
                 .requestMatchers("/api/tracking/public/**").permitAll()
                 .requestMatchers("/api/tracking/pixel/**").permitAll()
                 .requestMatchers("/api/public/**").permitAll()
@@ -43,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/templates/reseed").permitAll()
                 .anyRequest().authenticated()
             )
+
             .addFilterBefore(new FirebaseFilter(), UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
@@ -51,7 +53,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList(
+            "https://ab-testing-xi.vercel.app",
+            "http://localhost:4200"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
@@ -59,4 +64,5 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 }
