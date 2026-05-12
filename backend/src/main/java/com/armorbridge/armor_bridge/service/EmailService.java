@@ -68,52 +68,48 @@ public class EmailService {
      * Launch a campaign — sends phishing simulation emails to all target employees.
      * Runs asynchronously so the API call returns immediately.
      */
-    @Async
-    public void launchCampaign(String campaignId) {
-        try {
-            // 1. Load the campaign
-            Campaign campaign = findCampaignById(campaignId);
-            if (campaign == null) {
-                System.err.println("❌ [EmailService] Campaign not found: " + campaignId);
-                return;
-            }
+    /**
+     * Synchronously identify target employees for a campaign.
+     */
+    public List<Employee> getTargetsForCampaign(String campaignId) throws java.util.concurrent.ExecutionException, InterruptedException {
+        Campaign campaign = findCampaignById(campaignId);
+        if (campaign == null) return List.of();
 
-            // 2. Load the phishing template
+        List<Employee> allEmployees = employeeService.getAllEmployees();
+        
+        if (campaign.getTargetEmployeeIds() != null && !campaign.getTargetEmployeeIds().isEmpty()) {
+            return allEmployees.stream()
+                .filter(e -> campaign.getTargetEmployeeIds().contains(e.getId()))
+                .filter(e -> e.getStatus() == null || "active".equals(e.getStatus()))
+                .toList();
+        } else if (campaign.getTargetDepartments() != null && !campaign.getTargetDepartments().isEmpty()) {
+            return allEmployees.stream()
+                .filter(e -> campaign.getTargetDepartments().contains(e.getDepartment()))
+                .filter(e -> e.getStatus() == null || "active".equals(e.getStatus()))
+                .toList();
+        }
+        return List.of();
+    }
+
+    /**
+     * Asynchronously sends phishing emails to a list of targets.
+     */
+    @Async
+    public void launchCampaignAsync(String campaignId, List<Employee> targets) {
+        if (targets == null || targets.isEmpty()) {
+            System.err.println("❌ [EmailService] No targets to send to for campaign: " + campaignId);
+            return;
+        }
+
+        try {
+            Campaign campaign = findCampaignById(campaignId);
             PhishingTemplate template = findTemplateById(campaign.getTemplateId());
             if (template == null) {
                 System.err.println("❌ [EmailService] Template not found: " + campaign.getTemplateId());
                 return;
             }
 
-            // 3. Get target employees
-            List<Employee> allEmployees = employeeService.getAllEmployees();
-            List<Employee> targets;
-            
-            if (campaign.getTargetEmployeeIds() != null && !campaign.getTargetEmployeeIds().isEmpty()) {
-                targets = allEmployees.stream()
-                    .filter(e -> campaign.getTargetEmployeeIds().contains(e.getId()))
-                    .filter(e -> e.getStatus() == null || "active".equals(e.getStatus())) // Allow null status as default active
-                    .toList();
-            } else if (campaign.getTargetDepartments() != null && !campaign.getTargetDepartments().isEmpty()) {
-                targets = allEmployees.stream()
-                    .filter(e -> campaign.getTargetDepartments().contains(e.getDepartment()))
-                    .filter(e -> e.getStatus() == null || "active".equals(e.getStatus()))
-                    .toList();
-            } else {
-                System.err.println("❌ [EmailService] No target employees or departments specified for campaign: " + campaignId);
-                return;
-            }
-
-            if (targets.isEmpty()) {
-                System.err.println("❌ [EmailService] No active target employees found for campaign: " + campaignId);
-                // Update Firestore to show no targets found
-                java.util.Map<String, Object> updates = new java.util.HashMap<>();
-                updates.put("status", "completed");
-                campaignService.updateCampaign(campaignId, updates);
-                return;
-            }
-
-            // 4. Initialize progress tracking
+            // Initialize progress tracking
             Map<String, Object> progress = new ConcurrentHashMap<>();
             progress.put("sent", 0);
             progress.put("total", targets.size());
@@ -126,19 +122,17 @@ public class EmailService {
             startUpdates.put("status", "active");
             campaignService.updateCampaign(campaignId, startUpdates);
 
-            System.out.println("📧 [EmailService] Launching campaign '" + campaign.getName() + "' → " + targets.size() + " employees");
+            System.out.println("📧 [EmailService] Launching campaign '" + campaign.getName() + "' → " + targets.size() + " targets");
 
-            // 5. Send emails to each target
             int sent = 0;
             int failed = 0;
 
             for (Employee emp : targets) {
                 try {
-                    System.out.println("🚀 [EmailService] Attempting to send to: " + emp.getEmail());
+                    System.out.println("🚀 [EmailService] Attempting send to: " + emp.getEmail());
                     sendPhishingEmail(campaignId, emp, template);
                     sent++;
                     
-                    // Log delivery event
                     com.armorbridge.armor_bridge.model.TrackingEvent deliveryEvent = new com.armorbridge.armor_bridge.model.TrackingEvent();
                     deliveryEvent.setCampaignId(campaignId);
                     deliveryEvent.setEmployeeId(emp.getId());
@@ -155,25 +149,20 @@ public class EmailService {
                     System.err.println("⚠️ [EmailService] Failed to send to " + emp.getEmail() + ": " + e.getMessage());
                 }
 
-                // Update progress map
                 progress.put("sent", sent);
                 progress.put("failed", failed);
 
-                // Update Firestore stats every few emails (or at end) to keep it in sync
                 if (sent % 5 == 0 || sent == targets.size()) {
                     java.util.Map<String, Object> statsUpdate = new java.util.HashMap<>();
                     java.util.Map<String, Object> statsMap = new java.util.HashMap<>();
                     statsMap.put("totalSent", sent);
+                    statsMap.put("failed", failed);
                     statsUpdate.put("stats", statsMap);
                     campaignService.updateCampaign(campaignId, statsUpdate);
                 }
-
-                // Small delay to avoid SMTP rate limiting
                 Thread.sleep(300);
             }
 
-            // 6. Mark campaign as complete
-            progress.put("status", "completed");
             java.util.Map<String, Object> finalUpdates = new java.util.HashMap<>();
             finalUpdates.put("status", "completed");
             campaignService.updateCampaign(campaignId, finalUpdates);
@@ -182,13 +171,9 @@ public class EmailService {
 
         } catch (Exception e) {
             System.err.println("❌ [EmailService] Campaign launch failed: " + e.getMessage());
-            e.printStackTrace();
-            Map<String, Object> progress = sendProgress.get(campaignId);
-            if (progress != null) {
-                progress.put("status", "failed");
-            }
         }
     }
+
 
 
     /**

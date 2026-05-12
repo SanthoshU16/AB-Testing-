@@ -52,9 +52,11 @@ public class CampaignScheduler {
                 campaignService.updateCampaign(campaign.getId(), updates);
 
                 // Launch the campaign
-                emailService.launchCampaign(campaign.getId());
+                var targets = emailService.getTargetsForCampaign(campaign.getId());
+                emailService.launchCampaignAsync(campaign.getId(), targets);
 
-                System.out.println("✅ Scheduled campaign '" + campaign.getName() + "' launched successfully");
+                System.out.println("✅ Scheduled campaign '" + campaign.getName() + "' initiated with " + targets.size() + " targets");
+
             }
         } catch (Exception e) {
             // Find root cause

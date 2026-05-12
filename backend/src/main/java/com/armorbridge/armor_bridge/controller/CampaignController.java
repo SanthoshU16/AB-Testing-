@@ -1,7 +1,9 @@
 package com.armorbridge.armor_bridge.controller;
 
 import com.armorbridge.armor_bridge.model.Campaign;
+import com.armorbridge.armor_bridge.model.Employee;
 import com.armorbridge.armor_bridge.service.CampaignService;
+
 import com.armorbridge.armor_bridge.service.EmailService;
 import com.armorbridge.armor_bridge.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +46,20 @@ public class CampaignController {
     }
 
     @PostMapping("/{id}/launch")
-    public void launchCampaign(@PathVariable String id) {
-        emailService.launchCampaign(id);
+    public java.util.Map<String, Object> launchCampaign(@PathVariable String id) throws java.util.concurrent.ExecutionException, InterruptedException {
+        // 1. Find targets synchronously so we can return the count
+        List<Employee> targets = emailService.getTargetsForCampaign(id);
+        
+        // 2. Launch sending asynchronously
+        emailService.launchCampaignAsync(id, targets);
+        
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        response.put("targetsFound", targets.size());
+        response.put("message", targets.size() > 0 ? "Campaign launch initiated" : "No employees found matching targets");
+        return response;
     }
+
+
 
     @DeleteMapping("/{id}")
     public void deleteCampaign(@PathVariable String id) throws ExecutionException, InterruptedException {
